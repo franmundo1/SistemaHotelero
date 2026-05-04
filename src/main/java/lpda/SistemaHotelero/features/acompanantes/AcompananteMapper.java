@@ -1,0 +1,27 @@
+package lpda.SistemaHotelero.features.acompanantes;
+
+import lpda.SistemaHotelero.features.reservas.ReservaEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AcompananteMapper {
+
+    public AcompananteEntity toEntity(AcompananteRequestDTO dto, ReservaEntity reserva) {
+        AcompananteEntity entity = new AcompananteEntity();
+        entity.setReserva(reserva);
+        entity.setNombre(dto.getNombre());
+        entity.setApellido(dto.getApellido());
+        entity.setDni(dto.getDni());
+        return entity;
+    }
+
+    public AcompananteResponseDTO toResponse(AcompananteEntity entity) {
+        return AcompananteResponseDTO.builder()
+                .idAcompanante(entity.getIdAcompanante())
+                .idReserva(entity.getReserva().getIdReserva())
+                .nombre(entity.getNombre())
+                .apellido(entity.getApellido())
+                .dni(entity.getDni())
+                .build();
+    }
+}
