@@ -16,6 +16,6 @@ public class CanalReservaEntity {
     private Long idCanal;
 
     @Column(nullable = false, unique = true)
-    private String nombre;
+    private String nombrePersona;
     // HOTEL, BOOKING, WHATSAPP, TELEFONO
 }

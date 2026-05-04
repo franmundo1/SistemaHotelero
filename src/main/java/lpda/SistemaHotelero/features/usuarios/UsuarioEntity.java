@@ -1,7 +1,11 @@
 package lpda.SistemaHotelero.features.usuarios;
+
 import jakarta.persistence.*;
-        import lombok.*;
+import lombok.*;
 import lpda.SistemaHotelero.features.roles.RolEntity;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -31,7 +35,11 @@ public class UsuarioEntity {
     @Column(nullable = false)
     private Boolean activo = true;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rol", nullable = false)
-    private RolEntity rol;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuarios_roles",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol")
+    )
+    private Set<RolEntity> roles = new HashSet<>();
 }

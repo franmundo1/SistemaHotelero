@@ -1,6 +1,7 @@
 package lpda.SistemaHotelero.features.roles;
+
 import jakarta.persistence.*;
-        import lombok.*;
+import lombok.*;
 
 @Entity
 @Table(name = "roles")
