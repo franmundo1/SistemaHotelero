@@ -1,4 +1,13 @@
 package lpda.SistemaHotelero.features.huespedes;
 
-public class HuespedRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+
+public interface HuespedRepository extends JpaRepository<HuespedEntity, Long>,
+        JpaSpecificationExecutor<HuespedEntity> {
+
 }
+
