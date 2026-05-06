@@ -19,24 +19,24 @@ public class HuespedController {
     }
 
     @GetMapping
-public ResponseEntity<List<HuespedEntity>> listar (
-        @RequestParam (required = false) String nombre,
-        @RequestParam (required = false) String dni){
+    public ResponseEntity<List<HuespedEntity>> listar(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String dni) {
 
-        List <HuespedEntity> resultado = huespedService.buscarConFiltros(nombre, dni);
-         return ResponseEntity.ok(resultado);
+        List<HuespedEntity> resultado = huespedService.buscarConFiltros(nombre, dni);
+        return ResponseEntity.ok(resultado);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HuespedEntity> obteenrPorId(@PathVariable Long id){
+    public ResponseEntity<HuespedEntity> obteenrPorId(@PathVariable Long id) {
         return huespedService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping
-     public ResponseEntity<HuespedEntity> registrar (@RequestBody HuespedEntity huesped){
+    public ResponseEntity<HuespedEntity> registrar(@RequestBody HuespedEntity huesped) {
         HuespedEntity guardado = huespedService.guardarHuesped(huesped);
         return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
     }
-
+}
