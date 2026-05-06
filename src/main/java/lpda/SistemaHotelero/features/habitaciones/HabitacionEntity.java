@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class HabitacionEntity {
 
     @Id
