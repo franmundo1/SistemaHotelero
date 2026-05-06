@@ -10,3 +10,4 @@ public interface HuespedRepository extends JpaRepository<HuespedEntity, Long>,
         JpaSpecificationExecutor<HuespedEntity> {
 
 }
+

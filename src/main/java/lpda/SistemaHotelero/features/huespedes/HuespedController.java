@@ -39,4 +39,4 @@ public ResponseEntity<List<HuespedEntity>> listar (
         HuespedEntity guardado = huespedService.guardarHuesped(huesped);
         return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
     }
-}
+
