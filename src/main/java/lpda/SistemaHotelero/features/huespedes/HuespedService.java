@@ -30,13 +30,13 @@ public class HuespedService {
     }
 
     @Transactional(readOnly = true)
-    public List<HuespedEntity> buscarConFiltros(String nombre, String dni) {
-        PredicateSpecification<HuespedEntity> spec = PredicateSpecification.allOf(
-                HuespedSpecification.nombreLike(nombre),
-                HuespedSpecification.dniEquals(dni)
-        );
+    public List<HuespedResponseDTO> buscarConFiltros (String nombre, String dni){
+        Specification<HuespedEntity> spec = Specification.where(HuespedSpecification.nombreLike(nombre))
+                .and(HuespedSpecification.dniEquals(dni));
 
-        return huespedRepository.findAll(spec);
+        return huespedRepository.findAll(spec).stream()
+                .map(huespedMapper::toResponseDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -56,4 +56,3 @@ public class HuespedService {
     }
 }
 
-}
