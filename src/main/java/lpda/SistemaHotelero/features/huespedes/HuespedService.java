@@ -24,13 +24,13 @@ public class HuespedService {
 
     @Transactional
 
-    public HuespedEntity guardarHuesped (HuespedEntity huesped){
+    public HuespedEntity guardarHuesped(HuespedEntity huesped) {
         return huespedRepository.save(huesped);
 
     }
 
     @Transactional(readOnly = true)
-    public List<HuespedEntity> buscarConFiltros (String nombre, String dni){
+    public List<HuespedEntity> buscarConFiltros(String nombre, String dni) {
         PredicateSpecification<HuespedEntity> spec = PredicateSpecification.allOf(
                 HuespedSpecification.nombreLike(nombre),
                 HuespedSpecification.dniEquals(dni)
@@ -40,13 +40,13 @@ public class HuespedService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<HuespedEntity> buscarPorId (Long id){
+    public Optional<HuespedEntity> buscarPorId(Long id) {
         return huespedRepository.findById(id);
     }
 
     @Transactional
 
-    public HuespedResponseDTO guardarHuesped(HuespedRequestDTO dto){
+    public HuespedResponseDTO guardarHuesped(HuespedRequestDTO dto) {
         HuespedEntity entity = huespedMapper.toEntity(dto);
 
         HuespedEntity guardado = huespedRepository.save(entity);
@@ -54,4 +54,6 @@ public class HuespedService {
         return huespedMapper.toResponseDTO(guardado);
 
     }
+}
+
 }
