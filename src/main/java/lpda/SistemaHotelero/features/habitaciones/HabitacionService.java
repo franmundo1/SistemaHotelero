@@ -3,6 +3,9 @@ package lpda.SistemaHotelero.features.habitaciones;
 import lombok.RequiredArgsConstructor;
 import lpda.SistemaHotelero.exceptions.BadRequestException;
 import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
+import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -113,4 +116,56 @@ public class HabitacionService {
 
         return habitacionMapper.toResponseDTO(habitacionActualizada);
     }
+    public List<HabitacionResponseDTO> filtrarHabitaciones(
+            String numero,
+            TipoHabitacion tipo,
+            Integer capacidad,
+            EstadoOcupacion estadoOcupacion,
+            EstadoLimpieza estadoLimpieza,
+            Boolean activa
+    ) {
+        if (capacidad != null && (capacidad < 1 || capacidad > 3)) {
+            throw new BadRequestException("La capacidad debe estar entre 1 y 3");
+        }
+
+        return habitacionRepository.filtrarHabitaciones(
+                        numero,
+                        tipo,
+                        capacidad,
+                        estadoOcupacion,
+                        estadoLimpieza,
+                        activa
+                )
+                .stream()
+                .map(habitacionMapper::toResponseDTO)
+                .toList();
+    }
+    public HabitacionResponseDTO cambiarEstadoLimpieza(Long id, EstadoLimpieza estadoLimpieza) {
+        HabitacionEntity habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+
+        habitacion.setEstadoLimpieza(estadoLimpieza);
+
+        return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
+    }
+
+    public HabitacionResponseDTO cambiarEstadoOcupacion(Long id, EstadoOcupacion estadoOcupacion) {
+        HabitacionEntity habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+
+        habitacion.setEstadoOcupacion(estadoOcupacion);
+
+        return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
+    }
+
+    public HabitacionResponseDTO cambiarActiva(Long id, Boolean activa) {
+        HabitacionEntity habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+
+        habitacion.setActiva(activa);
+
+        return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
+    }
+
+
 }
