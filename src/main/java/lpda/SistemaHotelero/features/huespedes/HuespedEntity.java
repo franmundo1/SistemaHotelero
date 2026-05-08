@@ -1,7 +1,10 @@
 package lpda.SistemaHotelero.features.huespedes;
+
 import jakarta.persistence.*;
-        import lombok.*;
+import lombok.*;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
+
+import java.util.List;
 
 @Entity
 @Table(name = "huespedes")
@@ -16,9 +19,8 @@ public class HuespedEntity {
     @Column(name = "id_huesped")
     private Long idHuesped;
 
-    @OneToMany
-    @JoinColumn(name = "id_reserva", nullable = false)
-    private ReservaEntity reserva;
+    @OneToMany(mappedBy = "huesped")
+    private List<ReservaEntity> reservas;
 
     @Column(nullable = false)
     private String nombre;
@@ -32,5 +34,4 @@ public class HuespedEntity {
     private String telefono;
 
     private String email;
-
 }
