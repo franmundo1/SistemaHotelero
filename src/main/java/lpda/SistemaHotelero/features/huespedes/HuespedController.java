@@ -1,5 +1,8 @@
 package lpda.SistemaHotelero.features.huespedes;
 
+import jakarta.validation.Valid;
+import lpda.SistemaHotelero.features.huespedes.DTO.HuespedRequestDTO;
+import lpda.SistemaHotelero.features.huespedes.DTO.HuespedResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,12 +22,12 @@ public class HuespedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HuespedEntity>> listar(
+    public ResponseEntity<List<HuespedResponseDTO>> obtenerHuesped(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String dni) {
 
-        List<HuespedEntity> resultado = huespedService.buscarConFiltros(nombre, dni);
-        return ResponseEntity.ok(resultado);
+
+        return ResponseEntity.ok(huespedService.buscarConFiltros(nombre,dni));
     }
 
     @GetMapping("/{id}")
@@ -35,8 +38,8 @@ public class HuespedController {
     }
 
     @PostMapping
-    public ResponseEntity<HuespedEntity> registrar(@RequestBody HuespedEntity huesped) {
-        HuespedEntity guardado = huespedService.guardarHuesped(huesped);
-        return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
+    public ResponseEntity<HuespedResponseDTO> registrar(@Valid @RequestBody HuespedRequestDTO request) {
+       HuespedResponseDTO respons = huespedService.guardarHuesped(request);
+       return ResponseEntity.status(HttpStatus.CREATED).body(respons);
     }
 }
