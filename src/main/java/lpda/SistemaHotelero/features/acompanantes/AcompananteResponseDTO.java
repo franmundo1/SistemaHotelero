@@ -2,6 +2,8 @@ package lpda.SistemaHotelero.features.acompanantes;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,7 +11,7 @@ import lombok.*;
 @Builder
 public class AcompananteResponseDTO {
 
-    private Long idAcompanante;
+    private UUID idExterno;
 
     private Long idReserva;
 
@@ -18,5 +20,4 @@ public class AcompananteResponseDTO {
     private String apellido;
 
     private String dni;
-
 }
