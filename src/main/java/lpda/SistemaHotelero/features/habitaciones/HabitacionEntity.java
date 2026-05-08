@@ -1,8 +1,11 @@
 package lpda.SistemaHotelero.features.habitaciones;
 import jakarta.persistence.*;
         import lombok.*;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
+import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 
-        import java.math.BigDecimal;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "habitaciones")
@@ -21,9 +24,9 @@ public class HabitacionEntity {
     @Column(nullable = false, unique = true)
     private String numero;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String tipo;
-    // SIMPLE, DOBLE, TRIPLE, SUITE
+    private TipoHabitacion tipo;
 
     @Column(nullable = false)
     private Integer capacidad;
@@ -31,13 +34,14 @@ public class HabitacionEntity {
     @Column(name = "precio_por_noche", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioPorNoche;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado_ocupacion", nullable = false)
-    private String estadoOcupacion;
-    // DISPONIBLE, OCUPADA, MANTENIMIENTO
+    private EstadoOcupacion estadoOcupacion;
 
-    @Column(name = "estado_limpieza", nullable = false)
-    private String estadoLimpieza;
-    // LIMPIA, SUCIA, EN_LIMPIEZA
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_limpieza",nullable = false )
+    private EstadoLimpieza estadoLimpieza;
 
     @Column(nullable = false)
     private Boolean activa = true;
