@@ -1,11 +1,12 @@
 package lpda.SistemaHotelero.features.acompanantes;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/acompanantes")
@@ -16,32 +17,37 @@ public class AcompananteController {
 
     @GetMapping
     public ResponseEntity<List<AcompananteResponseDTO>> getAll() {
+
         return ResponseEntity.ok(acompananteService.getAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AcompananteResponseDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(acompananteService.getById(id));
+    @GetMapping("/{idExterno}")
+    public ResponseEntity<AcompananteResponseDTO> getById(
+            @PathVariable UUID idExterno
+    ) {
+
+        return ResponseEntity.ok(
+                acompananteService.getById(idExterno)
+        );
     }
 
     @GetMapping("/reserva/{idReserva}")
-    public ResponseEntity<List<AcompananteResponseDTO>> getByReserva(@PathVariable Long idReserva) {
-        return ResponseEntity.ok(acompananteService.getByReserva(idReserva));
+    public ResponseEntity<List<AcompananteResponseDTO>> getByReserva(
+            @PathVariable Long idReserva
+    ) {
+
+        return ResponseEntity.ok(
+                acompananteService.getByReserva(idReserva)
+        );
     }
 
-    /*
-    @PostMapping
-    public ResponseEntity<AcompananteResponseDTO> create(@Valid @RequestBody AcompananteRequestDTO dto) {}
-    */
+    @DeleteMapping("/{idExterno}")
+    public ResponseEntity<Void> delete(
+            @PathVariable UUID idExterno
+    ) {
 
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<AcompananteResponseDTO> update(@PathVariable Long id, @Valid @RequestBody AcompananteRequestDTO dto) {}
-    */
+        acompananteService.delete(idExterno);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        acompananteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
