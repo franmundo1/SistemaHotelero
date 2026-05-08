@@ -1,6 +1,9 @@
 package lpda.SistemaHotelero.features.habitaciones;
 
 import lombok.*;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
+import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 
 import java.math.BigDecimal;
 
@@ -13,10 +16,10 @@ public class HabitacionResponseDTO {
 
     private Long idHabitacion;
     private String numero;
-    private String tipo;
+    private TipoHabitacion tipo;
     private Integer capacidad;
     private BigDecimal precioPorNoche;
-    private String estadoOcupacion;
-    private String estadoLimpieza;
+    private EstadoOcupacion estadoOcupacion;
+    private EstadoLimpieza estadoLimpieza;
     private Boolean activa;
 }
