@@ -66,4 +66,52 @@ public class ReservaService {
 
         return reservaMapper.toDTO(guardada);
     }
+    public List<ReservaResponseDTO> listarReservas() {
+
+        return reservaRepository.findAll()
+                .stream()
+                .map(reservaMapper::toDTO)
+                .toList();
+    }
+
+    public ReservaResponseDTO buscarPorId(Long id) {
+
+        ReservaEntity reserva = reservaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Reserva no encontrada"));
+
+        return reservaMapper.toDTO(reserva);
+    }
+
+    public ReservaResponseDTO actualizarReserva(
+            Long id,
+            ReservaRequestDTO dto) {
+
+        ReservaEntity reserva = reservaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Reserva no encontrada"));
+
+        reserva.setCodigoReservaExterna(dto.getCodigoReservaExterna());
+        reserva.setFechaEntrada(dto.getFechaEntrada());
+        reserva.setFechaSalida(dto.getFechaSalida());
+        reserva.setCantidadPersonas(dto.getCantidadPersonas());
+        reserva.setPrecioPorNoche(dto.getPrecioPorNoche());
+        reserva.setTotalEstadia(dto.getTotalEstadia());
+        reserva.setAnticipo(dto.getAnticipo());
+        reserva.setEstado(dto.getEstado());
+        reserva.setObservaciones(dto.getObservaciones());
+
+        ReservaEntity actualizada = reservaRepository.save(reserva);
+
+        return reservaMapper.toDTO(actualizada);
+    }
+
+    public void eliminarReserva(Long id) {
+
+        ReservaEntity reserva = reservaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Reserva no encontrada"));
+
+        reservaRepository.delete(reserva);
+    }
 }
