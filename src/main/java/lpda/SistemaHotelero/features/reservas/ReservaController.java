@@ -5,7 +5,7 @@ import lpda.SistemaHotelero.features.reservas.DTO.ReservaResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 @RestController
 @RequestMapping("/api/reservas")
 public class ReservaController {
@@ -24,5 +24,40 @@ public class ReservaController {
                 reservaService.crearReserva(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    @GetMapping
+    public ResponseEntity<List<ReservaResponseDTO>> listarReservas() {
+
+        return ResponseEntity.ok(
+                reservaService.listarReservas()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservaResponseDTO> buscarPorId(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                reservaService.buscarPorId(id)
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ReservaResponseDTO> actualizarReserva(
+            @PathVariable Long id,
+            @RequestBody ReservaRequestDTO dto) {
+
+        return ResponseEntity.ok(
+                reservaService.actualizarReserva(id, dto)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarReserva(
+            @PathVariable Long id) {
+
+        reservaService.eliminarReserva(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
