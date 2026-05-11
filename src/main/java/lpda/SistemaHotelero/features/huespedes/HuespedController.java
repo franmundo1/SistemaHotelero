@@ -33,7 +33,7 @@ public class HuespedController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HuespedEntity> obteenrPorId(@PathVariable Long id) {
+    public ResponseEntity<HuespedEntity> obtenerPorId(@PathVariable Long id) {
         return huespedService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -53,10 +53,10 @@ public class HuespedController {
 
     @DeleteMapping("/{idExterno}")
     public ResponseEntity<Void> delete(
-            @PathVariable UUID idExterno
+            @PathVariable UUID idExterno)
     {
         huespedService.delete(idExterno);
         return  ResponseEntity.noContent().build();
     }
-    )
+
 }
