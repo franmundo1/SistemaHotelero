@@ -23,6 +23,7 @@ public class HuespedMapper {
         if(entity == null) return null;
 
         HuespedResponseDTO dto = new HuespedResponseDTO();
+        dto.setIdExterno(entity.getIdExterno());
         dto.setId(entity.getIdHuesped());
         dto.setNombre(entity.getNombre());
         dto.setApellido(entity.getApellido());
