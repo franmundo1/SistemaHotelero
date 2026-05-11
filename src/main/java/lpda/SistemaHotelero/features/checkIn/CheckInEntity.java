@@ -5,6 +5,7 @@ import lpda.SistemaHotelero.features.reservas.ReservaEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "check_in")
@@ -12,12 +13,16 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class checkInEntity {
+
+public class CheckInEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_check_in")
     private Long idCheckIn;
+
+    @Column (nullable = false, unique = true, length = 36)
+    private UUID idExterno;
 
     @OneToOne
     @JoinColumn(name = "id_reserva", nullable = false, unique = true)
@@ -32,4 +37,11 @@ public class checkInEntity {
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;
+
+    @PrePersist
+    public void ensureEsternalId(){
+        if(idExterno == null){
+            idExterno = UUID.randomUUID();
+        }
+    }
 }
