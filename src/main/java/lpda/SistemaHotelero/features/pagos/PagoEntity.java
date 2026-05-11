@@ -6,6 +6,7 @@ import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "pagos")
@@ -45,8 +46,13 @@ public class PagoEntity {
     @Column(columnDefinition = "TEXT")
     private String observaciones;
 
+    @Column(unique = true, nullable = false, name="idPagoExterno")
+    private UUID idExterno;
+
     @PrePersist
     public void prePersist() {
         this.fechaPago = LocalDateTime.now();
+        if(idExterno == null) idExterno = UUID.randomUUID();
+
     }
 }
