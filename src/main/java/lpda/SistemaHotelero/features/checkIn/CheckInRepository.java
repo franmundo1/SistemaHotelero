@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface CheckInRepository extends JpaRepository<CheckInEntity, Long >, JpaSpecificationExecutor<CheckInEntity> {
-    List<CheckInEntity> findByReserva_idReserva(Long idReserva);
+    List<CheckInEntity> findByReservas_idReserva(Long idReserva);
 
     Optional<CheckInEntity>  findById(long id);
     Optional<CheckInEntity>  findByIdExterno (UUID idExterno);
