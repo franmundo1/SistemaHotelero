@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface HuespedRepository extends JpaRepository<HuespedEntity, Long>,
         JpaSpecificationExecutor<HuespedEntity> {
-    List<HuespedEntity> findByReserva_IdReserva(Long idReserva);
+    List<HuespedEntity> findByReservas_IdReserva(Long idReserva);
 
     Optional<HuespedEntity> findByIdExterno(UUID idExterno);
 
