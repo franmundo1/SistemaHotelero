@@ -140,13 +140,18 @@ public class HabitacionService {
                 .map(habitacionMapper::toResponseDTO)
                 .toList();
     }
-    public HabitacionResponseDTO cambiarEstadoLimpieza(Long id, EstadoLimpieza estadoLimpieza) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionLimpiezaResponseDTO cambiarEstadoLimpiezaPorNumero(
+            String numero,
+            EstadoLimpieza estadoLimpieza
+    ) {
+        HabitacionEntity habitacion = habitacionRepository.findByNumero(numero)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + numero));
 
         habitacion.setEstadoLimpieza(estadoLimpieza);
 
-        return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
+        HabitacionEntity habitacionActualizada = habitacionRepository.save(habitacion);
+
+        return habitacionMapper.toLimpiezaResponseDTO(habitacionActualizada);
     }
 
     public HabitacionResponseDTO cambiarEstadoOcupacion(Long id, EstadoOcupacion estadoOcupacion) {
@@ -165,6 +170,12 @@ public class HabitacionService {
         habitacion.setActiva(activa);
 
         return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
+    }
+    public List<HabitacionLimpiezaResponseDTO> findAllParaLimpieza() {
+        return habitacionRepository.findAll()
+                .stream()
+                .map(habitacionMapper::toLimpiezaResponseDTO)
+                .toList();
     }
 
 

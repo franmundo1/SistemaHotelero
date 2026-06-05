@@ -79,12 +79,14 @@ public class HabitacionController {
         return ResponseEntity.ok(habitacionService.patch(id, patchDTO));
     }
 
-    @PatchMapping("/{id}/estado-limpieza")
-    public ResponseEntity<HabitacionResponseDTO> cambiarEstadoLimpieza(
-            @PathVariable Long id,
+    @PatchMapping("/limpieza/{numero}/estado-limpieza")
+    public ResponseEntity<HabitacionLimpiezaResponseDTO> cambiarEstadoLimpiezaPorNumero(
+            @PathVariable String numero,
             @RequestParam EstadoLimpieza estadoLimpieza
     ) {
-        return ResponseEntity.ok(habitacionService.cambiarEstadoLimpieza(id, estadoLimpieza));
+        return ResponseEntity.ok(
+                habitacionService.cambiarEstadoLimpiezaPorNumero(numero, estadoLimpieza)
+        );
     }
 
     @PatchMapping("/{id}/estado-ocupacion")
@@ -101,5 +103,9 @@ public class HabitacionController {
             @RequestParam Boolean activa
     ) {
         return ResponseEntity.ok(habitacionService.cambiarActiva(id, activa));
+    }
+    @GetMapping("/limpieza")
+    public ResponseEntity<List<HabitacionLimpiezaResponseDTO>> findAllParaLimpieza() {
+        return ResponseEntity.ok(habitacionService.findAllParaLimpieza());
     }
 }

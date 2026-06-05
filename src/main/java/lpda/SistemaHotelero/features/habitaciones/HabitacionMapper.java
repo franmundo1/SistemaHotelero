@@ -28,4 +28,10 @@ public class HabitacionMapper {
                 .activa(entity.getActiva())
                 .build();
     }
+    public HabitacionLimpiezaResponseDTO toLimpiezaResponseDTO(HabitacionEntity entity) {
+        return HabitacionLimpiezaResponseDTO.builder()
+                .numero(entity.getNumero())
+                .estadoLimpieza(entity.getEstadoLimpieza().name())
+                .build();
+    }
 }
