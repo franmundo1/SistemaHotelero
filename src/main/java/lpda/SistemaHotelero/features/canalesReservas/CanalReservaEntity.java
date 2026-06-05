@@ -2,6 +2,9 @@ package lpda.SistemaHotelero.features.canalesReservas;
 import jakarta.persistence.*;
         import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Entity
 @Table(name = "canales_reserva")
 @Getter
@@ -15,7 +18,15 @@ public class CanalReservaEntity {
     @Column(name = "id_canal")
     private Long idCanal;
 
-    @Column(nullable = false, unique = true)
-    private String nombrePersona;
-    // HOTEL, BOOKING, WHATSAPP, TELEFONO
+    @Enumerated(EnumType.STRING)
+    private TipoCanal tipo;
+
+    @Column(unique = true, nullable = false, name="id_externo")
+    private UUID idExterno;
+
+    @PrePersist
+    public void prePersist() {
+        if(idExterno == null) idExterno = UUID.randomUUID();
+
+    }
 }

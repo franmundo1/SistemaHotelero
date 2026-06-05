@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CanalReservaRequestDTO {
 
-    private String nombrePersona;
+    private String tipo;
 }

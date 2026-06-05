@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CanalReservaResponseDTO {
 
-    private Long idCanal;
-    private String nombrePersona;
+    private UUID idExterno;
+    private String tipo;
 }
