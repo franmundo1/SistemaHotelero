@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/canalesReserva")
@@ -33,9 +34,9 @@ public class CanalReservaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CanalReservaResponseDTO> buscarPorId(
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
 
-        return ResponseEntity.ok(canalReservaService.buscarPorId(id));
+        return ResponseEntity.ok(canalReservaService.buscarPorIdExterno(id));
     }
 
     @PutMapping("/{id}")
@@ -49,7 +50,7 @@ public class CanalReservaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarCanal(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarCanal(@PathVariable UUID id) {
 
         canalReservaService.eliminarCanal(id);
 

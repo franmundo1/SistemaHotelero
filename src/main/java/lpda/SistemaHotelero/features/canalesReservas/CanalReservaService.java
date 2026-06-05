@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CanalReservaService {
@@ -16,7 +17,7 @@ public class CanalReservaService {
 
     public CanalReservaResponseDTO crearCanal(CanalReservaRequestDTO dto){
 
-        if(canalReservaRepository.existsByNombrePersona(dto.getNombrePersona())){
+        if(canalReservaRepository.existsByTipo(dto.getTipo())){
             throw new RuntimeException("El canal ya existe");
         }
 
@@ -35,29 +36,33 @@ public class CanalReservaService {
                 .toList();
     }
 
-    public CanalReservaResponseDTO buscarPorId(Long id){
+    public CanalReservaResponseDTO buscarPorIdExterno(UUID id){
 
-        CanalReservaEntity canal = canalReservaRepository.findById(id)
+        CanalReservaEntity canal = canalReservaRepository.findByIdExterno(id)
                 .orElseThrow(() -> new RuntimeException("Canal no encontrado"));
 
         return canalReservaMapper.toDTO(canal);
     }
 
-    public CanalReservaResponseDTO actualizarCanal(Long id, CanalReservaRequestDTO dto){
+    public CanalReservaResponseDTO actualizarCanal(UUID id, CanalReservaRequestDTO dto){
 
-        CanalReservaEntity canal = canalReservaRepository.findById(id)
+        CanalReservaEntity canal = canalReservaRepository.findByIdExterno(id)
                 .orElseThrow(() -> new RuntimeException("Canal no encontrado"));
 
-        canal.setNombrePersona(dto.getNombrePersona());
+        try {
+            canal.setTipo(TipoCanal.valueOf(dto.getTipo().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tipo de canal invalido");
+        }
 
         CanalReservaEntity actualizado = canalReservaRepository.save(canal);
 
         return canalReservaMapper.toDTO(actualizado);
     }
 
-    public void eliminarCanal(Long id){
+    public void eliminarCanal(UUID id){
 
-        CanalReservaEntity canal = canalReservaRepository.findById(id)
+        CanalReservaEntity canal = canalReservaRepository.findByIdExterno(id)
                 .orElseThrow(() -> new RuntimeException("Canal no encontrado"));
 
         canalReservaRepository.delete(canal);
