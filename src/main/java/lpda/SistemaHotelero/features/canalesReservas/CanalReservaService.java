@@ -16,8 +16,9 @@ public class CanalReservaService {
     private CanalReservaMapper canalReservaMapper;
 
     public CanalReservaResponseDTO crearCanal(CanalReservaRequestDTO dto){
+        TipoCanal tipo = TipoCanal.valueOf(dto.getTipo().toUpperCase());
 
-        if(canalReservaRepository.existsByTipo(dto.getTipo())){
+        if(canalReservaRepository.existsByTipo(tipo)){
             throw new RuntimeException("El canal ya existe");
         }
 
