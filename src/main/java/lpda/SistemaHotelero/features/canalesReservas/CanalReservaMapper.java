@@ -7,14 +7,20 @@ public class CanalReservaMapper {
 
     public CanalReservaEntity toEntity(CanalReservaRequestDTO dto){
         CanalReservaEntity canal = new CanalReservaEntity();
-        canal.setNombrePersona(dto.getNombrePersona());
+
+        try {
+            canal.setTipo(TipoCanal.valueOf(dto.getTipo().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tipo de canal invalido");
+        }
+
         return canal;
     }
 
     public CanalReservaResponseDTO toDTO(CanalReservaEntity canal){
         return new CanalReservaResponseDTO(
-                canal.getIdCanal(),
-                canal.getNombrePersona()
+                canal.getIdExterno(),
+                canal.getTipo().name()
         );
     }
 }

@@ -41,7 +41,7 @@ public class CanalReservaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CanalReservaResponseDTO> actualizarCanal(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestBody CanalReservaRequestDTO dto) {
 
         return ResponseEntity.ok(

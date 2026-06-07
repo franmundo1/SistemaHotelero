@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository
 public interface CanalReservaRepository extends JpaRepository<CanalReservaEntity, Long> {
     Optional<CanalReservaEntity> findByIdExterno(UUID idExterno);
-    boolean existsByTipo(String tipo);
+    boolean existsByTipo(TipoCanal tipo);
 
 }
