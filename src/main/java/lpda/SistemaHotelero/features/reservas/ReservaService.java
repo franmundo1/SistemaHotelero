@@ -1,5 +1,6 @@
 package lpda.SistemaHotelero.features.reservas;
 
+import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaEntity;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaRepository;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
@@ -40,19 +41,19 @@ public class ReservaService {
         this.usuarioRepository = usuarioRepository;
         this.canalReservaRepository = canalReservaRepository;
     }
-    public ReservaResponseDTO crearReserva(ReservaRequestDTO dto) {
 
+    public ReservaResponseDTO crearReserva(ReservaRequestDTO dto) {
         HuespedEntity huesped = huespedRepository.findById(dto.getIdHuesped())
-                .orElseThrow(() -> new RuntimeException("Huésped no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Huesped no encontrado"));
 
         HabitacionEntity habitacion = habitacionRepository.findById(dto.getIdHabitacion())
-                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Habitacion no encontrada"));
 
         UsuarioEntity usuario = usuarioRepository.findById(dto.getIdUsuarioCreador())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         CanalReservaEntity canal = canalReservaRepository.findById(dto.getIdCanalReserva())
-                .orElseThrow(() -> new RuntimeException("Canal no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Canal no encontrado"));
 
         ReservaEntity reserva = reservaMapper.toEntity(
                 dto,
@@ -66,8 +67,8 @@ public class ReservaService {
 
         return reservaMapper.toDTO(guardada);
     }
-    public List<ReservaResponseDTO> listarReservas() {
 
+    public List<ReservaResponseDTO> listarReservas() {
         return reservaRepository.findAll()
                 .stream()
                 .map(reservaMapper::toDTO)
@@ -75,21 +76,18 @@ public class ReservaService {
     }
 
     public ReservaResponseDTO buscarPorId(Long id) {
-
         ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Reserva no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
 
         return reservaMapper.toDTO(reserva);
     }
 
     public ReservaResponseDTO actualizarReserva(
             Long id,
-            ReservaRequestDTO dto) {
-
+            ReservaRequestDTO dto
+    ) {
         ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Reserva no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
 
         reserva.setCodigoReservaExterna(dto.getCodigoReservaExterna());
         reserva.setFechaEntrada(dto.getFechaEntrada());
@@ -107,10 +105,8 @@ public class ReservaService {
     }
 
     public void eliminarReserva(Long id) {
-
         ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Reserva no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
 
         reservaRepository.delete(reserva);
     }

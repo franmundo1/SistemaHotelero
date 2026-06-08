@@ -4,6 +4,7 @@ import lpda.SistemaHotelero.features.usuarios.UsuarioRepository;
 import lpda.SistemaHotelero.seguridad.dto.AuthDtoRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,6 @@ public class AuthService {
         );
 
         return usuarioRepository.findByEmail(input.username())
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 }
