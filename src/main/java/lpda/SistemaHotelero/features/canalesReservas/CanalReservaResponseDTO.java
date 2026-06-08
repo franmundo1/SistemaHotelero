@@ -15,4 +15,7 @@ public class CanalReservaResponseDTO {
 
     private UUID idExterno;
     private String tipo;
+
+    public CanalReservaResponseDTO(Long idCanal, String string) {
+    }
 }

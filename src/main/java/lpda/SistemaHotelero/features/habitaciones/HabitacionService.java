@@ -9,6 +9,7 @@ import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +25,9 @@ public class HabitacionService {
                 .toList();
     }
 
-    public HabitacionResponseDTO findById(Long id) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionResponseDTO findById(UUID idExterno) {
+        HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         return habitacionMapper.toResponseDTO(habitacion);
     }
@@ -42,13 +43,13 @@ public class HabitacionService {
         return habitacionMapper.toResponseDTO(habitacionGuardada);
     }
 
-    public HabitacionResponseDTO update(Long id, HabitacionRequestDTO requestDTO) {
-        HabitacionEntity habitacionExistente = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionResponseDTO update(UUID idExterno, HabitacionRequestDTO requestDTO) {
+        HabitacionEntity habitacionExistente = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         habitacionRepository.findByNumero(requestDTO.getNumero())
                 .ifPresent(habitacionConMismoNumero -> {
-                    if (!habitacionConMismoNumero.getIdHabitacion().equals(id)) {
+                    if (!habitacionConMismoNumero.getIdHabitacion().equals(idExterno)) {
                         throw new BadRequestException("Ya existe otra habitación con el número: " + requestDTO.getNumero());
                     }
                 });
@@ -66,21 +67,21 @@ public class HabitacionService {
         return habitacionMapper.toResponseDTO(habitacionActualizada);
     }
 
-    public void deleteById(Long id) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public void deleteById(UUID idExterno) {
+        HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         habitacionRepository.delete(habitacion);
     }
 
-    public HabitacionResponseDTO patch (Long id, HabitacionPatchDTO patchDTO) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionResponseDTO patch (UUID idExterno, HabitacionPatchDTO patchDTO) {
+        HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         if (patchDTO.getNumero() != null) {
             habitacionRepository.findByNumero(patchDTO.getNumero())
                     .ifPresent(habitacionConMismoNumero -> {
-                        if (!habitacionConMismoNumero.getIdHabitacion().equals(id)) {
+                        if (!habitacionConMismoNumero.getIdHabitacion().equals(idExterno)) {
                             throw new BadRequestException("Ya existe otra habitación con el número: " + patchDTO.getNumero());
                         }
                     });
@@ -154,18 +155,18 @@ public class HabitacionService {
         return habitacionMapper.toLimpiezaResponseDTO(habitacionActualizada);
     }
 
-    public HabitacionResponseDTO cambiarEstadoOcupacion(Long id, EstadoOcupacion estadoOcupacion) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionResponseDTO cambiarEstadoOcupacion(UUID idExterno, EstadoOcupacion estadoOcupacion) {
+        HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         habitacion.setEstadoOcupacion(estadoOcupacion);
 
         return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
     }
 
-    public HabitacionResponseDTO cambiarActiva(Long id, Boolean activa) {
-        HabitacionEntity habitacion = habitacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + id));
+    public HabitacionResponseDTO cambiarActiva(UUID idExterno, Boolean activa) {
+        HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
         habitacion.setActiva(activa);
 

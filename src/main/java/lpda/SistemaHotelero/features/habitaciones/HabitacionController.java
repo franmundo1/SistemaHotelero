@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/habitaciones")
@@ -24,8 +25,8 @@ public class HabitacionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HabitacionResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(habitacionService.findById(id));
+    public ResponseEntity<HabitacionResponseDTO> findById(@PathVariable UUID idExterno) {
+        return ResponseEntity.ok(habitacionService.findById(idExterno));
     }
     @GetMapping("/filtrar")
     public ResponseEntity<List<HabitacionResponseDTO>> filtrarHabitaciones(
@@ -57,26 +58,26 @@ public class HabitacionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<HabitacionResponseDTO> update(
-            @PathVariable Long id,
+            @PathVariable UUID idExterno,
             @Valid @RequestBody HabitacionRequestDTO requestDTO
     ) {
-        return ResponseEntity.ok(habitacionService.update(id, requestDTO));
+        return ResponseEntity.ok(habitacionService.update(idExterno, requestDTO));
     }
 
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        habitacionService.deleteById(id);
+    public ResponseEntity<Void> deleteById(@PathVariable UUID idExterno) {
+        habitacionService.deleteById(idExterno);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<HabitacionResponseDTO> patch(
-            @PathVariable Long id,
+            @PathVariable UUID idExterno,
             @Valid @RequestBody HabitacionPatchDTO patchDTO
     ) {
-        return ResponseEntity.ok(habitacionService.patch(id, patchDTO));
+        return ResponseEntity.ok(habitacionService.patch(idExterno, patchDTO));
     }
 
     @PatchMapping("/limpieza/{numero}/estado-limpieza")
@@ -91,18 +92,18 @@ public class HabitacionController {
 
     @PatchMapping("/{id}/estado-ocupacion")
     public ResponseEntity<HabitacionResponseDTO> cambiarEstadoOcupacion(
-            @PathVariable Long id,
+            @PathVariable UUID idExterno,
             @RequestParam EstadoOcupacion estadoOcupacion
     ) {
-        return ResponseEntity.ok(habitacionService.cambiarEstadoOcupacion(id, estadoOcupacion));
+        return ResponseEntity.ok(habitacionService.cambiarEstadoOcupacion(idExterno, estadoOcupacion));
     }
 
     @PatchMapping("/{id}/activa")
     public ResponseEntity<HabitacionResponseDTO> cambiarActiva(
-            @PathVariable Long id,
+            @PathVariable UUID idExterno,
             @RequestParam Boolean activa
     ) {
-        return ResponseEntity.ok(habitacionService.cambiarActiva(id, activa));
+        return ResponseEntity.ok(habitacionService.cambiarActiva(idExterno, activa));
     }
     @GetMapping("/limpieza")
     public ResponseEntity<List<HabitacionLimpiezaResponseDTO>> findAllParaLimpieza() {

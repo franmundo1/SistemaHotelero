@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Long> {
@@ -17,6 +18,12 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
     Optional<HabitacionEntity> findByNumero(String numero);
 
     boolean existsByNumero(String numero);
+
+    Optional<HabitacionEntity> findByIdExterno(UUID idExterno);
+
+    boolean existsByIdExterno(UUID idExterno);
+
+    void deleteByIdExterno(UUID idExterno);
 
     @Query("""
         SELECT h FROM HabitacionEntity h

@@ -6,6 +6,7 @@ import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 @Builder
 public class HabitacionResponseDTO {
 
-    private Long idHabitacion;
+    private UUID idExterno;
     private String numero;
     private TipoHabitacion tipo;
     private Integer capacidad;
