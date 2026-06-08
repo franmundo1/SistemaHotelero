@@ -19,16 +19,17 @@ public class HuespedMapper {
         return entity;
     }
 
-    public HuespedResponseDTO toResponseDTO (HuespedEntity entity){
+    public HuespedResponseDTO toResponseDTO(HuespedEntity entity){
         if(entity == null) return null;
 
         HuespedResponseDTO dto = new HuespedResponseDTO();
+
         dto.setIdExterno(entity.getIdExterno());
-        dto.setId(entity.getIdHuesped());
         dto.setNombre(entity.getNombre());
         dto.setApellido(entity.getApellido());
         dto.setDni(entity.getDni());
         dto.setEmail(entity.getEmail());
+        dto.setTelefono(entity.getTelefono());
 
         return dto;
     }

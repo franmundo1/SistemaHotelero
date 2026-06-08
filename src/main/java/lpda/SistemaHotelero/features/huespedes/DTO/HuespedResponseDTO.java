@@ -13,8 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
     public class HuespedResponseDTO {
 
-    private Long id;
-
     private UUID idExterno;
 
     private String nombre;
@@ -24,5 +22,7 @@ import java.util.UUID;
     private String dni;
 
     private String email;
+
+    private String telefono;
 
 }
