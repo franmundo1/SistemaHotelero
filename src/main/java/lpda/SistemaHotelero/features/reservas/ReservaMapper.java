@@ -47,7 +47,7 @@ public class ReservaMapper {
                 reserva.getHabitacion().getNumero(),
                 reserva.getUsuarioCreador().getNombre() + " " +
                         reserva.getUsuarioCreador().getApellido(),
-                reserva.getCanalReserva().getTipo().toString(),
+                reserva.getCanalReserva().getTipo().name(),
                 reserva.getFechaEntrada(),
                 reserva.getFechaSalida(),
                 reserva.getTotalEstadia(),

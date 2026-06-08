@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 public class AcompananteMapper {
 
     public AcompananteEntity toEntity(AcompananteRequestDTO dto, ReservaEntity reserva) {
-
         AcompananteEntity entity = new AcompananteEntity();
 
         entity.setReserva(reserva);
@@ -18,8 +17,13 @@ public class AcompananteMapper {
         return entity;
     }
 
-    public AcompananteResponseDTO toResponse(AcompananteEntity entity) {
+    public void updateEntity(AcompananteEntity entity, AcompananteRequestDTO dto) {
+        entity.setNombre(dto.getNombre());
+        entity.setApellido(dto.getApellido());
+        entity.setDni(dto.getDni());
+    }
 
+    public AcompananteResponseDTO toResponse(AcompananteEntity entity) {
         return AcompananteResponseDTO.builder()
                 .idExterno(entity.getIdExterno())
                 .idReserva(entity.getReserva().getIdReserva())

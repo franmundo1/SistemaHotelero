@@ -16,7 +16,7 @@ public interface HuespedRepository extends JpaRepository<HuespedEntity, Long>,
     List<HuespedEntity> findByReservas_IdReserva(Long idReserva);
 
     Optional<HuespedEntity> findByIdExterno(UUID idExterno);
-
+    boolean existsByDni(String dni);
     boolean existsByIdExterno(UUID idExterno);
 
     void deleteByIdExterno(UUID idExterno);
