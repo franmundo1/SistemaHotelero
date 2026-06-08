@@ -6,6 +6,7 @@ import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "habitaciones")
@@ -23,6 +24,9 @@ public class HabitacionEntity {
 
     @Column(nullable = false, unique = true)
     private String numero;
+
+    @Column(unique = true, nullable = false, name = "id_externo")
+    private UUID idExterno;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,4 +49,11 @@ public class HabitacionEntity {
 
     @Column(nullable = false)
     private Boolean activa = true;
+
+    @PrePersist
+    void onSave() {
+        if (idExterno == null) {
+            idExterno = UUID.randomUUID();
+        }
+    }
 }

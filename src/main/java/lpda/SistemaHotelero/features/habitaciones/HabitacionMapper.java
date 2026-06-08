@@ -18,7 +18,7 @@ public class HabitacionMapper {
     }
     public HabitacionResponseDTO toResponseDTO(HabitacionEntity entity) {
         return HabitacionResponseDTO.builder()
-                .idHabitacion(entity.getIdHabitacion())
+                .idExterno(entity.getIdExterno())
                 .numero(entity.getNumero())
                 .tipo(entity.getTipo())
                 .capacidad(entity.getCapacidad())
