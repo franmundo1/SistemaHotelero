@@ -32,12 +32,6 @@ public class HuespedController {
         return ResponseEntity.ok(huespedService.buscarConFiltros(nombre,dni));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<HuespedEntity> obtenerPorId(@PathVariable Long id) {
-        return huespedService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
     @GetMapping("/{idExterno}")
     public ResponseEntity<HuespedResponseDTO> getById(
             @PathVariable UUID idExterno){

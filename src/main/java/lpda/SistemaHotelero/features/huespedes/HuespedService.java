@@ -23,13 +23,6 @@ public class HuespedService {
         this.huespedMapper = huespedMapper;
     }
 
-    @Transactional
-
-    public HuespedEntity guardarHuesped(HuespedEntity huesped) {
-        return huespedRepository.save(huesped);
-
-    }
-
     @Transactional(readOnly = true)
     public List<HuespedResponseDTO> buscarConFiltros (String nombre, String dni){
         Specification<HuespedEntity> spec = Specification.where(HuespedSpecification.nombreLike(nombre))
@@ -40,16 +33,15 @@ public class HuespedService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<HuespedEntity> buscarPorId(Long id) {
-        return huespedRepository.findById(id);
-    }
 
     @Transactional
-
     public HuespedResponseDTO guardarHuesped(HuespedRequestDTO dto) {
         HuespedEntity entity = huespedMapper.toEntity(dto);
-
+        if(huespedRepository.existsByDni(dto.getDni())){
+            throw new IllegalArgumentException(
+                    "Ya existe un huesped con DNI " + dto.getDni()
+            );
+        }
         HuespedEntity guardado = huespedRepository.save(entity);
 
         return huespedMapper.toResponseDTO(guardado);
