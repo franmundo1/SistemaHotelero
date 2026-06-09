@@ -16,7 +16,7 @@ public class PagoResponseDTO {
     private Long idPago;
     private UUID idExterno;
 
-    private Long idReserva;
+    private UUID idReservaExterno;
     private Long idUsuario;
     private String nombreUsuario;
 

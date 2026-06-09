@@ -21,24 +21,21 @@ public class PagoController {
 
     private final PagoService pagoService;
 
-    @PostMapping
-    @Operation(summary = "Registrar un nuevo pago para una reserva")
-    public ResponseEntity<PagoResponseDTO> registrarPago(@Valid @RequestBody PagoRequestDTO dto) {
-        PagoResponseDTO response = pagoService.registrarPago(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping
     @Operation(summary = "Obtener todos los pagos")
     public ResponseEntity<List<PagoResponseDTO>> obtenerTodos() {
         return ResponseEntity.ok(pagoService.obtenerTodos());
     }
 
-    @GetMapping("/reserva/{idReserva}")
+    @GetMapping("/reserva/{idReservaExterno}")
     @Operation(summary = "Obtener todos los pagos de una reserva")
-    public ResponseEntity<List<PagoResponseDTO>> obtenerPorReserva(@PathVariable Long idReserva) {
-        return ResponseEntity.ok(pagoService.obtenerPagosPorReserva(idReserva));
+    public ResponseEntity<List<PagoResponseDTO>> obtenerPorReserva(
+            @PathVariable UUID idReservaExterno
+    ) {
+        return ResponseEntity.ok(pagoService.obtenerPagosPorReserva(idReservaExterno));
     }
+
+
 
     @GetMapping("/usuario/{idUsuario}")
     @Operation(summary = "Obtener todos los pagos registrados por un usuario")

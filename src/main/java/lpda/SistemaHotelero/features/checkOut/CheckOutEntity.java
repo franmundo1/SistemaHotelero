@@ -51,6 +51,12 @@ public class CheckOutEntity {
     @Column(columnDefinition = "TEXT")
     private String observaciones;
 
+    @Column(name = "total_consumos", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalConsumos;
+
+    @Column(name = "total_final", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalFinal;
+
     @PrePersist
     public void prePersist() {
         if (idExterno == null) {

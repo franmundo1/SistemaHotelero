@@ -17,6 +17,8 @@ public class CheckOutMapper {
         dto.setFechaHoraSalida(entity.getFechaHora());
         dto.setObservaciones(entity.getObservaciones());
         dto.setTotalEstadia(entity.getTotalEstadia());
+        dto.setTotalConsumos(entity.getTotalConsumos());
+        dto.setTotalFinal(entity.getTotalFinal());
         dto.setAnticipo(entity.getAnticipo());
         dto.setMontoFinal(entity.getMontoFinal());
 

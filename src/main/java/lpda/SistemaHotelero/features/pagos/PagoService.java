@@ -59,11 +59,11 @@ public class PagoService {
     }
 
     @Transactional(readOnly = true)
-    public List<PagoResponseDTO> obtenerPagosPorReserva(Long idReserva) {
-        if (!reservaRepository.existsById(idReserva)) {
+    public List<PagoResponseDTO> obtenerPagosPorReserva(UUID idReserva) {
+        if (!reservaRepository.existsByIdExterno(idReserva)) {
             throw new ResourceNotFoundException("Reserva no encontrada con ID: " + idReserva);
         }
-        return pagoRepository.findByReserva_IdReserva(idReserva)
+        return pagoRepository.findByReserva_IdExterno(idReserva)
                 .stream()
                 .map(pagoMapper::toResponse)
                 .collect(Collectors.toList());

@@ -80,6 +80,16 @@ public class SecurityConfig {
                         .requestMatchers("/canalesReserva/**").hasRole("ADMIN")
                         .requestMatchers("/api/acompanantes/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
 
+                        .requestMatchers(HttpMethod.GET, "/api/productos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+                        .requestMatchers(HttpMethod.POST, "/api/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/productos/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+                        .requestMatchers(HttpMethod.POST, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+                        .requestMatchers(HttpMethod.DELETE, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+
                         .anyRequest().hasRole("ADMIN")
                 )
                 .cors(Customizer.withDefaults())

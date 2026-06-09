@@ -15,7 +15,7 @@ public interface PagoRepository extends JpaRepository<PagoEntity, Long> {
     List<PagoEntity> findByUsuario_IdUsuario(Long idUsuario);
 
     Optional<PagoEntity> findByIdExterno(UUID idExterno);
-
+    List<PagoEntity> findByReserva_IdExterno(UUID idReservaExterno);
     boolean existsByReserva_IdReservaAndTipoPago(Long idReserva, String tipoPago);
 }
  
