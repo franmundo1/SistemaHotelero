@@ -13,7 +13,7 @@ public class AcompananteResponseDTO {
 
     private UUID idExterno;
 
-    private Long idReserva;
+    private UUID idReservaExterno;
 
     private String nombre;
 

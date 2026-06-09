@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -26,6 +28,7 @@ public class HabitacionEntity {
     private String numero;
 
     @Column(unique = true, nullable = false, name = "id_externo")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @Enumerated(EnumType.STRING)

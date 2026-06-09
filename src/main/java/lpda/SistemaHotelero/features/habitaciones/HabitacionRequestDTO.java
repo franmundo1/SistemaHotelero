@@ -19,9 +19,6 @@ public class HabitacionRequestDTO {
     @Pattern(regexp = "^[1-9][0-9]*$", message = "El número de habitación debe ser un número positivo")
     private String numero;
 
-    @NotBlank(message = "El tipo de habitación es obligatorio")
-    private TipoHabitacion tipo;
-
     @NotNull(message = "La capacidad es obligatoria")
     @Min(value = 1, message = "La capacidad debe ser como mínimo 1")
     @Max(value = 3, message = "La capacidad máxima permitida es 3")
@@ -31,10 +28,13 @@ public class HabitacionRequestDTO {
     @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor a 0")
     private BigDecimal precioPorNoche;
 
-    @NotBlank(message = "El estado de ocupación es obligatorio")
+    @NotNull(message = "El tipo de habitación es obligatorio")
+    private TipoHabitacion tipo;
+
+    @NotNull(message = "El estado de ocupación es obligatorio")
     private EstadoOcupacion estadoOcupacion;
 
-    @NotBlank(message = "El estado de limpieza es obligatorio")
+    @NotNull(message = "El estado de limpieza es obligatorio")
     private EstadoLimpieza estadoLimpieza;
 
     @Builder.Default

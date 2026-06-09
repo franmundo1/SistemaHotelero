@@ -3,6 +3,8 @@ import jakarta.persistence.*;
         import lombok.*;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -47,6 +49,7 @@ public class PagoEntity {
     private String observaciones;
 
     @Column(unique = true, nullable = false, name="idPagoExterno")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @PrePersist

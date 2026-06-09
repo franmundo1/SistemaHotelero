@@ -1,11 +1,15 @@
 package lpda.SistemaHotelero.features.checkIn.DTO;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.UUID;
 
 @Data
 public class CheckInRequestDTO {
-    @NotBlank(message = "El ID de la reserva es obligatorio")
-    private String reservaExternalId; // Usamos el ID externo de la reserva
+
+    @NotNull(message = "El ID externo de la reserva es obligatorio")
+    private UUID idReservaExterno;
+
     private String observaciones;
 }

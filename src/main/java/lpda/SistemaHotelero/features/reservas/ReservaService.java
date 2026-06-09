@@ -1,5 +1,6 @@
 package lpda.SistemaHotelero.features.reservas;
 
+import lpda.SistemaHotelero.exceptions.BadRequestException;
 import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaEntity;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaRepository;
@@ -13,7 +14,9 @@ import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReservaService {
@@ -43,17 +46,45 @@ public class ReservaService {
     }
 
     public ReservaResponseDTO crearReserva(ReservaRequestDTO dto) {
-        HuespedEntity huesped = huespedRepository.findById(dto.getIdHuesped())
-                .orElseThrow(() -> new ResourceNotFoundException("Huesped no encontrado"));
+        HuespedEntity huesped = huespedRepository.findByIdExterno(dto.getIdHuespedExterno())
+                .orElseThrow(() -> new ResourceNotFoundException("Huesped no encontrado con ID externo: " + dto.getIdHuespedExterno()));
 
-        HabitacionEntity habitacion = habitacionRepository.findById(dto.getIdHabitacion())
-                .orElseThrow(() -> new ResourceNotFoundException("Habitacion no encontrada"));
+        HabitacionEntity habitacion = habitacionRepository.findByNumero(dto.getNumeroHabitacion())
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + dto.getNumeroHabitacion()));
 
-        UsuarioEntity usuario = usuarioRepository.findById(dto.getIdUsuarioCreador())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        UsuarioEntity usuario = usuarioRepository.findByEmail(dto.getEmailUsuarioCreador())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + dto.getEmailUsuarioCreador()));
 
-        CanalReservaEntity canal = canalReservaRepository.findById(dto.getIdCanalReserva())
-                .orElseThrow(() -> new ResourceNotFoundException("Canal no encontrado"));
+        CanalReservaEntity canal = canalReservaRepository.findByIdExterno(dto.getIdCanalReservaExterno())
+                .orElseThrow(() -> new ResourceNotFoundException("Canal no encontrado con ID externo: " + dto.getIdCanalReservaExterno()));
+
+        LocalDate hoy = LocalDate.now();
+
+        if (dto.getFechaEntrada() == null) {
+            throw new BadRequestException("La fecha de entrada es obligatoria");
+        }
+
+        if (dto.getFechaSalida() == null) {
+            throw new BadRequestException("La fecha de salida es obligatoria");
+        }
+
+        if (dto.getFechaEntrada().isBefore(hoy)) {
+            throw new BadRequestException("No se puede crear una reserva con fecha de entrada pasada");
+        }
+
+        if (!dto.getFechaSalida().isAfter(dto.getFechaEntrada())) {
+            throw new BadRequestException("La fecha de salida debe ser posterior a la fecha de entrada");
+        }
+
+        boolean existeSolapamiento = reservaRepository.existsReservaSolapada(
+                habitacion.getIdHabitacion(),
+                dto.getFechaEntrada(),
+                dto.getFechaSalida()
+        );
+
+        if (existeSolapamiento) {
+            throw new BadRequestException("La habitación ya tiene una reserva activa en ese rango de fechas");
+        }
 
         ReservaEntity reserva = reservaMapper.toEntity(
                 dto,
@@ -75,21 +106,68 @@ public class ReservaService {
                 .toList();
     }
 
-    public ReservaResponseDTO buscarPorId(Long id) {
-        ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
+    public ReservaResponseDTO buscarPorId(UUID idExterno) {
+        ReservaEntity reserva = reservaRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idExterno));
 
         return reservaMapper.toDTO(reserva);
     }
 
     public ReservaResponseDTO actualizarReserva(
-            Long id,
+            UUID idExterno,
             ReservaRequestDTO dto
     ) {
-        ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
+        ReservaEntity reserva = reservaRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idExterno));
 
-        reserva.setCodigoReservaExterna(dto.getCodigoReservaExterna());
+        HabitacionEntity habitacion = habitacionRepository.findByNumero(dto.getNumeroHabitacion())
+                .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + dto.getNumeroHabitacion()));
+        HuespedEntity huesped = huespedRepository.findByIdExterno(dto.getIdHuespedExterno())
+                .orElseThrow(() -> new ResourceNotFoundException("Huesped no encontrado con ID externo: " + dto.getIdHuespedExterno()));
+
+        UsuarioEntity usuario = usuarioRepository.findByEmail(dto.getEmailUsuarioCreador())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + dto.getEmailUsuarioCreador()));
+
+        CanalReservaEntity canal = canalReservaRepository.findByIdExterno(dto.getIdCanalReservaExterno())
+                .orElseThrow(() -> new ResourceNotFoundException("Canal no encontrado con ID externo: " + dto.getIdCanalReservaExterno()));
+
+
+
+        LocalDate hoy = LocalDate.now();
+
+        if (dto.getFechaEntrada() == null) {
+            throw new BadRequestException("La fecha de entrada es obligatoria");
+        }
+
+        if (dto.getFechaSalida() == null) {
+            throw new BadRequestException("La fecha de salida es obligatoria");
+        }
+
+        if (dto.getFechaEntrada().isBefore(hoy)) {
+            throw new BadRequestException("No se puede actualizar una reserva con fecha de entrada pasada");
+        }
+
+        if (!dto.getFechaSalida().isAfter(dto.getFechaEntrada())) {
+            throw new BadRequestException("La fecha de salida debe ser posterior a la fecha de entrada");
+        }
+
+        boolean existeSolapamiento = reservaRepository.existsReservaSolapadaExcluyendoReservaActual(
+                habitacion.getIdHabitacion(),
+                reserva.getIdReserva(),
+                dto.getFechaEntrada(),
+                dto.getFechaSalida()
+        );
+
+        if (existeSolapamiento) {
+            throw new BadRequestException("La habitación ya tiene una reserva activa en ese rango de fechas");
+        }
+
+        reserva.setHuesped(huesped);
+        reserva.setHabitacion(habitacion);
+        reserva.setUsuarioCreador(usuario);
+        reserva.setCanalReserva(canal);
+
+
         reserva.setFechaEntrada(dto.getFechaEntrada());
         reserva.setFechaSalida(dto.getFechaSalida());
         reserva.setCantidadPersonas(dto.getCantidadPersonas());
@@ -104,9 +182,9 @@ public class ReservaService {
         return reservaMapper.toDTO(actualizada);
     }
 
-    public void eliminarReserva(Long id) {
-        ReservaEntity reserva = reservaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
+    public void eliminarReserva(UUID idExterno) {
+        ReservaEntity reserva = reservaRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idExterno));
 
         reservaRepository.delete(reserva);
     }

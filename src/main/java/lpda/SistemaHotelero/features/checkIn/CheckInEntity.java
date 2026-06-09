@@ -3,6 +3,8 @@ import jakarta.persistence.*;
         import lombok.*;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class CheckInEntity {
     private Long idCheckIn;
 
     @Column (nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @OneToOne

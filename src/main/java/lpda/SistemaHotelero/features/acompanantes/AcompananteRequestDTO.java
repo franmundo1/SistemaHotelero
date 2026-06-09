@@ -3,6 +3,8 @@ package lpda.SistemaHotelero.features.acompanantes;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -10,8 +12,7 @@ import lombok.*;
 public class AcompananteRequestDTO {
 
     @NotNull(message = "El ID de la reserva es obligatorio")
-    @Positive(message = "El ID de la reserva debe ser mayor a cero")
-    private Long idReserva;
+    private UUID idReserva;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")

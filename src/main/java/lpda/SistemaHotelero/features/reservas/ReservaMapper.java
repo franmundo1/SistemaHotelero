@@ -26,7 +26,6 @@ public class ReservaMapper {
         reserva.setUsuarioCreador(usuario);
         reserva.setCanalReserva(canal);
 
-        reserva.setCodigoReservaExterna(dto.getCodigoReservaExterna());
         reserva.setFechaEntrada(dto.getFechaEntrada());
         reserva.setFechaSalida(dto.getFechaSalida());
         reserva.setCantidadPersonas(dto.getCantidadPersonas());
@@ -42,7 +41,7 @@ public class ReservaMapper {
     public ReservaResponseDTO toDTO(ReservaEntity reserva) {
 
         return new ReservaResponseDTO(
-                reserva.getIdReserva(),
+                reserva.getIdExterno(),
                 reserva.getHuesped().getNombre(),
                 reserva.getHabitacion().getNumero(),
                 reserva.getUsuarioCreador().getNombre() + " " +

@@ -1,21 +1,24 @@
-package lpda.SistemaHotelero.features.checkIn;
+package lpda.SistemaHotelero.features.checkOut;
 
-import lpda.SistemaHotelero.features.checkIn.DTO.CheckInResponseDTO;
+import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CheckInMapper {
+public class CheckOutMapper {
 
-    public CheckInResponseDTO toResponseDTO(CheckInEntity entity) {
+    public CheckOutResponseDTO toResponseDTO(CheckOutEntity entity) {
         if (entity == null) {
             return null;
         }
 
-        CheckInResponseDTO dto = new CheckInResponseDTO();
+        CheckOutResponseDTO dto = new CheckOutResponseDTO();
 
         dto.setIdExterno(entity.getIdExterno());
-        dto.setFechaHoraEntrada(entity.getFechaHora());
+        dto.setFechaHoraSalida(entity.getFechaHora());
         dto.setObservaciones(entity.getObservaciones());
+        dto.setTotalEstadia(entity.getTotalEstadia());
+        dto.setAnticipo(entity.getAnticipo());
+        dto.setMontoFinal(entity.getMontoFinal());
 
         if (entity.getReserva() != null) {
             dto.setIdReservaExterno(entity.getReserva().getIdExterno());
@@ -32,6 +35,9 @@ public class CheckInMapper {
                 dto.setNumeroHabitacion(entity.getReserva().getHabitacion().getNumero());
                 dto.setEstadoOcupacionHabitacion(
                         entity.getReserva().getHabitacion().getEstadoOcupacion().name()
+                );
+                dto.setEstadoLimpiezaHabitacion(
+                        entity.getReserva().getHabitacion().getEstadoLimpieza().name()
                 );
             }
         }

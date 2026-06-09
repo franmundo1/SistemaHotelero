@@ -16,10 +16,10 @@ public interface AcompananteRepository extends JpaRepository<AcompananteEntity, 
 
     boolean existsByIdExterno(UUID idExterno);
 
-    boolean existsByReserva_IdReservaAndDni(Long idReserva, String dni);
+    boolean existsByReserva_IdExternoAndDni(UUID idReservaExterno, String dni);
 
-    boolean existsByReserva_IdReservaAndDniAndIdExternoNot(
-            Long idReserva,
+    boolean existsByReserva_IdExternoAndDniAndIdExternoNot(
+            UUID idReservaExterno,
             String dni,
             UUID idExterno
     );

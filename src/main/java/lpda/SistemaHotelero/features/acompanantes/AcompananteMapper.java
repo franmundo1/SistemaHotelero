@@ -26,7 +26,7 @@ public class AcompananteMapper {
     public AcompananteResponseDTO toResponse(AcompananteEntity entity) {
         return AcompananteResponseDTO.builder()
                 .idExterno(entity.getIdExterno())
-                .idReserva(entity.getReserva().getIdReserva())
+                .idReservaExterno(entity.getReserva().getIdExterno())
                 .nombre(entity.getNombre())
                 .apellido(entity.getApellido())
                 .dni(entity.getDni())

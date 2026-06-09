@@ -2,6 +2,8 @@ package lpda.SistemaHotelero.features.acompanantes;
 import jakarta.persistence.*;
         import lombok.*;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -23,6 +25,7 @@ public class AcompananteEntity {
     private ReservaEntity reserva;
 
     @Column(unique = true, nullable = false, name="id_externo")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @Column(nullable = false)
