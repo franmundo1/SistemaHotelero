@@ -29,9 +29,6 @@ public class ReservaMapper {
         reserva.setFechaEntrada(dto.getFechaEntrada());
         reserva.setFechaSalida(dto.getFechaSalida());
         reserva.setCantidadPersonas(dto.getCantidadPersonas());
-        reserva.setPrecioPorNoche(dto.getPrecioPorNoche());
-        reserva.setTotalEstadia(dto.getTotalEstadia());
-        reserva.setAnticipo(dto.getAnticipo());
         reserva.setEstado(dto.getEstado());
         reserva.setObservaciones(dto.getObservaciones());
 

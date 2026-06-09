@@ -5,6 +5,7 @@ import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.checkIn.CheckInRepository;
 import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutRequestDTO;
 import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutResponseDTO;
+import lpda.SistemaHotelero.features.consumos.ConsumoService;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionRepository;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
@@ -31,6 +32,7 @@ public class CheckOutService {
     private final HabitacionRepository habitacionRepository;
     private final CheckInRepository checkInRepository;
     private final PagoRepository pagoRepository;
+    private final ConsumoService consumoService;
 
     public CheckOutService(
             CheckOutRepository checkOutRepository,
@@ -38,7 +40,8 @@ public class CheckOutService {
             ReservaRepository reservaRepository,
             HabitacionRepository habitacionRepository,
             CheckInRepository checkInRepository,
-            PagoRepository pagoRepository
+            PagoRepository pagoRepository,
+            ConsumoService consumoService
     ) {
         this.checkOutRepository = checkOutRepository;
         this.checkOutMapper = checkOutMapper;
@@ -46,6 +49,7 @@ public class CheckOutService {
         this.habitacionRepository = habitacionRepository;
         this.checkInRepository = checkInRepository;
         this.pagoRepository=pagoRepository;
+        this.consumoService=consumoService;
     }
 
     @Transactional(readOnly = true)
@@ -79,8 +83,11 @@ public class CheckOutService {
                 .getPrincipal();
 
         BigDecimal totalEstadia = reserva.getTotalEstadia();
+        BigDecimal totalConsumos = consumoService.calcularTotalConsumosPorReserva(reserva.getIdExterno());
         BigDecimal anticipo = reserva.getAnticipo();
-        BigDecimal montoFinal = totalEstadia.subtract(anticipo);
+
+        BigDecimal totalFinal = totalEstadia.add(totalConsumos);
+        BigDecimal montoFinal = totalFinal.subtract(anticipo);
 
         if (dto.getMontoAbonado().compareTo(montoFinal) != 0) {
             throw new BadRequestException("El monto abonado no coincide con el saldo pendiente de la reserva");
@@ -93,6 +100,8 @@ public class CheckOutService {
         checkOut.setUsuario(usuarioLogueado);
         checkOut.setFechaHora(LocalDateTime.now());
         checkOut.setTotalEstadia(totalEstadia);
+        checkOut.setTotalConsumos(totalConsumos);
+        checkOut.setTotalFinal(totalFinal);
         checkOut.setAnticipo(anticipo);
         checkOut.setMontoFinal(montoFinal);
         checkOut.setObservaciones(dto.getObservaciones());

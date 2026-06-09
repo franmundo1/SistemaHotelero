@@ -22,7 +22,7 @@ public class PagoMapper {
         return PagoResponseDTO.builder()
                 .idPago(pago.getIdPago())
                 .idExterno(pago.getIdExterno())
-                .idReserva(pago.getReserva().getIdReserva())
+                .idReservaExterno(pago.getReserva().getIdExterno())
                 .idUsuario(pago.getUsuario().getIdUsuario())
                 .nombreUsuario(pago.getUsuario().getNombre() + " " + pago.getUsuario().getApellido())
                 .monto(pago.getMonto())

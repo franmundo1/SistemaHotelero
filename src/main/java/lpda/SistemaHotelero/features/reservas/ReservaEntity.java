@@ -5,6 +5,8 @@ import lpda.SistemaHotelero.features.canalesReservas.CanalReservaEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.huespedes.HuespedEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,7 +26,8 @@ public class ReservaEntity {
     @Column(name = "id_reserva")
     private Long idReserva;
 
-    @Column(name = "id_externo", nullable = false, unique = true)
+    @Column(name = "id_externo", nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @ManyToOne
@@ -53,8 +56,6 @@ public class ReservaEntity {
     @Column(name = "cantidad_personas", nullable = false)
     private Integer cantidadPersonas;
 
-    @Column(name = "precio_por_noche", nullable = false, precision = 10, scale = 2)
-    private BigDecimal precioPorNoche;
 
     @Column(name = "total_estadia", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalEstadia;
@@ -64,7 +65,6 @@ public class ReservaEntity {
 
     @Column(nullable = false)
     private String estado;
-    // PENDIENTE, CONFIRMADA, CANCELADA, EN_CURSO, FINALIZADA
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;

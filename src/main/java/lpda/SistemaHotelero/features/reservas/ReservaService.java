@@ -8,13 +8,17 @@ import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionRepository;
 import lpda.SistemaHotelero.features.huespedes.HuespedEntity;
 import lpda.SistemaHotelero.features.huespedes.HuespedRepository;
+import lpda.SistemaHotelero.features.pagos.PagoEntity;
+import lpda.SistemaHotelero.features.pagos.PagoRepository;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaRequestDTO;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaResponseDTO;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +32,7 @@ public class ReservaService {
     private final HabitacionRepository habitacionRepository;
     private final UsuarioRepository usuarioRepository;
     private final CanalReservaRepository canalReservaRepository;
+    private final PagoRepository pagoRepository;
 
     public ReservaService(
             ReservaRepository reservaRepository,
@@ -35,7 +40,8 @@ public class ReservaService {
             HuespedRepository huespedRepository,
             HabitacionRepository habitacionRepository,
             UsuarioRepository usuarioRepository,
-            CanalReservaRepository canalReservaRepository
+            CanalReservaRepository canalReservaRepository,
+            PagoRepository pagoRepository
     ) {
         this.reservaRepository = reservaRepository;
         this.reservaMapper = reservaMapper;
@@ -43,6 +49,7 @@ public class ReservaService {
         this.habitacionRepository = habitacionRepository;
         this.usuarioRepository = usuarioRepository;
         this.canalReservaRepository = canalReservaRepository;
+        this.pagoRepository=pagoRepository;
     }
 
     public ReservaResponseDTO crearReserva(ReservaRequestDTO dto) {
@@ -85,6 +92,37 @@ public class ReservaService {
         if (existeSolapamiento) {
             throw new BadRequestException("La habitación ya tiene una reserva activa en ese rango de fechas");
         }
+        long cantidadNoches = ChronoUnit.DAYS.between(
+                dto.getFechaEntrada(),
+                dto.getFechaSalida()
+        );
+
+        if (cantidadNoches <= 0) {
+            throw new BadRequestException("La reserva debe tener al menos una noche");
+        }
+
+        BigDecimal precioPorNoche = habitacion.getPrecioPorNoche();
+
+        BigDecimal totalEstadia = precioPorNoche.multiply(
+                BigDecimal.valueOf(cantidadNoches)
+        );
+
+        BigDecimal anticipo = dto.getAnticipo() != null
+                ? dto.getAnticipo()
+                : BigDecimal.ZERO;
+
+        if (anticipo.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("El anticipo no puede ser negativo");
+        }
+
+        if (anticipo.compareTo(totalEstadia) > 0) {
+            throw new BadRequestException("El anticipo no puede ser mayor al total de la estadía");
+        }
+
+        if (anticipo.compareTo(BigDecimal.ZERO) > 0 &&
+                (dto.getMetodoPagoAnticipo() == null || dto.getMetodoPagoAnticipo().isBlank())) {
+            throw new BadRequestException("Debe indicar el método de pago del anticipo");
+        }
 
         ReservaEntity reserva = reservaMapper.toEntity(
                 dto,
@@ -94,7 +132,26 @@ public class ReservaService {
                 canal
         );
 
+        reserva.setTotalEstadia(totalEstadia);
+        reserva.setAnticipo(anticipo);
+
+        if (reserva.getEstado() == null || reserva.getEstado().isBlank()) {
+            reserva.setEstado("CONFIRMADA");
+        }
+
         ReservaEntity guardada = reservaRepository.save(reserva);
+
+        if (anticipo.compareTo(BigDecimal.ZERO) > 0) {
+            PagoEntity pagoAnticipo = new PagoEntity();
+            pagoAnticipo.setReserva(guardada);
+            pagoAnticipo.setUsuario(usuario);
+            pagoAnticipo.setMonto(anticipo);
+            pagoAnticipo.setMetodoPago(dto.getMetodoPagoAnticipo());
+            pagoAnticipo.setTipoPago("ANTICIPO");
+            pagoAnticipo.setObservaciones("Anticipo registrado al crear la reserva");
+
+            pagoRepository.save(pagoAnticipo);
+        }
 
         return reservaMapper.toDTO(guardada);
     }
@@ -167,13 +224,32 @@ public class ReservaService {
         reserva.setUsuarioCreador(usuario);
         reserva.setCanalReserva(canal);
 
+        long cantidadNoches = ChronoUnit.DAYS.between(
+                dto.getFechaEntrada(),
+                dto.getFechaSalida()
+        );
+        if (cantidadNoches <= 0) {
+            throw new BadRequestException("La reserva debe tener al menos una noche");
+        }
+
+        BigDecimal totalEstadia = habitacion.getPrecioPorNoche()
+                .multiply(BigDecimal.valueOf(cantidadNoches));
+
+        BigDecimal anticipo = dto.getAnticipo() != null
+                ? dto.getAnticipo()
+                : BigDecimal.ZERO;
+
+        if (anticipo.compareTo(totalEstadia) > 0) {
+            throw new BadRequestException("El anticipo no puede ser mayor al total de la estadía");
+        }
+
+        reserva.setTotalEstadia(totalEstadia);
+        reserva.setAnticipo(anticipo);
+
 
         reserva.setFechaEntrada(dto.getFechaEntrada());
         reserva.setFechaSalida(dto.getFechaSalida());
         reserva.setCantidadPersonas(dto.getCantidadPersonas());
-        reserva.setPrecioPorNoche(dto.getPrecioPorNoche());
-        reserva.setTotalEstadia(dto.getTotalEstadia());
-        reserva.setAnticipo(dto.getAnticipo());
         reserva.setEstado(dto.getEstado());
         reserva.setObservaciones(dto.getObservaciones());
 

@@ -21,4 +21,6 @@ public class CheckOutResponseDTO {
     private BigDecimal totalEstadia;
     private BigDecimal anticipo;
     private BigDecimal montoFinal;
+    private BigDecimal totalConsumos;
+    private BigDecimal totalFinal;
 }

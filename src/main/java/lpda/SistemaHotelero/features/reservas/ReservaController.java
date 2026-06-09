@@ -1,5 +1,6 @@
 package lpda.SistemaHotelero.features.reservas;
 
+import jakarta.validation.Valid;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaRequestDTO;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,9 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<ReservaResponseDTO> crearReserva(
-            @RequestBody ReservaRequestDTO dto) {
-
-        ReservaResponseDTO response =
-                reservaService.crearReserva(dto);
-
+            @Valid @RequestBody ReservaRequestDTO dto
+    ) {
+        ReservaResponseDTO response = reservaService.crearReserva(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     @GetMapping
@@ -47,11 +46,9 @@ public class ReservaController {
     @PutMapping("/{id}")
     public ResponseEntity<ReservaResponseDTO> actualizarReserva(
             @PathVariable UUID id,
-            @RequestBody ReservaRequestDTO dto) {
-
-        return ResponseEntity.ok(
-                reservaService.actualizarReserva(id, dto)
-        );
+            @Valid @RequestBody ReservaRequestDTO dto
+    ) {
+        return ResponseEntity.ok(reservaService.actualizarReserva(id, dto));
     }
 
     @DeleteMapping("/{id}")
