@@ -6,14 +6,14 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class ReservaResponseDTO {
 
-    private Long idReserva;
+    private UUID idExterno;
 
     private String huesped;
     private String habitacion;

@@ -19,6 +19,8 @@ public interface CheckInRepository extends JpaRepository<CheckInEntity, Long >, 
 
     void deleteByIdExterno(UUID idExterno);
 
+    boolean existsByReserva_IdExterno(UUID idReservaExterno);
+
 
 
 }

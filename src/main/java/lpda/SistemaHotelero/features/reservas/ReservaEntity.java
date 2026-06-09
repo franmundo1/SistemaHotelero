@@ -9,6 +9,7 @@ import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "reservas")
@@ -22,6 +23,9 @@ public class ReservaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reserva")
     private Long idReserva;
+
+    @Column(name = "id_externo", nullable = false, unique = true)
+    private UUID idExterno;
 
     @ManyToOne
     @JoinColumn(name = "id_huesped", nullable = false)
@@ -39,8 +43,6 @@ public class ReservaEntity {
     @JoinColumn(name = "id_canal", nullable = false)
     private CanalReservaEntity canalReserva;
 
-    @Column(name = "codigo_reserva_externa")
-    private String codigoReservaExterna;
 
     @Column(name = "fecha_entrada", nullable = false)
     private LocalDate fechaEntrada;
@@ -76,5 +78,9 @@ public class ReservaEntity {
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
+
+        if (this.idExterno == null) {
+            this.idExterno = UUID.randomUUID();
+        }
     }
 }

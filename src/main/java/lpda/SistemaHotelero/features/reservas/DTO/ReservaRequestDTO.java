@@ -5,17 +5,17 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class ReservaRequestDTO {
 
-    private Long idHuesped;
-    private Long idHabitacion;
-    private Long idUsuarioCreador;
-    private Long idCanalReserva;
+    private UUID idHuespedExterno;
+    private String numeroHabitacion;
+    private String emailUsuarioCreador;
+    private UUID idCanalReservaExterno;
 
-    private String codigoReservaExterna;
     private LocalDate fechaEntrada;
     private LocalDate fechaSalida;
     private Integer cantidadPersonas;

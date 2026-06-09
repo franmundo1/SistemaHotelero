@@ -21,7 +21,8 @@ public class AcompananteService {
 
     @Transactional
     public AcompananteResponseDTO create(AcompananteRequestDTO dto) {
-        ReservaEntity reserva = buscarReserva(dto.getIdReserva());
+        ReservaEntity reserva = reservaRepository.findByIdExterno(dto.getIdReserva())
+                .orElseThrow(()-> new ResourceNotFoundException("No se encontro la reserva"));
 
         validarReservaHabilitada(reserva);
         validarDniDuplicadoEnReserva(dto.getIdReserva(), dto.getDni());
@@ -67,7 +68,7 @@ public class AcompananteService {
 
         if (dto.getDni() != null && !dto.getDni().isBlank()) {
             boolean dniDuplicado = acompananteRepository
-                    .existsByReserva_IdReservaAndDniAndIdExternoNot(
+                    .existsByReserva_IdExternoAndDniAndIdExternoNot(
                             dto.getIdReserva(),
                             dto.getDni(),
                             idExterno
@@ -97,19 +98,19 @@ public class AcompananteService {
                 );
     }
 
-    private ReservaEntity buscarReserva(Long idReserva) {
-        return reservaRepository.findById(idReserva)
+    private ReservaEntity buscarReserva(UUID idReserva) {
+        return reservaRepository.findByIdExterno(idReserva)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Reserva no encontrada con ID: " + idReserva)
                 );
     }
 
-    private void validarDniDuplicadoEnReserva(Long idReserva, String dni) {
+    private void validarDniDuplicadoEnReserva(UUID idReserva, String dni) {
         if (dni == null || dni.isBlank()) {
             return;
         }
 
-        if (acompananteRepository.existsByReserva_IdReservaAndDni(idReserva, dni)) {
+        if (acompananteRepository.existsByReserva_IdExternoAndDni(idReserva, dni)) {
             throw new BadRequestException("Ya existe un acompañante con ese DNI en la reserva");
         }
     }

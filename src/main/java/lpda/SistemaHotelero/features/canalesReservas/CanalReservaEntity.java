@@ -1,6 +1,8 @@
 package lpda.SistemaHotelero.features.canalesReservas;
 import jakarta.persistence.*;
         import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class CanalReservaEntity {
     private TipoCanal tipo;
 
     @Column(unique = true, nullable = false, name="id_externo")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @PrePersist

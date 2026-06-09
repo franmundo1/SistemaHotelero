@@ -3,6 +3,8 @@ package lpda.SistemaHotelero.features.huespedes;
 import jakarta.persistence.*;
 import lombok.*;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +22,8 @@ public class HuespedEntity {
     @Column(name = "id_huesped")
     private Long idHuesped;
 
-    @Column (nullable = false, unique = true, length = 36)
+    @Column(name = "id_externo", nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID idExterno;
 
     @OneToMany(mappedBy = "huesped")

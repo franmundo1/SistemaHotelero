@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/reservas")
 public class ReservaController {
@@ -35,7 +37,7 @@ public class ReservaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservaResponseDTO> buscarPorId(
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
 
         return ResponseEntity.ok(
                 reservaService.buscarPorId(id)
@@ -44,7 +46,7 @@ public class ReservaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ReservaResponseDTO> actualizarReserva(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestBody ReservaRequestDTO dto) {
 
         return ResponseEntity.ok(
@@ -54,7 +56,7 @@ public class ReservaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarReserva(
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
 
         reservaService.eliminarReserva(id);
 
