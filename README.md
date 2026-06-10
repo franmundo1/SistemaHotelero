@@ -4,6 +4,7 @@
 
 Sistema Hotelero es una API REST desarrollada con Java y Spring Boot para la administración integral de hoteles. Permite gestionar huéspedes, habitaciones, reservas, consumos, pagos, check-in, check-out y usuarios, incorporando autenticación JWT y control de acceso basado en roles.
 
+---
 ### Integrantes
 Francisco Mandolino,
 
@@ -11,6 +12,8 @@ Mauro Massi,
 
 Joaquín Ortiz Martínez.
 
+
+---
 ### Tecnologías Utilizadas
 
 - Java 21
@@ -25,6 +28,7 @@ Joaquín Ortiz Martínez.
 - Swagger / OpenAPI
 - Jakarta Validation
 
+---
 ### Arquitectura
 
 El proyecto implementa una arquitectura en capas:
@@ -38,6 +42,7 @@ Security
 
 Esta estructura favorece la separación de responsabilidades y facilita el mantenimiento del sistema.
 
+---
 ### Estructura del Proyecto
 ```text
 src/main/java
@@ -70,6 +75,7 @@ sus propias entidades, DTOs, repositorios, servicios
 y controladores, favoreciendo una arquitectura modular 
 y escalable.
 
+---
 ### Funcionalidades Principales
 
 Gestión de huéspedes,
@@ -83,17 +89,19 @@ Administración de usuarios,
 Gestión de roles y permisos,
 Seguridad mediante JWT.
 
+---
 ### Configuración - Requisitos
 JDK 21,
 Maven,
 MySQL.
 
+---
 ### Seguridad
 Autenticación mediante JWT.
 Control de acceso basado en roles y permisos.
 Arquitectura stateless.
 Protección de endpoints mediante Spring Security.
-
+---
 ### Ejecución
 Clonar el repositorio.
 Configurar la base de datos MySQL.
@@ -101,7 +109,7 @@ Ajustar las credenciales en application.properties.
 Ejecutar:
 mvn spring-boot:run
 Documentación API
-
+---
 ## Endpoints Principales
 
 
