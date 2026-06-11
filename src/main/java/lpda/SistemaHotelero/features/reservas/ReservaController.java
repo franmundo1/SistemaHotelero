@@ -1,6 +1,7 @@
 package lpda.SistemaHotelero.features.reservas;
 
 import jakarta.validation.Valid;
+import lpda.SistemaHotelero.features.reservas.DTO.CancelarReservaRequestDTO;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaRequestDTO;
 import lpda.SistemaHotelero.features.reservas.DTO.ReservaResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -58,5 +59,33 @@ public class ReservaController {
         reservaService.eliminarReserva(id);
 
         return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<ReservaResponseDTO> cancelarReserva(
+            @PathVariable UUID id,
+            @Valid @RequestBody CancelarReservaRequestDTO dto
+    ) {
+        return ResponseEntity.ok(
+                reservaService.cancelarReserva(id, dto.getMotivoCancelacion())
+        );
+    }
+    @GetMapping("/confirmadas")
+    public ResponseEntity<List<ReservaResponseDTO>> listarConfirmadas() {
+        return ResponseEntity.ok(reservaService.listarPorEstado("CONFIRMADA"));
+    }
+
+    @GetMapping("/en-curso")
+    public ResponseEntity<List<ReservaResponseDTO>> listarEnCurso() {
+        return ResponseEntity.ok(reservaService.listarPorEstado("EN_CURSO"));
+    }
+
+    @GetMapping("/finalizadas")
+    public ResponseEntity<List<ReservaResponseDTO>> listarFinalizadas() {
+        return ResponseEntity.ok(reservaService.listarPorEstado("FINALIZADA"));
+    }
+
+    @GetMapping("/canceladas")
+    public ResponseEntity<List<ReservaResponseDTO>> listarCanceladas() {
+        return ResponseEntity.ok(reservaService.listarPorEstado("CANCELADA"));
     }
 }

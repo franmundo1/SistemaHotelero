@@ -143,12 +143,24 @@ public class HabitacionService {
     }
     public HabitacionLimpiezaResponseDTO cambiarEstadoLimpiezaPorNumero(
             String numero,
-            EstadoLimpieza estadoLimpieza
+            EstadoLimpieza nuevoEstado
     ) {
         HabitacionEntity habitacion = habitacionRepository.findByNumero(numero)
                 .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + numero));
 
-        habitacion.setEstadoLimpieza(estadoLimpieza);
+        EstadoLimpieza estadoActual = habitacion.getEstadoLimpieza();
+
+        boolean transicionValida =
+                (EstadoLimpieza.SUCIA.equals(estadoActual) && EstadoLimpieza.EN_LIMPIEZA.equals(nuevoEstado))
+                        || (EstadoLimpieza.EN_LIMPIEZA.equals(estadoActual) && EstadoLimpieza.LIMPIA.equals(nuevoEstado));
+
+        if (!transicionValida) {
+            throw new BadRequestException(
+                    "Transición de limpieza no permitida. Solo se permite SUCIA -> EN_LIMPIEZA y EN_LIMPIEZA -> LIMPIA"
+            );
+        }
+
+        habitacion.setEstadoLimpieza(nuevoEstado);
 
         HabitacionEntity habitacionActualizada = habitacionRepository.save(habitacion);
 
@@ -173,7 +185,7 @@ public class HabitacionService {
         return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
     }
     public List<HabitacionLimpiezaResponseDTO> findAllParaLimpieza() {
-        return habitacionRepository.findAll()
+        return habitacionRepository.findByEstadoLimpieza(EstadoLimpieza.SUCIA)
                 .stream()
                 .map(habitacionMapper::toLimpiezaResponseDTO)
                 .toList();

@@ -6,3 +6,4 @@ public enum TipoCanal {
     WHATSAPP,
     TELEFONO
 }
+

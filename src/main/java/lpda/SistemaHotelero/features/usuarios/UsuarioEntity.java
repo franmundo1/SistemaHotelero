@@ -3,6 +3,8 @@ package lpda.SistemaHotelero.features.usuarios;
 import jakarta.persistence.*;
 import lombok.*;
 import lpda.SistemaHotelero.features.roles.RolEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
@@ -23,6 +26,10 @@ public class UsuarioEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long idUsuario;
+
+    @Column(name = "id_externo", nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID idExterno;
 
     @Column(nullable = false)
     private String nombre;
@@ -85,5 +92,16 @@ public class UsuarioEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return Boolean.TRUE.equals(this.activo);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (idExterno == null) {
+            idExterno = UUID.randomUUID();
+        }
+
+        if (activo == null) {
+            activo = true;
+        }
     }
 }

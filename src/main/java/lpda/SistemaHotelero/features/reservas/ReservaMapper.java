@@ -47,6 +47,7 @@ public class ReservaMapper {
                 reserva.getFechaEntrada(),
                 reserva.getFechaSalida(),
                 reserva.getTotalEstadia(),
+                reserva.getMotivoCancelacion(),
                 reserva.getEstado()
         );
     }

@@ -49,7 +49,9 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        .requestMatchers("/api/usuarios/**").hasAuthority("VER_USUARIOS")
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/api/roles/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/habitaciones/limpieza").hasAnyRole("ADMIN", "LIMPIEZA")
