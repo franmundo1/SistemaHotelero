@@ -43,4 +43,6 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
             @Param("activa") Boolean activa
     );
 
+    List<HabitacionEntity> findByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
+
 }

@@ -59,6 +59,21 @@ public class ReservaService {
         HabitacionEntity habitacion = habitacionRepository.findByNumero(dto.getNumeroHabitacion())
                 .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + dto.getNumeroHabitacion()));
 
+        if (dto.getCantidadPersonas() == null) {
+            throw new BadRequestException("La cantidad de personas es obligatoria");
+        }
+
+        if (dto.getCantidadPersonas() < 1) {
+            throw new BadRequestException("La cantidad de personas debe ser al menos 1");
+        }
+
+        if (dto.getCantidadPersonas() > habitacion.getCapacidad()) {
+            throw new BadRequestException(
+                    "La cantidad de personas supera la capacidad de la habitación. Capacidad máxima: "
+                            + habitacion.getCapacidad()
+            );
+        }
+
         UsuarioEntity usuario = usuarioRepository.findByEmail(dto.getEmailUsuarioCreador())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + dto.getEmailUsuarioCreador()));
 
@@ -112,7 +127,7 @@ public class ReservaService {
                 : BigDecimal.ZERO;
 
         if (anticipo.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("El anticipo no puede ser negativo");
+            throw new BadRequestException("El anticipo debe ser mayor a 0");
         }
 
         if (anticipo.compareTo(totalEstadia) > 0) {
@@ -179,6 +194,22 @@ public class ReservaService {
 
         HabitacionEntity habitacion = habitacionRepository.findByNumero(dto.getNumeroHabitacion())
                 .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con número: " + dto.getNumeroHabitacion()));
+
+        if (dto.getCantidadPersonas() == null) {
+            throw new BadRequestException("La cantidad de personas es obligatoria");
+        }
+
+        if (dto.getCantidadPersonas() < 1) {
+            throw new BadRequestException("La cantidad de personas debe ser al menos 1");
+        }
+
+        if (dto.getCantidadPersonas() > habitacion.getCapacidad()) {
+            throw new BadRequestException(
+                    "La cantidad de personas supera la capacidad de la habitación. Capacidad máxima: "
+                            + habitacion.getCapacidad()
+            );
+        }
+
         HuespedEntity huesped = huespedRepository.findByIdExterno(dto.getIdHuespedExterno())
                 .orElseThrow(() -> new ResourceNotFoundException("Huesped no encontrado con ID externo: " + dto.getIdHuespedExterno()));
 
@@ -263,5 +294,35 @@ public class ReservaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idExterno));
 
         reservaRepository.delete(reserva);
+    }
+    public ReservaResponseDTO cancelarReserva(UUID idExterno, String motivoCancelacion) {
+        ReservaEntity reserva = reservaRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idExterno));
+
+        if ("FINALIZADA".equalsIgnoreCase(reserva.getEstado())) {
+            throw new BadRequestException("No se puede cancelar una reserva finalizada");
+        }
+
+        if ("CANCELADA".equalsIgnoreCase(reserva.getEstado())) {
+            throw new BadRequestException("La reserva ya se encuentra cancelada");
+        }
+
+        if ("EN_CURSO".equalsIgnoreCase(reserva.getEstado())) {
+            throw new BadRequestException("No se puede cancelar una reserva con check-in realizado");
+        }
+
+        reserva.setEstado("CANCELADA");
+        reserva.setMotivoCancelacion(motivoCancelacion);
+
+        ReservaEntity cancelada = reservaRepository.save(reserva);
+
+        return reservaMapper.toDTO(cancelada);
+    }
+
+    public List<ReservaResponseDTO> listarPorEstado(String estado) {
+        return reservaRepository.findByEstadoIgnoreCase(estado)
+                .stream()
+                .map(reservaMapper::toDTO)
+                .toList();
     }
 }

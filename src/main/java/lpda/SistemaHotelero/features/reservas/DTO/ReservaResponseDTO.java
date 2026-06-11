@@ -24,6 +24,7 @@ public class ReservaResponseDTO {
     private LocalDate fechaSalida;
 
     private BigDecimal totalEstadia;
+    private String motivoCancelacion;
 
     private String estado;
 }

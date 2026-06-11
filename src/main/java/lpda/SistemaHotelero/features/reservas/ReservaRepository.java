@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,4 +46,5 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
             @Param("fechaEntrada") LocalDate fechaEntrada,
             @Param("fechaSalida") LocalDate fechaSalida
     );
+    List<ReservaEntity> findByEstadoIgnoreCase(String estado);
 }
