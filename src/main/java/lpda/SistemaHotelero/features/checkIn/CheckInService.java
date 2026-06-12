@@ -6,6 +6,7 @@ import lpda.SistemaHotelero.features.checkIn.DTO.CheckInRequestDTO;
 import lpda.SistemaHotelero.features.checkIn.DTO.CheckInResponseDTO;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionRepository;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
 import lpda.SistemaHotelero.features.reservas.ReservaRepository;
@@ -70,6 +71,9 @@ public class CheckInService {
 
         if (!EstadoOcupacion.DISPONIBLE.equals(habitacion.getEstadoOcupacion())) {
             throw new BadRequestException("La habitación no está disponible para check-in");
+        }
+        if (!EstadoLimpieza.LIMPIA.equals(habitacion.getEstadoLimpieza())) {
+            throw new BadRequestException("No se puede hacer check-in porque la habitación no está limpia");
         }
 
         UsuarioEntity usuarioLogueado = (UsuarioEntity) SecurityContextHolder
