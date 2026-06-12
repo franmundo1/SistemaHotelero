@@ -34,7 +34,7 @@ public class HabitacionController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idExterno}")
     public ResponseEntity<HabitacionResponseDTO> findById(@PathVariable UUID idExterno) {
         return ResponseEntity.ok(habitacionService.findById(idExterno));
     }
@@ -66,7 +66,7 @@ public class HabitacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{idExterno}")
     public ResponseEntity<HabitacionResponseDTO> update(
             @PathVariable UUID idExterno,
             @Valid @RequestBody HabitacionRequestDTO requestDTO
@@ -82,7 +82,7 @@ public class HabitacionController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{idExterno}")
     public ResponseEntity<HabitacionResponseDTO> patch(
             @PathVariable UUID idExterno,
             @Valid @RequestBody HabitacionPatchDTO patchDTO
@@ -100,7 +100,7 @@ public class HabitacionController {
         );
     }
 
-    @PatchMapping("/{id}/estado-ocupacion")
+    @PatchMapping("/{idExterno}/estado-ocupacion")
     public ResponseEntity<HabitacionResponseDTO> cambiarEstadoOcupacion(
             @PathVariable UUID idExterno,
             @RequestParam EstadoOcupacion estadoOcupacion
@@ -108,13 +108,14 @@ public class HabitacionController {
         return ResponseEntity.ok(habitacionService.cambiarEstadoOcupacion(idExterno, estadoOcupacion));
     }
 
-    @PatchMapping("/{id}/activa")
+    @PatchMapping("/{idExterno}/activa")
     public ResponseEntity<HabitacionResponseDTO> cambiarActiva(
             @PathVariable UUID idExterno,
             @RequestParam Boolean activa
     ) {
         return ResponseEntity.ok(habitacionService.cambiarActiva(idExterno, activa));
     }
+
     @GetMapping("/limpieza")
     public ResponseEntity<List<HabitacionLimpiezaResponseDTO>> findAllParaLimpieza() {
         return ResponseEntity.ok(habitacionService.findAllParaLimpieza());
