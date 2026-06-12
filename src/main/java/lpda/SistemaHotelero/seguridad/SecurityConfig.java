@@ -80,7 +80,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/pagos/**").hasAuthority("VER_PAGOS")
                         .requestMatchers(HttpMethod.POST, "/pagos/**").hasAuthority("REGISTRAR_PAGO")
 
-                        .requestMatchers("/canalesReserva/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/canalesReserva/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+                        .requestMatchers(HttpMethod.POST, "/canalesReserva/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/canalesReserva/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/canalesReserva/**").hasRole("ADMIN")
                         .requestMatchers("/api/acompanantes/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
 
                         .requestMatchers(HttpMethod.GET, "/api/productos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")

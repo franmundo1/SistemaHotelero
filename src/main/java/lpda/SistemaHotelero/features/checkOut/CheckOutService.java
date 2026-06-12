@@ -5,6 +5,7 @@ import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.checkIn.CheckInRepository;
 import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutRequestDTO;
 import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutResponseDTO;
+import lpda.SistemaHotelero.features.checkOut.Dto.CheckOutResumenDTO;
 import lpda.SistemaHotelero.features.consumos.ConsumoService;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionRepository;
@@ -133,5 +134,35 @@ public class CheckOutService {
                 .orElseThrow(() -> new ResourceNotFoundException("Check-out no encontrado con ID: " + idExterno));
 
         checkOutRepository.delete(checkOut);
+    }
+    @Transactional(readOnly = true)
+    public CheckOutResumenDTO obtenerResumen(UUID idReservaExterno) {
+        ReservaEntity reserva = reservaRepository.findByIdExterno(idReservaExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID externo: " + idReservaExterno));
+
+        if (!"EN_CURSO".equalsIgnoreCase(reserva.getEstado())) {
+            throw new BadRequestException("Solo se puede consultar deuda de reservas EN_CURSO");
+        }
+
+        BigDecimal totalEstadia = reserva.getTotalEstadia();
+        BigDecimal totalConsumos = consumoService.calcularTotalConsumosPorReserva(reserva.getIdExterno());
+        BigDecimal anticipo = reserva.getAnticipo();
+
+        BigDecimal totalFinal = totalEstadia.add(totalConsumos);
+        BigDecimal saldoPendiente = totalFinal.subtract(anticipo);
+
+        String huesped = reserva.getHuesped().getNombre() + " " + reserva.getHuesped().getApellido();
+        String habitacion = reserva.getHabitacion().getNumero();
+
+        return CheckOutResumenDTO.builder()
+                .idReservaExterno(reserva.getIdExterno())
+                .huesped(huesped)
+                .habitacion(habitacion)
+                .totalEstadia(totalEstadia)
+                .totalConsumos(totalConsumos)
+                .anticipo(anticipo)
+                .totalFinal(totalFinal)
+                .saldoPendiente(saldoPendiente)
+                .build();
     }
 }
