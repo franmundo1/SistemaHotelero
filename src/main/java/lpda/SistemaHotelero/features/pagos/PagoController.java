@@ -39,7 +39,7 @@ public class PagoController {
 
     @GetMapping("/usuario/{idUsuario}")
     @Operation(summary = "Obtener todos los pagos registrados por un usuario")
-    public ResponseEntity<List<PagoResponseDTO>> obtenerPorUsuario(@PathVariable Long idUsuario) {
+    public ResponseEntity<List<PagoResponseDTO>> obtenerPorUsuario(@PathVariable UUID idUsuario) {
         return ResponseEntity.ok(pagoService.obtenerPagosPorUsuario(idUsuario));
     }
 

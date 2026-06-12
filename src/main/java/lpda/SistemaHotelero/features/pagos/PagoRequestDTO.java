@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,10 +14,10 @@ import java.math.BigDecimal;
 public class PagoRequestDTO {
 
     @NotNull(message = "El ID de la reserva es obligatorio")
-    private Long idReserva;
+    private UUID idReserva;
 
     @NotNull(message = "El ID del usuario es obligatorio")
-    private Long idUsuario;
+    private UUID idUsuario;
 
     @NotNull(message = "El monto es obligatorio")
     @DecimalMin(value = "0.01", message = "El monto debe ser mayor a 0")

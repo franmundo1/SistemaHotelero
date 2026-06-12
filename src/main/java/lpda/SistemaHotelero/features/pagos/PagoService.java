@@ -25,16 +25,16 @@ public class PagoService {
 
     @Transactional
     public PagoResponseDTO registrarPago(PagoRequestDTO dto) {
-        ReservaEntity reserva = reservaRepository.findById(dto.getIdReserva())
+        ReservaEntity reserva = reservaRepository.findByIdExterno(dto.getIdReserva())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Reserva no encontrada con ID: " + dto.getIdReserva()));
 
-        UsuarioEntity usuario = usuarioRepository.findById(dto.getIdUsuario())
+        UsuarioEntity usuario = usuarioRepository.findByIdExterno(dto.getIdUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Usuario no encontrado con ID: " + dto.getIdUsuario()));
 
         if ("FINAL".equals(dto.getTipoPago()) &&
-                pagoRepository.existsByReserva_IdReservaAndTipoPago(dto.getIdReserva(), "FINAL")) {
+                pagoRepository.existsByReserva_IdExternoAndTipoPago(dto.getIdReserva(), "FINAL")) {
             throw new BadRequestException(
                     "Ya existe un pago FINAL registrado para la reserva con ID: " + dto.getIdReserva());
         }
@@ -70,11 +70,11 @@ public class PagoService {
     }
 
     @Transactional(readOnly = true)
-    public List<PagoResponseDTO> obtenerPagosPorUsuario(Long idUsuario) {
-        if (!usuarioRepository.existsById(idUsuario)) {
+    public List<PagoResponseDTO> obtenerPagosPorUsuario(UUID idUsuario) {
+        if (!usuarioRepository.existsByIdExterno(idUsuario)) {
             throw new ResourceNotFoundException("Usuario no encontrado con ID: " + idUsuario);
         }
-        return pagoRepository.findByUsuario_IdUsuario(idUsuario)
+        return pagoRepository.findByUsuario_IdExterno(idUsuario)
                 .stream()
                 .map(pagoMapper::toResponse)
                 .collect(Collectors.toList());

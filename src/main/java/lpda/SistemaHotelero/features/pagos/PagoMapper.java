@@ -20,10 +20,9 @@ public class PagoMapper {
 
     public PagoResponseDTO toResponse(PagoEntity pago) {
         return PagoResponseDTO.builder()
-                .idPago(pago.getIdPago())
                 .idExterno(pago.getIdExterno())
                 .idReservaExterno(pago.getReserva().getIdExterno())
-                .idUsuario(pago.getUsuario().getIdUsuario())
+                .idUsuarioExterno(pago.getUsuario().getIdExterno())
                 .nombreUsuario(pago.getUsuario().getNombre() + " " + pago.getUsuario().getApellido())
                 .monto(pago.getMonto())
                 .metodoPago(pago.getMetodoPago())
