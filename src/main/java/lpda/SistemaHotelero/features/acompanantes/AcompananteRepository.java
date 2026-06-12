@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface AcompananteRepository extends JpaRepository<AcompananteEntity, Long> {
 
-    List<AcompananteEntity> findByReserva_IdReserva(Long idReserva);
+    List<AcompananteEntity> findByReserva_IdReserva(UUID idExterno);
 
     Optional<AcompananteEntity> findByIdExterno(UUID idExterno);
 

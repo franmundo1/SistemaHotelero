@@ -39,4 +39,12 @@ public class UsuarioController {
         usuarioService.eliminar(idExterno);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{idExterno}/activo")
+    public ResponseEntity<UsuarioResponseDTO> cambiarActivo(
+            @PathVariable UUID idExterno,
+            @RequestParam Boolean activo
+    ) {
+        return ResponseEntity.ok(usuarioService.cambiarActivo(idExterno, activo));
+    }
 }

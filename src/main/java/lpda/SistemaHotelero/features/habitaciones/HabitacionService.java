@@ -8,6 +8,7 @@ import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class HabitacionService {
     private final HabitacionMapper habitacionMapper;
 
     public List<HabitacionResponseDTO> findAll() {
-        return habitacionRepository.findAll()
+        return habitacionRepository.findByActivaTrue()
                 .stream()
                 .map(habitacionMapper::toResponseDTO)
                 .toList();
@@ -71,7 +72,12 @@ public class HabitacionService {
         HabitacionEntity habitacion = habitacionRepository.findByIdExterno(idExterno)
                 .orElseThrow(() -> new ResourceNotFoundException("Habitación no encontrada con id: " + idExterno));
 
-        habitacionRepository.delete(habitacion);
+        if (!Boolean.TRUE.equals(habitacion.getActiva())) {
+            throw new BadRequestException("La habitación ya se encuentra inactiva");
+        }
+
+        habitacion.setActiva(false);
+        habitacionRepository.save(habitacion);
     }
 
     public HabitacionResponseDTO patch (UUID idExterno, HabitacionPatchDTO patchDTO) {
@@ -188,6 +194,35 @@ public class HabitacionService {
         return habitacionRepository.findByEstadoLimpieza(EstadoLimpieza.SUCIA)
                 .stream()
                 .map(habitacionMapper::toLimpiezaResponseDTO)
+                .toList();
+    }
+
+
+    public List<HabitacionResponseDTO> findDisponiblesPorRangoDeFechas(
+            LocalDate fechaEntrada,
+            LocalDate fechaSalida
+    ) {
+        LocalDate hoy = LocalDate.now();
+
+        if (fechaEntrada == null) {
+            throw new BadRequestException("La fecha de entrada es obligatoria");
+        }
+
+        if (fechaSalida == null) {
+            throw new BadRequestException("La fecha de salida es obligatoria");
+        }
+
+        if (fechaEntrada.isBefore(hoy)) {
+            throw new BadRequestException("La fecha de entrada no puede ser pasada");
+        }
+
+        if (!fechaSalida.isAfter(fechaEntrada)) {
+            throw new BadRequestException("La fecha de salida debe ser posterior a la fecha de entrada");
+        }
+
+        return habitacionRepository.findDisponiblesPorRangoDeFechas(fechaEntrada, fechaSalida)
+                .stream()
+                .map(habitacionMapper::toResponseDTO)
                 .toList();
     }
 

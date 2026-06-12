@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,5 +45,30 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
     );
 
     List<HabitacionEntity> findByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
+
+    List<HabitacionEntity> findByActivaTrue();
+
+    long countByEstadoOcupacion(EstadoOcupacion estadoOcupacion);
+
+    long countByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
+
+    long countByActivaTrue();
+
+    @Query("""
+    SELECT h FROM HabitacionEntity h
+    WHERE h.activa = true
+    AND h.estadoOcupacion <> 'MANTENIMIENTO'
+    AND h.idHabitacion NOT IN (
+        SELECT r.habitacion.idHabitacion
+        FROM ReservaEntity r
+        WHERE r.estado NOT IN ('CANCELADA', 'FINALIZADA')
+        AND :fechaEntrada < r.fechaSalida
+        AND :fechaSalida > r.fechaEntrada
+    )
+    """)
+    List<HabitacionEntity> findDisponiblesPorRangoDeFechas(
+            @Param("fechaEntrada") LocalDate fechaEntrada,
+            @Param("fechaSalida") LocalDate fechaSalida
+    );
 
 }

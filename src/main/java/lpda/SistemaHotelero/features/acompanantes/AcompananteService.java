@@ -48,12 +48,12 @@ public class AcompananteService {
     }
 
     @Transactional(readOnly = true)
-    public List<AcompananteResponseDTO> getByReserva(Long idReserva) {
-        if (!reservaRepository.existsById(idReserva)) {
-            throw new ResourceNotFoundException("Reserva no encontrada con ID: " + idReserva);
+    public List<AcompananteResponseDTO> getByReserva(UUID idExterno) {
+        if (!reservaRepository.existsByIdExterno(idExterno)) {
+            throw new ResourceNotFoundException("Reserva no encontrada con ID: " + idExterno);
         }
 
-        return acompananteRepository.findByReserva_IdReserva(idReserva)
+        return acompananteRepository.findByReserva_IdReserva(idExterno)
                 .stream()
                 .map(acompananteMapper::toResponse)
                 .toList();

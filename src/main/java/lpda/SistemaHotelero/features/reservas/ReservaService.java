@@ -4,6 +4,7 @@ import lpda.SistemaHotelero.exceptions.BadRequestException;
 import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaEntity;
 import lpda.SistemaHotelero.features.canalesReservas.CanalReservaRepository;
+import lpda.SistemaHotelero.features.canalesReservas.TipoCanal;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionRepository;
 import lpda.SistemaHotelero.features.huespedes.HuespedEntity;
@@ -116,7 +117,7 @@ public class ReservaService {
             throw new BadRequestException("La reserva debe tener al menos una noche");
         }
 
-        BigDecimal precioPorNoche = habitacion.getPrecioPorNoche();
+        BigDecimal precioPorNoche = calcularPrecioPorNocheSegunCanal(habitacion, canal);
 
         BigDecimal totalEstadia = precioPorNoche.multiply(
                 BigDecimal.valueOf(cantidadNoches)
@@ -263,8 +264,11 @@ public class ReservaService {
             throw new BadRequestException("La reserva debe tener al menos una noche");
         }
 
-        BigDecimal totalEstadia = habitacion.getPrecioPorNoche()
-                .multiply(BigDecimal.valueOf(cantidadNoches));
+        BigDecimal precioPorNoche = calcularPrecioPorNocheSegunCanal(habitacion, canal);
+
+        BigDecimal totalEstadia = precioPorNoche.multiply(
+                BigDecimal.valueOf(cantidadNoches)
+        );
 
         BigDecimal anticipo = dto.getAnticipo() != null
                 ? dto.getAnticipo()
@@ -324,5 +328,17 @@ public class ReservaService {
                 .stream()
                 .map(reservaMapper::toDTO)
                 .toList();
+    }
+    private BigDecimal calcularPrecioPorNocheSegunCanal(
+            HabitacionEntity habitacion,
+            CanalReservaEntity canal
+    ) {
+        BigDecimal precioPorNoche = habitacion.getPrecioPorNoche();
+
+        if (TipoCanal.BOOKING.equals(canal.getTipo())) {
+            precioPorNoche = precioPorNoche.multiply(BigDecimal.valueOf(1.20));
+        }
+
+        return precioPorNoche;
     }
 }

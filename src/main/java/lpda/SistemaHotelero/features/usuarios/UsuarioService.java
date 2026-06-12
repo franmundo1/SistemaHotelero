@@ -26,7 +26,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<UsuarioResponseDTO> listar() {
-        return usuarioRepository.findAll()
+        return usuarioRepository.findByActivoTrue()
                 .stream()
                 .map(usuarioMapper::toResponseDTO)
                 .toList();
@@ -58,6 +58,20 @@ public class UsuarioService {
         UsuarioEntity usuario = usuarioRepository.findByIdExterno(idExterno)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID externo: " + idExterno));
 
-        usuarioRepository.delete(usuario);
+        if (!Boolean.TRUE.equals(usuario.getActivo())) {
+            throw new BadRequestException("El usuario ya se encuentra inactivo");
+        }
+
+        usuario.setActivo(false);
+        usuarioRepository.save(usuario);
+    }
+    @Transactional
+    public UsuarioResponseDTO cambiarActivo(UUID idExterno, Boolean activo) {
+        UsuarioEntity usuario = usuarioRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID externo: " + idExterno));
+
+        usuario.setActivo(activo);
+
+        return usuarioMapper.toResponseDTO(usuarioRepository.save(usuario));
     }
 }

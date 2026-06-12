@@ -64,6 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/habitaciones/**").hasAuthority("ACTUALIZAR_HABITACION")
                         .requestMatchers(HttpMethod.DELETE, "/api/habitaciones/**").hasRole("ADMIN")
 
+
                         .requestMatchers(HttpMethod.GET, "/api/reservas/**").hasAuthority("VER_RESERVAS")
                         .requestMatchers(HttpMethod.POST, "/api/reservas/**").hasAuthority("CREAR_RESERVA")
                         .requestMatchers(HttpMethod.PUT, "/api/reservas/**").hasAuthority("ACTUALIZAR_RESERVA")
@@ -91,6 +92,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
                         .requestMatchers(HttpMethod.POST, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
                         .requestMatchers(HttpMethod.DELETE, "/api/consumos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+
+
+                        .requestMatchers(HttpMethod.GET, "/api/dashboard/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
+
 
                         .anyRequest().hasRole("ADMIN")
                 )
