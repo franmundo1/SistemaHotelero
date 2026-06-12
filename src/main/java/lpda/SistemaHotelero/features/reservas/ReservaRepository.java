@@ -47,4 +47,6 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
             @Param("fechaSalida") LocalDate fechaSalida
     );
     List<ReservaEntity> findByEstadoIgnoreCase(String estado);
+
+    long countByEstadoIgnoreCase(String estado);
 }

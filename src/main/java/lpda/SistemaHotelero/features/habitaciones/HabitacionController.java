@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +23,15 @@ public class HabitacionController {
     @GetMapping
     public ResponseEntity<List<HabitacionResponseDTO>> findAll() {
         return ResponseEntity.ok(habitacionService.findAll());
+    }
+    @GetMapping("/disponibles-por-fecha")
+    public ResponseEntity<List<HabitacionResponseDTO>> disponiblesPorFecha(
+            @RequestParam LocalDate fechaEntrada,
+            @RequestParam LocalDate fechaSalida
+    ) {
+        return ResponseEntity.ok(
+                habitacionService.findDisponiblesPorRangoDeFechas(fechaEntrada, fechaSalida)
+        );
     }
 
     @GetMapping("/{id}")

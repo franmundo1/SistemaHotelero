@@ -30,6 +30,12 @@ public class ConsumoController {
     @GetMapping
     public ResponseEntity<List<ConsumoResponseDTO>> listar() {
         return ResponseEntity.ok(consumoService.listar());
+
+    }
+
+    @GetMapping("/hoy")
+    public ResponseEntity<List<ConsumoResponseDTO>> listarConsumosDelDia() {
+        return ResponseEntity.ok(consumoService.listarConsumosDelDia());
     }
 
     @GetMapping("/{idExterno}")

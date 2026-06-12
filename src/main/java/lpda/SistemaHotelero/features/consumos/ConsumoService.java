@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,5 +118,18 @@ public class ConsumoService {
                 .stream()
                 .map(ConsumoEntity::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ConsumoResponseDTO> listarConsumosDelDia() {
+        LocalDate hoy = LocalDate.now();
+
+        LocalDateTime inicioDelDia = hoy.atStartOfDay();
+        LocalDateTime finDelDia = hoy.plusDays(1).atStartOfDay().minusNanos(1);
+
+        return consumoRepository.findByFechaConsumoBetween(inicioDelDia, finDelDia)
+                .stream()
+                .map(consumoMapper::toResponseDTO)
+                .toList();
     }
 }

@@ -32,7 +32,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<ProductoResponseDTO> listar() {
-        return productoRepository.findAll()
+        return productoRepository.findByActivoTrue()
                 .stream()
                 .map(productoMapper::toResponseDTO)
                 .toList();
@@ -79,7 +79,13 @@ public class ProductoService {
     @Transactional
     public void eliminar(UUID idExterno) {
         ProductoEntity producto = buscarEntityPorIdExterno(idExterno);
-        productoRepository.delete(producto);
+
+        if (!Boolean.TRUE.equals(producto.getActivo())) {
+            throw new BadRequestException("El producto ya se encuentra inactivo");
+        }
+
+        producto.setActivo(false);
+        productoRepository.save(producto);
     }
 
     public ProductoEntity buscarEntityPorIdExterno(UUID idExterno) {

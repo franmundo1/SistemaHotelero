@@ -39,9 +39,9 @@ public class AcompananteController {
 
     @GetMapping("/reserva/{idReserva}")
     public ResponseEntity<List<AcompananteResponseDTO>> getByReserva(
-            @PathVariable Long idReserva
+            @PathVariable UUID idExterno
     ) {
-        return ResponseEntity.ok(acompananteService.getByReserva(idReserva));
+        return ResponseEntity.ok(acompananteService.getByReserva(idExterno));
     }
 
     @PutMapping("/{idExterno}")
