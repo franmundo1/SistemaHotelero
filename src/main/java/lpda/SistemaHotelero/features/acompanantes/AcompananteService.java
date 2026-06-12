@@ -3,6 +3,7 @@ package lpda.SistemaHotelero.features.acompanantes;
 import lombok.RequiredArgsConstructor;
 import lpda.SistemaHotelero.exceptions.BadRequestException;
 import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
+import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
 import lpda.SistemaHotelero.features.reservas.ReservaRepository;
 import org.springframework.stereotype.Service;
@@ -118,11 +119,15 @@ public class AcompananteService {
     private void validarCapacidadReserva(ReservaEntity reserva) {
         long acompanantesActuales = acompananteRepository.countByReserva_IdReserva(reserva.getIdReserva());
 
-        int cantidadPersonas = reserva.getCantidadPersonas();
-        int maximoAcompanantes = cantidadPersonas - 1;
+        HabitacionEntity habitacion = reserva.getHabitacion();
+        int capacidadHabitacion = habitacion.getCapacidad();
+
+        // La capacidad total incluye el huésped principal + acompañantes
+        // Si la capacidad es 3, puede haber 1 huésped + 2 acompañantes
+        int maximoAcompanantes = capacidadHabitacion - 1;
 
         if (acompanantesActuales >= maximoAcompanantes) {
-            throw new BadRequestException("La reserva ya alcanzó la cantidad máxima de acompañantes");
+            throw new BadRequestException("La reserva ya alcanzó la cantidad máxima de acompañantes para la habitación. Capacidad: " + capacidadHabitacion);
         }
     }
 
