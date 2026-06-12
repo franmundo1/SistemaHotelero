@@ -5,10 +5,13 @@ import lpda.SistemaHotelero.features.canalesReservas.CanalReservaEntity;
 import lpda.SistemaHotelero.features.habitaciones.HabitacionEntity;
 import lpda.SistemaHotelero.features.huespedes.HuespedEntity;
 import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "reservas")
@@ -22,6 +25,10 @@ public class ReservaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reserva")
     private Long idReserva;
+
+    @Column(name = "id_externo", nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID idExterno;
 
     @ManyToOne
     @JoinColumn(name = "id_huesped", nullable = false)
@@ -39,8 +46,6 @@ public class ReservaEntity {
     @JoinColumn(name = "id_canal", nullable = false)
     private CanalReservaEntity canalReserva;
 
-    @Column(name = "codigo_reserva_externa")
-    private String codigoReservaExterna;
 
     @Column(name = "fecha_entrada", nullable = false)
     private LocalDate fechaEntrada;
@@ -51,8 +56,6 @@ public class ReservaEntity {
     @Column(name = "cantidad_personas", nullable = false)
     private Integer cantidadPersonas;
 
-    @Column(name = "precio_por_noche", nullable = false, precision = 10, scale = 2)
-    private BigDecimal precioPorNoche;
 
     @Column(name = "total_estadia", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalEstadia;
@@ -62,7 +65,6 @@ public class ReservaEntity {
 
     @Column(nullable = false)
     private String estado;
-    // PENDIENTE, CONFIRMADA, CANCELADA, EN_CURSO, FINALIZADA
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;
@@ -76,5 +78,9 @@ public class ReservaEntity {
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
+
+        if (this.idExterno == null) {
+            this.idExterno = UUID.randomUUID();
+        }
     }
 }

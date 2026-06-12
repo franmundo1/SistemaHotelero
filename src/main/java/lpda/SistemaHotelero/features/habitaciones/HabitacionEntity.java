@@ -1,8 +1,14 @@
 package lpda.SistemaHotelero.features.habitaciones;
 import jakarta.persistence.*;
         import lombok.*;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
+import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
+import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-        import java.math.BigDecimal;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "habitaciones")
@@ -10,6 +16,7 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class HabitacionEntity {
 
     @Id
@@ -20,9 +27,13 @@ public class HabitacionEntity {
     @Column(nullable = false, unique = true)
     private String numero;
 
+    @Column(unique = true, nullable = false, name = "id_externo")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID idExterno;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String tipo;
-    // SIMPLE, DOBLE, TRIPLE, SUITE
+    private TipoHabitacion tipo;
 
     @Column(nullable = false)
     private Integer capacidad;
@@ -30,14 +41,22 @@ public class HabitacionEntity {
     @Column(name = "precio_por_noche", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioPorNoche;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado_ocupacion", nullable = false)
-    private String estadoOcupacion;
-    // DISPONIBLE, OCUPADA, MANTENIMIENTO
+    private EstadoOcupacion estadoOcupacion;
 
-    @Column(name = "estado_limpieza", nullable = false)
-    private String estadoLimpieza;
-    // LIMPIA, SUCIA, EN_LIMPIEZA
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_limpieza",nullable = false )
+    private EstadoLimpieza estadoLimpieza;
 
     @Column(nullable = false)
     private Boolean activa = true;
+
+    @PrePersist
+    void onSave() {
+        if (idExterno == null) {
+            idExterno = UUID.randomUUID();
+        }
+    }
 }

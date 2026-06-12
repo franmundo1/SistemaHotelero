@@ -8,17 +8,25 @@ public class AcompananteMapper {
 
     public AcompananteEntity toEntity(AcompananteRequestDTO dto, ReservaEntity reserva) {
         AcompananteEntity entity = new AcompananteEntity();
+
         entity.setReserva(reserva);
         entity.setNombre(dto.getNombre());
         entity.setApellido(dto.getApellido());
         entity.setDni(dto.getDni());
+
         return entity;
+    }
+
+    public void updateEntity(AcompananteEntity entity, AcompananteRequestDTO dto) {
+        entity.setNombre(dto.getNombre());
+        entity.setApellido(dto.getApellido());
+        entity.setDni(dto.getDni());
     }
 
     public AcompananteResponseDTO toResponse(AcompananteEntity entity) {
         return AcompananteResponseDTO.builder()
-                .idAcompanante(entity.getIdAcompanante())
-                .idReserva(entity.getReserva().getIdReserva())
+                .idExterno(entity.getIdExterno())
+                .idReservaExterno(entity.getReserva().getIdExterno())
                 .nombre(entity.getNombre())
                 .apellido(entity.getApellido())
                 .dni(entity.getDni())
