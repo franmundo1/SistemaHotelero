@@ -13,11 +13,10 @@ import java.util.UUID;
 @Builder
 public class PagoResponseDTO {
 
-    private Long idPago;
     private UUID idExterno;
 
     private UUID idReservaExterno;
-    private Long idUsuario;
+    private UUID idUsuarioExterno;
     private String nombreUsuario;
 
     private BigDecimal monto;

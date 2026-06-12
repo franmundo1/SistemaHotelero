@@ -10,12 +10,11 @@ import java.util.UUID;
 @Repository
 public interface PagoRepository extends JpaRepository<PagoEntity, Long> {
 
-    List<PagoEntity> findByReserva_IdReserva(Long idReserva);
+    List<PagoEntity> findByReserva_IdExterno(UUID idReservaExterno);
 
-    List<PagoEntity> findByUsuario_IdUsuario(Long idUsuario);
+    List<PagoEntity> findByUsuario_IdExterno(UUID idUsuarioExterno);
 
     Optional<PagoEntity> findByIdExterno(UUID idExterno);
-    List<PagoEntity> findByReserva_IdExterno(UUID idReservaExterno);
-    boolean existsByReserva_IdReservaAndTipoPago(Long idReserva, String tipoPago);
+
+    boolean existsByReserva_IdExternoAndTipoPago(UUID idReservaExterno, String tipoPago);
 }
- 
