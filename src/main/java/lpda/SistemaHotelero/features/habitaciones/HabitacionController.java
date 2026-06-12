@@ -76,7 +76,7 @@ public class HabitacionController {
 
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idExterno}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID idExterno) {
         habitacionService.deleteById(idExterno);
         return ResponseEntity.noContent().build();
