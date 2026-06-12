@@ -122,8 +122,6 @@ public class AcompananteService {
         HabitacionEntity habitacion = reserva.getHabitacion();
         int capacidadHabitacion = habitacion.getCapacidad();
 
-        // La capacidad total incluye el huésped principal + acompañantes
-        // Si la capacidad es 3, puede haber 1 huésped + 2 acompañantes
         int maximoAcompanantes = capacidadHabitacion - 1;
 
         if (acompanantesActuales >= maximoAcompanantes) {
