@@ -1,0 +1,85 @@
+<section class="habitaciones">
+  <header class="habitaciones__encabezado">
+    <div>
+      <p class="habitaciones__seccion">Gestión de habitaciones</p>
+      <h1>Habitaciones</h1>
+      <p class="habitaciones__descripcion">
+        Consultá el estado y las características de las habitaciones del hotel.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="boton-recargar"
+      (click)="cargarHabitaciones()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+  </header>
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando habitaciones...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+
+      <button type="button" (click)="cargarHabitaciones()">
+        Reintentar
+      </button>
+    </div>
+  } @else if (habitaciones().length === 0) {
+    <div class="mensaje">
+      <p>No hay habitaciones registradas.</p>
+    </div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Precio por noche</th>
+            <th>Ocupación</th>
+            <th>Limpieza</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (habitacion of habitaciones(); track habitacion.idExterno) {
+            <tr>
+              <td class="numero">{{ habitacion.numero }}</td>
+              <td>{{ mostrarEstado(habitacion.tipo) }}</td>
+              <td>
+                {{ habitacion.capacidad }}
+                {{ habitacion.capacidad === 1 ? 'persona' : 'personas' }}
+              </td>
+              <td>
+                {{ habitacion.precioPorNoche | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
+              </td>
+              <td>
+                <span
+                  class="estado"
+                  [class]="'estado estado--' + habitacion.estadoOcupacion.toLowerCase()"
+                >
+                  {{ mostrarEstado(habitacion.estadoOcupacion) }}
+                </span>
+              </td>
+              <td>
+                <span
+                  class="estado"
+                  [class]="'estado estado--' + habitacion.estadoLimpieza.toLowerCase()"
+                >
+                  {{ mostrarEstado(habitacion.estadoLimpieza) }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
