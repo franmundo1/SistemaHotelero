@@ -1,0 +1,153 @@
+:host {
+  display: block;
+}
+
+.habitaciones {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.habitaciones__encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.habitaciones__seccion {
+  margin: 0 0 0.35rem;
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: #172033;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.habitaciones__descripcion {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+}
+
+.boton-recargar,
+.mensaje button {
+  border: 0;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton-recargar:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background-color: white;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+td {
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.numero {
+  color: #172033;
+  font-weight: 700;
+}
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.estado--disponible,
+.estado--limpia {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.estado--ocupada,
+.estado--sucia {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.estado--mantenimiento,
+.estado--en_limpieza {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.mensaje {
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background-color: white;
+  color: #475569;
+  text-align: center;
+}
+
+.mensaje--error {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.mensaje button {
+  margin-top: 0.75rem;
+}
+
+@media (width <= 700px) {
+  .habitaciones__encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boton-recargar {
+    width: 100%;
+  }
+}
