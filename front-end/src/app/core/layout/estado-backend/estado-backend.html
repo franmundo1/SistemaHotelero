@@ -1,0 +1,16 @@
+<section class="estado">
+  <h2>Conexión con el backend</h2>
+  <p>API: <code>{{ apiUrl }}</code></p>
+
+  @if (estado() === 'cargando') {
+    <p>Verificando conexión...</p>
+  } @else if (estado() === 'ok') {
+    <p class="ok">Conectado correctamente con el backend.</p>
+  } @else {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <button type="button" (click)="onVerificar()" [disabled]="estado() === 'cargando'">
+    Reintentar
+  </button>
+</section>
