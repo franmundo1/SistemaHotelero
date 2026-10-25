@@ -6,6 +6,7 @@ import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoLimpieza;
 import lpda.SistemaHotelero.features.habitaciones.enums.EstadoOcupacion;
 import lpda.SistemaHotelero.features.habitaciones.enums.TipoHabitacion;
+import lpda.SistemaHotelero.features.reservas.ReservaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
     private final HabitacionMapper habitacionMapper;
+    private final ReservaRepository reservaRepository;
 
     public List<HabitacionResponseDTO> findAll() {
         return habitacionRepository.findByActivaTrue()
@@ -50,7 +52,7 @@ public class HabitacionService {
 
         habitacionRepository.findByNumero(requestDTO.getNumero())
                 .ifPresent(habitacionConMismoNumero -> {
-                    if (!habitacionConMismoNumero.getIdHabitacion().equals(idExterno)) {
+                    if (!habitacionConMismoNumero.getIdExterno().equals(idExterno)) {
                         throw new BadRequestException("Ya existe otra habitación con el número: " + requestDTO.getNumero());
                     }
                 });
@@ -76,6 +78,10 @@ public class HabitacionService {
             throw new BadRequestException("La habitación ya se encuentra inactiva");
         }
 
+        if (reservaRepository.existsReservaActivaOFutura(habitacion.getIdHabitacion())) {
+            throw new BadRequestException("No se puede dar de baja la habitación porque tiene reservas activas o futuras");
+        }
+
         habitacion.setActiva(false);
         habitacionRepository.save(habitacion);
     }
@@ -87,7 +93,7 @@ public class HabitacionService {
         if (patchDTO.getNumero() != null) {
             habitacionRepository.findByNumero(patchDTO.getNumero())
                     .ifPresent(habitacionConMismoNumero -> {
-                        if (!habitacionConMismoNumero.getIdHabitacion().equals(idExterno)) {
+                        if (!habitacionConMismoNumero.getIdExterno().equals(idExterno)) {
                             throw new BadRequestException("Ya existe otra habitación con el número: " + patchDTO.getNumero());
                         }
                     });

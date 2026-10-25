@@ -46,6 +46,14 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
             @Param("fechaEntrada") LocalDate fechaEntrada,
             @Param("fechaSalida") LocalDate fechaSalida
     );
+    @Query("""
+    SELECT COUNT(r) > 0
+    FROM ReservaEntity r
+    WHERE r.habitacion.idHabitacion = :idHabitacion
+    AND r.estado NOT IN ('CANCELADA', 'FINALIZADA')
+    """)
+    boolean existsReservaActivaOFutura(@Param("idHabitacion") Long idHabitacion);
+
     List<ReservaEntity> findByEstadoIgnoreCase(String estado);
 
     long countByEstadoIgnoreCase(String estado);

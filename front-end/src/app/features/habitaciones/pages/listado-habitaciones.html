@@ -8,15 +8,37 @@
       </p>
     </div>
 
-    <button
-      type="button"
-      class="boton-recargar"
-      (click)="cargarHabitaciones()"
-      [disabled]="cargando()"
-    >
-      Actualizar
-    </button>
+    <div class="habitaciones__acciones">
+      <button
+        type="button"
+        class="boton-recargar boton-recargar--secundario"
+        (click)="cargarHabitaciones()"
+        [disabled]="cargando()"
+      >
+        Actualizar
+      </button>
+      <button type="button" class="boton-recargar" (click)="onNueva()" [disabled]="formularioAbierto()">
+        Nueva habitación
+      </button>
+    </div>
   </header>
+
+  @if (mensaje()) {
+    <p class="exito">{{ mensaje() }}</p>
+  }
+  @if (errorBaja()) {
+    <p class="error">{{ errorBaja() }}</p>
+  }
+
+  @if (formularioAbierto()) {
+    <app-formulario-habitacion
+      [habitacion]="habitacionEnEdicion()"
+      [loading]="guardando()"
+      [error]="errorFormulario()"
+      (guardar)="onGuardar($event)"
+      (cancelar)="onCancelar()"
+    />
+  }
 
   @if (cargando()) {
     <div class="mensaje">
@@ -45,6 +67,7 @@
             <th>Precio por noche</th>
             <th>Ocupación</th>
             <th>Limpieza</th>
+            <th class="acciones">Acciones</th>
           </tr>
         </thead>
 
@@ -75,6 +98,10 @@
                 >
                   {{ mostrarEstado(habitacion.estadoLimpieza) }}
                 </span>
+              </td>
+              <td class="acciones">
+                <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
+                <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
               </td>
             </tr>
           }

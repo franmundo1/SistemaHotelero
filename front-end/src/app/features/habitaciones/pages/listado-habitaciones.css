@@ -151,3 +151,40 @@ tbody tr:hover {
     width: 100%;
   }
 }
+
+.habitaciones__acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.boton-recargar--secundario {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.accion {
+  margin-left: 0.4rem;
+  cursor: pointer;
+}
+
+.accion--peligro {
+  color: #b91c1c;
+}
+
+.exito {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+@media (width <= 700px) {
+  .habitaciones__acciones {
+    flex-direction: column;
+  }
+}
