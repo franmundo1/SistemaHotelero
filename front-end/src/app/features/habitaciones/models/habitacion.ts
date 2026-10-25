@@ -11,12 +11,15 @@ export type EstadoLimpieza =
   | 'EN_LIMPIEZA';
 
 export interface Habitacion {
-  idExterno: string;
-  numero: string;
-  tipo: TipoHabitacion;
-  capacidad: number;
-  precioPorNoche: number;
+  idExterno:       string;
+  numero:          string;
+  tipo:            TipoHabitacion;
+  capacidad:       number;
+  precioPorNoche:  number;
   estadoOcupacion: EstadoOcupacion;
-  estadoLimpieza: EstadoLimpieza;
-  activa: boolean;
+  estadoLimpieza:  EstadoLimpieza;
+  activa:          boolean;
 }
+
+// Cuerpo que espera el back para crear/editar (HabitacionRequestDTO)
+export type HabitacionRequest = Omit<Habitacion, 'idExterno'>;

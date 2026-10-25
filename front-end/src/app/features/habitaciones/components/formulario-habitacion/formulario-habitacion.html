@@ -1,0 +1,75 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h2>{{ habitacion() ? 'Editar habitación ' + habitacion()?.numero : 'Nueva habitación' }}</h2>
+
+  <label>
+    Número
+    <input type="text" formControlName="numero" />
+  </label>
+  @if (form.controls.numero.touched && form.controls.numero.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El número es obligatorio.</small>
+    } @else if (e['pattern']) {
+      <small class="error">El número debe ser un entero positivo.</small>
+    }
+  }
+
+  <label>
+    Tipo
+    <select formControlName="tipo">
+      @for (tipo of tipos; track tipo) {
+        <option [value]="tipo">{{ mostrar(tipo) }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Capacidad
+    <input type="number" formControlName="capacidad" />
+  </label>
+  @if (form.controls.capacidad.touched && form.controls.capacidad.errors; as e) {
+    @if (e['required']) {
+      <small class="error">La capacidad es obligatoria.</small>
+    } @else if (e['min']) {
+      <small class="error">La capacidad debe ser mayor a 0.</small>
+    } @else if (e['max']) {
+      <small class="error">La capacidad máxima es 3.</small>
+    }
+  }
+
+  <label>
+    Precio por noche
+    <input type="number" formControlName="precioPorNoche" step="0.01" />
+  </label>
+  @if (form.controls.precioPorNoche.touched && form.controls.precioPorNoche.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El precio es obligatorio.</small>
+    } @else if (e['min']) {
+      <small class="error">El precio debe ser mayor a 0.</small>
+    }
+  }
+
+  <label>
+    Estado de ocupación
+    <select formControlName="estadoOcupacion">
+      @for (estado of estadosOcupacion; track estado) {
+        <option [value]="estado">{{ mostrar(estado) }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Estado de limpieza
+    <select formControlName="estadoLimpieza">
+      @for (estado of estadosLimpieza; track estado) {
+        <option [value]="estado">{{ mostrar(estado) }}</option>
+      }
+    </select>
+  </label>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <button type="submit" [disabled]="loading()">{{ loading() ? 'Guardando...' : 'Guardar' }}</button>
+  <button type="button" (click)="onCancelar()" [disabled]="loading()">Cancelar</button>
+</form>
