@@ -17,6 +17,7 @@ public interface HuespedRepository extends JpaRepository<HuespedEntity, Long>,
 
     Optional<HuespedEntity> findByIdExterno(UUID idExterno);
     boolean existsByDni(String dni);
+    boolean existsByDniAndIdExternoNot(String dni, UUID idExterno);
     boolean existsByIdExterno(UUID idExterno);
 
     void deleteByIdExterno(UUID idExterno);

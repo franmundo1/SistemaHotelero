@@ -14,6 +14,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'huespedes',
+    loadComponent: () =>
+      import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),
+    title: 'Huéspedes',
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'habitaciones',
     pathMatch: 'full',

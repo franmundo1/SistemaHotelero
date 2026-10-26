@@ -1,0 +1,94 @@
+<section class="huespedes">
+  <header class="huespedes__encabezado">
+    <div>
+      <p class="huespedes__seccion">Gestión de huéspedes</p>
+      <h1>Huéspedes</h1>
+      <p class="huespedes__descripcion">
+        Registrá y mantené actualizados los datos de los huéspedes del hotel.
+      </p>
+    </div>
+
+    <div class="huespedes__acciones">
+      <button
+        type="button"
+        class="boton-recargar boton-recargar--secundario"
+        (click)="cargarHuespedes()"
+        [disabled]="cargando()"
+      >
+        Actualizar
+      </button>
+      <button type="button" class="boton-recargar" (click)="onNuevo()" [disabled]="formularioAbierto()">
+        Nuevo huésped
+      </button>
+    </div>
+  </header>
+
+  @if (mensaje()) {
+    <p class="exito">{{ mensaje() }}</p>
+  }
+  @if (errorBaja()) {
+    <p class="error">{{ errorBaja() }}</p>
+  }
+
+  @if (formularioAbierto()) {
+    <app-formulario-huesped
+      [huesped]="huespedEnEdicion()"
+      [loading]="guardando()"
+      [error]="errorFormulario()"
+      (guardar)="onGuardar($event)"
+      (cancelar)="onCancelar()"
+    />
+  }
+
+  <label class="buscador">
+    Buscar por nombre, apellido o DNI
+    <input type="text" [formControl]="buscador" />
+  </label>
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando huéspedes...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+
+      <button type="button" (click)="cargarHuespedes()">Reintentar</button>
+    </div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th class="acciones">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (huesped of huespedesFiltrados(); track huesped.idExterno) {
+            <tr>
+              <td class="nombre">{{ huesped.nombre }}</td>
+              <td>{{ huesped.apellido }}</td>
+              <td>{{ huesped.dni }}</td>
+              <td>{{ huesped.telefono || '-' }}</td>
+              <td>{{ huesped.email }}</td>
+              <td class="acciones">
+                <button type="button" class="accion" (click)="onEditar(huesped)" [disabled]="formularioAbierto()">Editar</button>
+                <button type="button" class="accion accion--peligro" (click)="onEliminar(huesped)">Eliminar</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No hay huéspedes para mostrar.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
