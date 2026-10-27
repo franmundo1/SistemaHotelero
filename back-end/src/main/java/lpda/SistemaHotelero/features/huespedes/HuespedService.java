@@ -60,6 +60,29 @@ public class HuespedService {
     }
 
     @Transactional
+    public HuespedResponseDTO actualizarHuesped(UUID idExterno, HuespedRequestDTO dto) {
+        HuespedEntity entity = huespedRepository.findByIdExterno(idExterno)
+                .orElseThrow(()->
+                        new EntityNotFoundException(
+                                "Huesped no encontrado con ID: " + idExterno
+                        ));
+        if(huespedRepository.existsByDniAndIdExternoNot(dto.getDni(), idExterno)){
+            throw new IllegalArgumentException(
+                    "Ya existe un huesped con DNI " + dto.getDni()
+            );
+        }
+        entity.setNombre(dto.getNombre());
+        entity.setApellido(dto.getApellido());
+        entity.setDni(dto.getDni());
+        entity.setEmail(dto.getEmail());
+        entity.setTelefono(dto.getTelefono());
+
+        HuespedEntity actualizado = huespedRepository.save(entity);
+
+        return huespedMapper.toResponseDTO(actualizado);
+    }
+
+    @Transactional
     public void delete (UUID idExterno){
         HuespedEntity entity = huespedRepository.findByIdExterno(idExterno)
                 .orElseThrow(()->

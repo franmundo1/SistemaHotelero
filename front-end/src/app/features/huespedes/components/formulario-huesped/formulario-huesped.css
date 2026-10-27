@@ -1,0 +1,27 @@
+form {
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+}
+
+button {
+  margin-top: 1rem;
+  margin-right: 0.5rem;
+}
+
+.error {
+  display: block;
+  color: red;
+}

@@ -72,6 +72,21 @@ public class HuespedController {
        return ResponseEntity.status(HttpStatus.CREATED).body(respons);
     }
     @Operation(
+            summary = "Actualizar huésped",
+            description = "Actualiza los datos de un huésped utilizando su identificador externo"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Huésped actualizado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Huésped no encontrado")
+    })
+    @PutMapping("/{idExterno}")
+    public ResponseEntity<HuespedResponseDTO> actualizar(
+            @PathVariable UUID idExterno,
+            @Valid @RequestBody HuespedRequestDTO request) {
+        return ResponseEntity.ok(huespedService.actualizarHuesped(idExterno, request));
+    }
+    @Operation(
             summary = "Eliminar huésped",
             description = "Elimina un huésped utilizando su identificador externo"
     )
