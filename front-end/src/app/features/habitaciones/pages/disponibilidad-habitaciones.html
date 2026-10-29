@@ -1,0 +1,92 @@
+<section class="habitaciones">
+  <header class="habitaciones__encabezado">
+    <div>
+      <p class="habitaciones__seccion">Reservas</p>
+      <h1>Disponibilidad</h1>
+      <p class="habitaciones__descripcion">
+        Consultá qué habitaciones están libres para unas fechas y una cantidad de personas.
+      </p>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onBuscar()">
+    <label>
+      Fecha de entrada
+      <input type="date" formControlName="fechaEntrada" [min]="hoy" />
+    </label>
+    @if (form.controls.fechaEntrada.touched && form.controls.fechaEntrada.errors; as e) {
+      @if (e['required']) {
+        <small class="error">La fecha de entrada es obligatoria.</small>
+      }
+    }
+
+    <label>
+      Fecha de salida
+      <input type="date" formControlName="fechaSalida" [min]="form.controls.fechaEntrada.value || hoy" />
+    </label>
+    @if (form.controls.fechaSalida.touched && form.controls.fechaSalida.errors; as e) {
+      @if (e['required']) {
+        <small class="error">La fecha de salida es obligatoria.</small>
+      }
+    }
+
+    <label>
+      Cantidad de personas
+      <input type="number" formControlName="personas" min="1" max="3" />
+    </label>
+    @if (form.controls.personas.touched && form.controls.personas.errors; as e) {
+      @if (e['required']) {
+        <small class="error">La cantidad de personas es obligatoria.</small>
+      } @else if (e['min']) {
+        <small class="error">Tiene que ser al menos 1 persona.</small>
+      } @else if (e['max']) {
+        <small class="error">La capacidad máxima de una habitación es 3 personas.</small>
+      }
+    }
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="submit" [disabled]="buscando()">{{ buscando() ? 'Buscando...' : 'Buscar' }}</button>
+  </form>
+
+  @if (busqueda()) {
+    @if (disponibles().length === 0) {
+      <div class="mensaje">
+        <p>No hay habitaciones disponibles para esas fechas</p>
+      </div>
+    } @else {
+      <div class="tabla-contenedor">
+        <table>
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Tipo</th>
+              <th>Capacidad</th>
+              <th>Precio por noche</th>
+              <th class="acciones">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (habitacion of disponibles(); track habitacion.idExterno) {
+              <tr>
+                <td class="numero">{{ habitacion.numero }}</td>
+                <td>{{ mostrar(habitacion.tipo) }}</td>
+                <td>
+                  {{ habitacion.capacidad }}
+                  {{ habitacion.capacidad === 1 ? 'persona' : 'personas' }}
+                </td>
+                <td>{{ habitacion.precioPorNoche | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</td>
+                <td class="acciones">
+                  <button type="button" class="accion" (click)="onReservar(habitacion)">Reservar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</section>
