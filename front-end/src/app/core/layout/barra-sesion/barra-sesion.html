@@ -1,0 +1,20 @@
+<header class="barra">
+  <a class="barra__marca" routerLink="/habitaciones">
+    Sistema Hotelero
+  </a>
+
+  <div class="barra__sesion">
+    <div class="barra__avatar">
+      {{ inicialUsuario() }}
+    </div>
+
+    <div class="barra__usuario">
+      <span>Usuario conectado</span>
+      <strong>{{ emailUsuario() }}</strong>
+    </div>
+
+    <button type="button" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
+</header>
