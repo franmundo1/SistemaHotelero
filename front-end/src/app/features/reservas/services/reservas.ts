@@ -13,4 +13,8 @@ export class ReservasService {
   create(reserva: ReservaRequest): Observable<Reserva> {
     return this.api.post<Reserva>(this.url, reserva);
   }
+
+  listarConfirmadas(): Observable<Reserva[]> {
+    return this.api.get<Reserva[]>(`${this.url}/confirmadas`);
+  }
 }
