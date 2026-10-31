@@ -23,6 +23,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'reservas/nueva',
+    loadComponent: () => import('./features/reservas/pages/nueva-reserva').then((m) => m.NuevaReserva),
+    title: 'Nueva reserva',
+    canActivate: [authGuard],
+  },
+  {
     path: 'huespedes',
     loadComponent: () =>
       import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),

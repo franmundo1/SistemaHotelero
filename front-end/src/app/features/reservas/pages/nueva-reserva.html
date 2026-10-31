@@ -1,0 +1,126 @@
+<section class="reserva">
+  <header class="reserva__encabezado">
+    <p class="reserva__seccion">Reservas</p>
+    <h1>Nueva reserva</h1>
+  </header>
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando datos de la reserva...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+      <a routerLink="/disponibilidad">Ir a la consulta de disponibilidad</a>
+    </div>
+  } @else if (reservaCreada(); as reserva) {
+    <div class="mensaje mensaje--exito">
+      <p>
+        Reserva {{ mostrar(reserva.estado) }} para {{ reserva.huesped }} en la habitación
+        {{ reserva.habitacion }}, del {{ reserva.fechaEntrada }} al {{ reserva.fechaSalida }}.
+      </p>
+      <p>Total de la estadía: {{ reserva.totalEstadia | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</p>
+      <a routerLink="/disponibilidad">Hacer otra reserva</a>
+    </div>
+  } @else if (habitacionElegida(); as h) {
+    <div class="resumen">
+      <p><strong>Habitación {{ h.numero }}</strong> · {{ mostrar(h.tipo) }} · hasta {{ h.capacidad }} personas</p>
+      <p>Del {{ fechaEntrada() }} al {{ fechaSalida() }} ({{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }})</p>
+      <a routerLink="/disponibilidad">Cambiar habitación o fechas</a>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onConfirmar()">
+      <label>
+        Huésped
+        <select formControlName="huesped">
+          <option value="" disabled>Elegí un huésped</option>
+          @for (huesped of huespedes(); track huesped.idExterno) {
+            <option [value]="huesped.idExterno">
+              {{ huesped.apellido }}, {{ huesped.nombre }} (DNI {{ huesped.dni }})
+            </option>
+          } @empty {
+            <option value="" disabled>No hay huéspedes cargados</option>
+          }
+        </select>
+      </label>
+      @if (form.controls.huesped.touched && form.controls.huesped.errors; as e) {
+        @if (e['required']) {
+          <small class="error">Elegí un huésped.</small>
+        }
+      }
+
+      <label>
+        Canal de reserva
+        <select formControlName="canal">
+          <option value="" disabled>Elegí un canal</option>
+          @for (canal of canales(); track canal.idExterno) {
+            <option [value]="canal.idExterno">{{ mostrar(canal.tipo) }}</option>
+          }
+        </select>
+      </label>
+      @if (form.controls.canal.touched && form.controls.canal.errors; as e) {
+        @if (e['required']) {
+          <small class="error">Elegí un canal de reserva.</small>
+        }
+      }
+
+      <label>
+        Cantidad de personas
+        <input type="number" formControlName="personas" min="1" [max]="h.capacidad" />
+      </label>
+      @if (form.controls.personas.touched && form.controls.personas.errors; as e) {
+        @if (e['required']) {
+          <small class="error">La cantidad de personas es obligatoria.</small>
+        } @else if (e['min']) {
+          <small class="error">Tiene que ser al menos 1 persona.</small>
+        }
+      }
+      @if (superaCapacidad()) {
+        <small class="error">La habitación admite como máximo {{ h.capacidad }} personas.</small>
+      }
+
+      <label>
+        Anticipo
+        <input type="number" formControlName="anticipo" min="0" step="0.01" />
+      </label>
+      @if (form.controls.anticipo.touched && form.controls.anticipo.errors; as e) {
+        @if (e['required']) {
+          <small class="error">El anticipo es obligatorio.</small>
+        } @else if (e['min']) {
+          <small class="error">El anticipo debe ser mayor a 0.</small>
+        }
+      }
+      @if (anticipoSuperaTotal()) {
+        <small class="error">El anticipo no puede superar el total de la estadía.</small>
+      }
+
+      <label>
+        Método de pago del anticipo
+        <select formControlName="metodoPago">
+          @for (metodo of metodosPago; track metodo) {
+            <option [value]="metodo">{{ mostrar(metodo) }}</option>
+          }
+        </select>
+      </label>
+
+      <div class="total">
+        <p>
+          {{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }} x
+          {{ precioPorNoche() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
+        </p>
+        <p><strong>Total a pagar: {{ total() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</strong></p>
+        @if (total() > 0 && form.controls.anticipo.value > 0 && !anticipoSuperaTotal()) {
+          <p>Saldo pendiente: {{ total() - form.controls.anticipo.value | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</p>
+        }
+      </div>
+
+      @if (errorGuardar()) {
+        <p class="error">{{ errorGuardar() }}</p>
+      }
+
+      <button type="submit" [disabled]="guardando() || superaCapacidad() || anticipoSuperaTotal()">
+        {{ guardando() ? 'Guardando...' : 'Confirmar reserva' }}
+      </button>
+    </form>
+  }
+</section>
