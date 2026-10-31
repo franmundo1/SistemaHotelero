@@ -14,6 +14,10 @@ export class HabitacionesService {
     return this.api.get<Habitacion[]>(this.url);
   }
 
+  getById(idExterno: string): Observable<Habitacion> {
+    return this.api.get<Habitacion>(`${this.url}/${idExterno}`);
+  }
+
   // Activas, sin mantenimiento y sin reservas en el rango (la capacidad se filtra en la pantalla)
   getDisponibles(fechaEntrada: string, fechaSalida: string): Observable<Habitacion[]> {
     return this.api.get<Habitacion[]>(`${this.url}/disponibles-por-fecha`, { fechaEntrada, fechaSalida });
