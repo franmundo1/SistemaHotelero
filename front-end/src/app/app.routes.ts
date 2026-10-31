@@ -40,8 +40,22 @@ export const routes: Routes = [
     redirectTo: 'habitaciones',
     pathMatch: 'full',
   },
+
+  {
+  path: 'check-in',
+  loadComponent: () =>
+    import('./features/check-in/pages/check-in').then(
+      (m) => m.RegistrarCheckIn
+    ),
+  title: 'Registrar check-in',
+  canActivate: [authGuard],
+},
+
   {
     path: '**',
     redirectTo: 'habitaciones',
   },
+
+
+
 ];
