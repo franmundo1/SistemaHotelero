@@ -14,6 +14,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'disponibilidad',
+    loadComponent: () =>
+      import('./features/habitaciones/pages/disponibilidad-habitaciones').then(
+        (m) => m.DisponibilidadHabitaciones
+      ),
+    title: 'Disponibilidad',
+    canActivate: [authGuard],
+  },
+  {
     path: 'huespedes',
     loadComponent: () =>
       import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),
