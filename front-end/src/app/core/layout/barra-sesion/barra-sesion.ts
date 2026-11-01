@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { SesionService } from '../../auth/sesion.service';
 
 @Component({
   selector: 'app-barra-sesion',
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './barra-sesion.html',
   styleUrl: './barra-sesion.css',
 })
@@ -14,9 +14,15 @@ export class BarraSesion {
 
   readonly emailUsuario = this.sesionService.emailUsuario;
 
-  readonly inicialUsuario = computed(() =>
-    this.emailUsuario()?.charAt(0).toUpperCase() ?? 'U'
-  );
+  readonly inicialUsuario = computed(() => this.emailUsuario()?.charAt(0).toUpperCase() ?? 'U');
+
+  readonly fechaActual = new Intl.DateTimeFormat('es-AR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  })
+    .format(new Date())
+    .replace('.', '');
 
   cerrarSesion(): void {
     this.sesionService.cerrarSesion();

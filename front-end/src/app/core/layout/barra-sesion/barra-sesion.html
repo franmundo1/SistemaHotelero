@@ -1,20 +1,33 @@
 <header class="barra">
-  <a class="barra__marca" routerLink="/habitaciones">
-    Sistema Hotelero
-  </a>
+  <div class="barra__contenido">
+    <a class="barra__marca" routerLink="/habitaciones" aria-label="Ir a habitaciones">
+      <strong>CASA FARO</strong>
+      <span>HOTEL &amp; ESTADÍAS</span>
+    </a>
 
-  <div class="barra__sesion">
-    <div class="barra__avatar">
-      {{ inicialUsuario() }}
+    <nav class="barra__navegacion" aria-label="Navegación principal">
+      <a routerLink="/habitaciones" routerLinkActive="barra__enlace--activo">Habitaciones</a>
+      <a routerLink="/disponibilidad" routerLinkActive="barra__enlace--activo">Disponibilidad</a>
+      <a routerLink="/huespedes" routerLinkActive="barra__enlace--activo">Huéspedes</a>
+    </nav>
+
+    <div class="barra__acciones">
+      <span class="barra__fecha">{{ fechaActual }}</span>
+
+      <a class="barra__reserva" routerLink="/disponibilidad">Nueva reserva</a>
+
+      <div class="barra__sesion">
+        <div class="barra__avatar" aria-hidden="true">
+          {{ inicialUsuario() }}
+        </div>
+
+        <div class="barra__usuario">
+          <span>Sesión activa</span>
+          <strong>{{ emailUsuario() }}</strong>
+        </div>
+
+        <button type="button" class="barra__salir" (click)="cerrarSesion()">Cerrar sesión</button>
+      </div>
     </div>
-
-    <div class="barra__usuario">
-      <span>Usuario conectado</span>
-      <strong>{{ emailUsuario() }}</strong>
-    </div>
-
-    <button type="button" (click)="cerrarSesion()">
-      Cerrar sesión
-    </button>
   </div>
 </header>
