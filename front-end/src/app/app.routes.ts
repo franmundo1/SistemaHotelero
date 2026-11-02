@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth-guard';
+import { authGuard, guestGuard } from './core/guards/auth-guard';
 import { ListadoHabitaciones } from './features/habitaciones/pages/listado-habitaciones';
 import { Login } from './features/login/pages/login';
 
@@ -7,6 +7,7 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [guestGuard],
   },
   {
     path: 'habitaciones',
@@ -33,6 +34,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),
     title: 'Huéspedes',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'consumos',
+    loadComponent: () =>
+      import('./features/consumos/pages/registrar-consumo').then(
+        (m) => m.RegistrarConsumo
+      ),
+    title: 'Registrar consumo',
     canActivate: [authGuard],
   },
   {
