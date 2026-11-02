@@ -1,5 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ROLES } from '../../../core/auth/roles';
+import { SesionService } from '../../../core/auth/sesion.service';
 import { ApiError } from '../../../core/models/api-error';
 import { FormularioHabitacion } from '../components/formulario-habitacion/formulario-habitacion';
 import { Habitacion, HabitacionRequest } from '../models/habitacion';
@@ -13,6 +15,10 @@ import { HabitacionesService } from '../services/habitaciones';
 })
 export class ListadoHabitaciones implements OnInit {
   private readonly habitacionesService = inject(HabitacionesService);
+  private readonly sesionService = inject(SesionService);
+
+  // El ABM de habitaciones es solo del admin (igual que en el back)
+  readonly esAdmin = computed(() => this.sesionService.tieneAlgunRol([ROLES.ADMIN]));
 
   readonly habitaciones = signal<Habitacion[]>([]);
   readonly cargando = signal(false);

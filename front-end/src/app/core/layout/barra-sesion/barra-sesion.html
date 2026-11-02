@@ -6,16 +6,17 @@
     </a>
 
     <nav class="barra__navegacion" aria-label="Navegación principal">
-      <a routerLink="/habitaciones" routerLinkActive="barra__enlace--activo">Habitaciones</a>
-      <a routerLink="/disponibilidad" routerLinkActive="barra__enlace--activo">Disponibilidad</a>
-      <a routerLink="/huespedes" routerLinkActive="barra__enlace--activo">Huéspedes</a>
-      <a routerLink="/consumos" routerLinkActive="barra__enlace--activo">Consumos</a>
+      @for (opcion of opciones(); track opcion.ruta) {
+        <a [routerLink]="opcion.ruta" routerLinkActive="barra__enlace--activo">{{ opcion.texto }}</a>
+      }
     </nav>
 
     <div class="barra__acciones">
       <span class="barra__fecha">{{ fechaActual }}</span>
 
-      <a class="barra__reserva" routerLink="/disponibilidad">Nueva reserva</a>
+      @if (puedeReservar()) {
+        <a class="barra__reserva" routerLink="/disponibilidad">Nueva reserva</a>
+      }
 
       <div class="barra__sesion">
         <div class="barra__avatar" aria-hidden="true">

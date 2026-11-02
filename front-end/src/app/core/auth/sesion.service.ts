@@ -52,6 +52,11 @@ export class SesionService {
     return this.autoridades().includes(autoridad);
   }
 
+  // true si el usuario tiene al menos uno de los roles
+  tieneAlgunRol(roles: string[]): boolean {
+    return roles.find((rol) => this.tieneAutoridad(rol)) !== undefined;
+  }
+
   private recuperarTokenGuardado(): void {
     const token = localStorage.getItem(this.nombreToken);
 
