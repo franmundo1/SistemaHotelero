@@ -75,6 +75,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'check-out',
+    loadComponent: () =>
+      import('./features/check-out/pages/registrar-check-out').then(
+        (m) => m.RegistrarCheckOut
+      ),
+    title: 'Registrar check-out',
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'habitaciones',
     pathMatch: 'full',

@@ -1,0 +1,165 @@
+:host {
+  display: block;
+}
+
+.check-out {
+  width: min(850px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+  font-family: Arial, sans-serif;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.4rem;
+}
+
+form,
+.resultado,
+.mensaje {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: white;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+select,
+input,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  padding: 0.7rem;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.resumen {
+  border-radius: 6px;
+  padding: 1rem;
+  background: #f4f4f4;
+}
+
+.resumen h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.15rem;
+}
+
+.resumen p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.resumen .saldo {
+  margin: 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid #ccc;
+}
+
+button {
+  border: 0;
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  background: #b55b3a;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.secundario {
+  background: #555;
+}
+
+.resultado {
+  margin-bottom: 1.5rem;
+  border-color: #8bc79a;
+  background: #f1fff4;
+}
+
+.resultado h2 {
+  margin-bottom: 0.5rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0 0;
+}
+
+dt {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+dd {
+  margin: 0.2rem 0 0;
+  font-weight: 600;
+}
+
+.error,
+.error-contenedor {
+  color: #a22;
+}
+
+.error-contenedor {
+  margin-top: 1rem;
+  border: 1px solid #e4aaaa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  background: #fff3f3;
+}
+
+@media (width <= 650px) {
+  .encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .fila,
+  dl {
+    grid-template-columns: 1fr;
+  }
+}
