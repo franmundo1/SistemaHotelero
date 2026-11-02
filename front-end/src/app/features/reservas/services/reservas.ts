@@ -39,4 +39,8 @@ export class ReservasService {
       datos
     );
   }
+
+  listarEnCurso(): Observable<Reserva[]> {
+    return this.api.get<Reserva[]>(`${this.url}/en-curso`);
+  }
 }
