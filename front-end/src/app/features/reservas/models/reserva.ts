@@ -32,3 +32,7 @@ export interface Reserva {
   motivoCancelacion: string | null;
   estado:            string;
 }
+
+export interface CancelarReservaRequest {
+  motivoCancelacion: string;
+}

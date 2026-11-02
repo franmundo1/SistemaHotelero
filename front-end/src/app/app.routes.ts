@@ -28,6 +28,18 @@ export const routes: Routes = [
     title: 'Nueva reserva',
     canActivate: [authGuard],
   },
+
+  {
+  path: 'reservas',
+  loadComponent: () =>
+    import('./features/reservas/pages/listado-reservas').then(
+      (m) => m.ListadoReservas
+    ),
+  title: 'Reservas',
+  canActivate: [authGuard],
+},
+
+
   {
     path: 'huespedes',
     loadComponent: () =>
