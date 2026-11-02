@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
+import { ROLES } from './core/auth/roles';
 import { authGuard, guestGuard } from './core/guards/auth-guard';
+import { rolGuard } from './core/guards/rol-guard';
 import { ListadoHabitaciones } from './features/habitaciones/pages/listado-habitaciones';
 import { Login } from './features/login/pages/login';
+
+// Pantallas de recepcion: las ven el admin y el recepcionista
+const RECEPCION = [ROLES.ADMIN, ROLES.RECEPCIONISTA];
 
 export const routes: Routes = [
   {
@@ -12,7 +17,8 @@ export const routes: Routes = [
   {
     path: 'habitaciones',
     component: ListadoHabitaciones,
-    canActivate: [authGuard],
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
   },
   {
     path: 'disponibilidad',
@@ -21,40 +27,51 @@ export const routes: Routes = [
         (m) => m.DisponibilidadHabitaciones
       ),
     title: 'Disponibilidad',
-    canActivate: [authGuard],
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
   },
   {
     path: 'reservas/nueva',
     loadComponent: () => import('./features/reservas/pages/nueva-reserva').then((m) => m.NuevaReserva),
     title: 'Nueva reserva',
-    canActivate: [authGuard],
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
   },
-
   {
-  path: 'reservas',
-  loadComponent: () =>
-    import('./features/reservas/pages/listado-reservas').then(
-      (m) => m.ListadoReservas
-    ),
-  title: 'Reservas',
-  canActivate: [authGuard],
-},
-
-
+    path: 'reservas',
+    loadComponent: () =>
+      import('./features/reservas/pages/listado-reservas').then((m) => m.ListadoReservas),
+    title: 'Reservas',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
   {
     path: 'huespedes',
     loadComponent: () =>
       import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),
     title: 'Huéspedes',
-    canActivate: [authGuard],
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
   },
   {
     path: 'consumos',
     loadComponent: () =>
-      import('./features/consumos/pages/registrar-consumo').then(
-        (m) => m.RegistrarConsumo
-      ),
+      import('./features/consumos/pages/registrar-consumo').then((m) => m.RegistrarConsumo),
     title: 'Registrar consumo',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'check-in',
+    loadComponent: () => import('./features/check-in/pages/check-in').then((m) => m.RegistrarCheckIn),
+    title: 'Registrar check-in',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'sin-permiso',
+    loadComponent: () => import('./core/layout/sin-permiso/sin-permiso').then((m) => m.SinPermiso),
+    title: 'Sin permisos',
     canActivate: [authGuard],
   },
   {
@@ -62,22 +79,8 @@ export const routes: Routes = [
     redirectTo: 'habitaciones',
     pathMatch: 'full',
   },
-
-  {
-  path: 'check-in',
-  loadComponent: () =>
-    import('./features/check-in/pages/check-in').then(
-      (m) => m.RegistrarCheckIn
-    ),
-  title: 'Registrar check-in',
-  canActivate: [authGuard],
-},
-
   {
     path: '**',
     redirectTo: 'habitaciones',
   },
-
-
-
 ];

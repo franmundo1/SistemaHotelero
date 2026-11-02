@@ -17,9 +17,11 @@
       >
         Actualizar
       </button>
+      @if (esAdmin()) {
       <button type="button" class="boton-recargar" (click)="onNueva()" [disabled]="formularioAbierto()">
         Nueva habitación
       </button>
+      }
     </div>
   </header>
 
@@ -67,7 +69,9 @@
             <th>Precio por noche</th>
             <th>Ocupación</th>
             <th>Limpieza</th>
-            <th class="acciones">Acciones</th>
+            @if (esAdmin()) {
+              <th class="acciones">Acciones</th>
+            }
           </tr>
         </thead>
 
@@ -99,10 +103,12 @@
                   {{ mostrarEstado(habitacion.estadoLimpieza) }}
                 </span>
               </td>
-              <td class="acciones">
-                <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
-                <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
-              </td>
+              @if (esAdmin()) {
+                <td class="acciones">
+                  <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
+                  <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
+                </td>
+              }
             </tr>
           }
         </tbody>

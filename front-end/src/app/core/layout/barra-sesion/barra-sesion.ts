@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { OPCIONES_MENU, ROLES } from '../../auth/roles';
 import { SesionService } from '../../auth/sesion.service';
 
 @Component({
@@ -13,6 +14,15 @@ export class BarraSesion {
   private readonly router = inject(Router);
 
   readonly emailUsuario = this.sesionService.emailUsuario;
+
+  // Solo las opciones que puede ver el rol del usuario
+  readonly opciones = computed(() =>
+    OPCIONES_MENU.filter((opcion) => this.sesionService.tieneAlgunRol(opcion.roles))
+  );
+
+  readonly puedeReservar = computed(() =>
+    this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
+  );
 
   readonly inicialUsuario = computed(() => this.emailUsuario()?.charAt(0).toUpperCase() ?? 'U');
 

@@ -1,0 +1,14 @@
+.sin-permiso {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  color: #172033;
+}
+
+p {
+  color: #64748b;
+}
