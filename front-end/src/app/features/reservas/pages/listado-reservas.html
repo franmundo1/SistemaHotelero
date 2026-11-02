@@ -1,0 +1,193 @@
+<section class="reservas">
+  <header class="reservas__encabezado">
+    <div>
+      <p class="reservas__seccion">Gestión de reservas</p>
+      <h1>Reservas</h1>
+      <p class="reservas__descripcion">
+        Consultá las reservas registradas y cancelá las que todavía estén confirmadas.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="boton-actualizar"
+      (click)="cargarReservas()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+  </header>
+
+  @if (mensaje()) {
+    <p class="mensaje-exito">{{ mensaje() }}</p>
+  }
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando reservas...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+
+      <button type="button" (click)="cargarReservas()">
+        Reintentar
+      </button>
+    </div>
+  } @else if (reservas().length === 0) {
+    <div class="mensaje">
+      <p>No hay reservas registradas.</p>
+    </div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Huésped</th>
+            <th>Habitación</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Canal</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th class="acciones">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (reserva of reservas(); track reserva.idExterno) {
+            <tr>
+              <td class="huesped">{{ reserva.huesped }}</td>
+              <td>{{ reserva.habitacion }}</td>
+              <td>{{ reserva.fechaEntrada | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ mostrarEstado(reserva.canalReserva) }}</td>
+              <td>
+                {{
+                  reserva.totalEstadia
+                    | currency: 'ARS' : 'symbol-narrow' : '1.2-2'
+                }}
+              </td>
+              <td>
+                <span
+                  class="estado"
+                  [class]="'estado estado--' + reserva.estado.toLowerCase()"
+                >
+                  {{ mostrarEstado(reserva.estado) }}
+                </span>
+
+                @if (
+                  reserva.estado === 'CANCELADA' &&
+                  reserva.motivoCancelacion
+                ) {
+                  <small class="motivo">
+                    {{ reserva.motivoCancelacion }}
+                  </small>
+                }
+              </td>
+              <td class="acciones">
+                @if (puedeCancelar(reserva)) {
+                  <button
+                    type="button"
+                    class="accion-cancelar"
+                    (click)="onAbrirCancelacion(reserva)"
+                  >
+                    Cancelar
+                  </button>
+                } @else {
+                  <span class="sin-accion">—</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (reservaACancelar(); as reserva) {
+  <div class="modal-fondo">
+    <section
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-cancelacion"
+    >
+      <header>
+        <div>
+          <p class="modal__seccion">Cancelar reserva</p>
+          <h2 id="titulo-cancelacion">
+            Habitación {{ reserva.habitacion }}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="modal__cerrar"
+          aria-label="Cerrar"
+          (click)="onCerrarCancelacion()"
+          [disabled]="cancelando()"
+        >
+          ×
+        </button>
+      </header>
+
+      <p>
+        Vas a cancelar la reserva de
+        <strong>{{ reserva.huesped }}</strong>,
+        del {{ reserva.fechaEntrada | date: 'dd/MM/yyyy' }}
+        al {{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}.
+      </p>
+
+      <form
+        [formGroup]="formularioCancelacion"
+        (ngSubmit)="onConfirmarCancelacion()"
+      >
+        <label>
+          Motivo de cancelación
+
+          <textarea
+            formControlName="motivoCancelacion"
+            rows="4"
+            placeholder="Ingresá el motivo de la cancelación"
+          ></textarea>
+        </label>
+
+        @if (
+          formularioCancelacion.controls.motivoCancelacion.touched &&
+          formularioCancelacion.controls.motivoCancelacion.hasError('required')
+        ) {
+          <small class="error">
+            El motivo de cancelación es obligatorio.
+          </small>
+        }
+
+        @if (errorCancelacion()) {
+          <p class="error error--contenedor">
+            {{ errorCancelacion() }}
+          </p>
+        }
+
+        <div class="modal__acciones">
+          <button
+            type="button"
+            class="boton-secundario"
+            (click)="onCerrarCancelacion()"
+            [disabled]="cancelando()"
+          >
+            Volver
+          </button>
+
+          <button
+            type="submit"
+            class="boton-peligro"
+            [disabled]="cancelando()"
+          >
+            {{ cancelando() ? 'Cancelando...' : 'Confirmar cancelación' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+}
