@@ -19,4 +19,5 @@ export const OPCIONES_MENU: OpcionMenu[] = [
   { texto: 'Huéspedes', ruta: '/huespedes', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
   { texto: 'Consumos', ruta: '/consumos', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
   { texto: 'Check-in', ruta: '/check-in', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
+  { texto: 'Check-out', ruta: '/check-out', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
 ];
