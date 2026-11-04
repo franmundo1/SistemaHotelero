@@ -197,7 +197,9 @@ public class HabitacionService {
         return habitacionMapper.toResponseDTO(habitacionRepository.save(habitacion));
     }
     public List<HabitacionLimpiezaResponseDTO> findAllParaLimpieza() {
-        return habitacionRepository.findByEstadoLimpieza(EstadoLimpieza.SUCIA)
+        return habitacionRepository.findByActivaTrueAndEstadoLimpiezaInOrderByNumeroAsc(
+                        List.of(EstadoLimpieza.SUCIA, EstadoLimpieza.EN_LIMPIEZA)
+                )
                 .stream()
                 .map(habitacionMapper::toLimpiezaResponseDTO)
                 .toList();

@@ -1,0 +1,65 @@
+<section class="limpieza">
+  <header class="encabezado">
+    <div>
+      <h1>Limpieza de habitaciones</h1>
+      <p>Habitaciones pendientes y limpiezas en curso.</p>
+    </div>
+
+    <button type="button" class="secundario" (click)="cargarHabitaciones()" [disabled]="cargando()">
+      Actualizar
+    </button>
+  </header>
+
+  @if (mensaje()) {
+    <p class="aviso aviso--bien">{{ mensaje() }}</p>
+  }
+
+  @if (error()) {
+    <p class="aviso aviso--error">{{ error() }}</p>
+  }
+
+  @if (cargando()) {
+    <p class="vacio">Cargando habitaciones...</p>
+  } @else if (habitaciones().length === 0) {
+    <p class="vacio">No hay habitaciones pendientes de limpieza.</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Habitación</th>
+            <th>Estado</th>
+            <th class="acciones">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (habitacion of habitaciones(); track habitacion.numero) {
+            <tr>
+              <td class="numero">{{ habitacion.numero }}</td>
+              <td>
+                <span class="estado" [class.estado--curso]="habitacion.estadoLimpieza === 'EN_LIMPIEZA'">
+                  {{ mostrarEstado(habitacion.estadoLimpieza) }}
+                </span>
+              </td>
+              <td class="acciones">
+                <button
+                  type="button"
+                  (click)="cambiarEstado(habitacion)"
+                  [disabled]="actualizando() !== null"
+                >
+                  @if (actualizando() === habitacion.numero) {
+                    Guardando...
+                  } @else if (habitacion.estadoLimpieza === 'SUCIA') {
+                    Iniciar limpieza
+                  } @else {
+                    Finalizar limpieza
+                  }
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

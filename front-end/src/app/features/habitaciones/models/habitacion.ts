@@ -21,5 +21,10 @@ export interface Habitacion {
   activa:          boolean;
 }
 
-// Cuerpo que espera el back para crear/editar (HabitacionRequestDTO)
+export interface HabitacionLimpieza {
+  numero: string;
+  estadoLimpieza: EstadoLimpieza;
+}
+
+
 export type HabitacionRequest = Omit<Habitacion, 'idExterno'>;

@@ -118,6 +118,24 @@ export class ListadoHabitaciones implements OnInit {
     return texto.charAt(0).toUpperCase() + texto.slice(1);
   }
 
+  mostrarOcupacion(habitacion: Habitacion): string {
+    if (habitacion.estadoOcupacion === 'DISPONIBLE' && habitacion.estadoLimpieza === 'SUCIA') {
+      return 'Pendiente de limpieza';
+    }
+
+    if (habitacion.estadoOcupacion === 'DISPONIBLE' && habitacion.estadoLimpieza === 'EN_LIMPIEZA') {
+      return 'En limpieza';
+    }
+
+    return this.mostrarEstado(habitacion.estadoOcupacion);
+  }
+
+  claseOcupacion(habitacion: Habitacion): string {
+    return habitacion.estadoOcupacion === 'DISPONIBLE' && habitacion.estadoLimpieza !== 'LIMPIA'
+      ? 'estado--no-disponible'
+      : `estado--${habitacion.estadoOcupacion.toLowerCase()}`;
+  }
+
   private abrirFormulario(habitacion: Habitacion | null): void {
     this.mensaje.set(null);
     this.errorBaja.set(null);

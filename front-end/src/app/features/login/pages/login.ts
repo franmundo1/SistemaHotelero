@@ -5,6 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ROLES } from '../../../core/auth/roles';
 import { SesionService } from '../../../core/auth/sesion.service';
 import { ApiError } from '../../../core/models/api-error';
 import { LoginService } from '../services/login';
@@ -42,7 +43,12 @@ export class Login {
       next: (respuesta) => {
         this.sesionService.guardarToken(respuesta.token);
         this.enviando.set(false);
-        this.router.navigate(['/habitaciones']);
+
+        // El usuario de limpieza entra directo a su listado,
+        const ruta = this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
+          ? '/habitaciones'
+          : '/limpieza';
+        this.router.navigate([ruta]);
       },
       error: (error: ApiError) => {
         this.error.set(error.mensaje);
