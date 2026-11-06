@@ -3,6 +3,8 @@ import { computed, Injectable, signal } from '@angular/core';
 interface JwtPayload {
   sub: string;
   roles: string[];
+  nombre?: string;
+  apellido?: string;
   iat: number;
   exp: number;
 }
@@ -27,6 +29,19 @@ export class SesionService {
   });
 
   readonly emailUsuario = computed(() => this.datosUsuario()?.sub ?? null);
+
+  readonly nombreUsuario = computed(() => {
+    const datos = this.datosUsuario();
+
+    if (datos === null) {
+      return null;
+    }
+
+    const nombreCompleto = [datos.nombre, datos.apellido].filter(Boolean).join(' ');
+
+    // si quedo un token viejo usamos solo lo que esta antes del arroba
+    return nombreCompleto || datos.sub.split('@')[0];
+  });
 
   readonly autoridades = computed(() => this.datosUsuario()?.roles ?? []);
 

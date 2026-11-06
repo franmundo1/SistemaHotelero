@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { OPCIONES_MENU, ROLES } from '../../auth/roles';
 import { SesionService } from '../../auth/sesion.service';
@@ -13,7 +13,8 @@ export class BarraSesion {
   private readonly sesionService = inject(SesionService);
   private readonly router = inject(Router);
 
-  readonly emailUsuario = this.sesionService.emailUsuario;
+  readonly nombreUsuario = this.sesionService.nombreUsuario;
+  readonly menuAbierto = signal(false);
 
   // Solo las opciones que puede ver el rol del usuario
   readonly opciones = computed(() =>
@@ -30,7 +31,7 @@ export class BarraSesion {
       : '/limpieza'
   );
 
-  readonly inicialUsuario = computed(() => this.emailUsuario()?.charAt(0).toUpperCase() ?? 'U');
+  readonly inicialUsuario = computed(() => this.nombreUsuario()?.charAt(0).toUpperCase() ?? 'U');
 
   readonly fechaActual = new Intl.DateTimeFormat('es-AR', {
     weekday: 'short',
@@ -40,7 +41,16 @@ export class BarraSesion {
     .format(new Date())
     .replace('.', '');
 
+  cambiarMenu(): void {
+    this.menuAbierto.update((abierto) => !abierto);
+  }
+
+  cerrarMenu(): void {
+    this.menuAbierto.set(false);
+  }
+
   cerrarSesion(): void {
+    this.cerrarMenu();
     this.sesionService.cerrarSesion();
     this.router.navigate(['/login'], {
       replaceUrl: true,
