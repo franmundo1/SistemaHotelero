@@ -1,0 +1,150 @@
+:host {
+  display: block;
+}
+
+.pagos {
+  width: min(1000px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  margin: 0 0 0.35rem;
+  color: #2563eb;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: #172033;
+}
+
+.descripcion {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+}
+
+.botones {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.botones a,
+button {
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1rem;
+  background: #2563eb;
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.botones a {
+  background: #64748b;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+}
+
+td {
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.monto {
+  text-align: right;
+  font-weight: 700;
+}
+
+.tipo {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 0.3rem 0.65rem;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tipo--anticipo {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.tipo--final {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.mensaje {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  background: white;
+  color: #475569;
+  text-align: center;
+}
+
+.mensaje p {
+  margin-top: 0;
+}
+
+.mensaje--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+@media (width <= 700px) {
+  .encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .botones a,
+  .botones button {
+    flex: 1;
+    text-align: center;
+  }
+}

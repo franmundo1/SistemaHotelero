@@ -6,13 +6,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ApiError } from '../../../core/models/api-error';
 import { Reserva } from '../models/reserva';
 import { ReservasService } from '../services/reservas';
 
 @Component({
   selector: 'app-listado-reservas',
-  imports: [CurrencyPipe, DatePipe, ReactiveFormsModule],
+  imports: [CurrencyPipe, DatePipe, ReactiveFormsModule, RouterLink],
   templateUrl: './listado-reservas.html',
   styleUrl: './listado-reservas.css',
 })

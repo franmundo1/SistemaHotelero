@@ -38,6 +38,14 @@ export const routes: Routes = [
     data: { roles: RECEPCION },
   },
   {
+    path: 'reservas/:id/pagos',
+    loadComponent: () =>
+      import('./features/pagos/pages/pagos-reserva').then((m) => m.PagosReserva),
+    title: 'Pagos de la reserva',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
     path: 'reservas',
     loadComponent: () =>
       import('./features/reservas/pages/listado-reservas').then((m) => m.ListadoReservas),
