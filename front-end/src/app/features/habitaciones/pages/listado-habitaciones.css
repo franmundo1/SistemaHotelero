@@ -117,7 +117,8 @@ tbody tr:hover {
 }
 
 .estado--mantenimiento,
-.estado--en_limpieza {
+.estado--en_limpieza,
+.estado--no-disponible {
   background-color: #fef3c7;
   color: #92400e;
 }

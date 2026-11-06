@@ -24,6 +24,12 @@ export class BarraSesion {
     this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
   );
 
+  readonly rutaInicio = computed(() =>
+    this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
+      ? '/habitaciones'
+      : '/limpieza'
+  );
+
   readonly inicialUsuario = computed(() => this.emailUsuario()?.charAt(0).toUpperCase() ?? 'U');
 
   readonly fechaActual = new Intl.DateTimeFormat('es-AR', {

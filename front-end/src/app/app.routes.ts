@@ -84,6 +84,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'limpieza',
+    loadComponent: () =>
+      import('./features/habitaciones/pages/limpieza-habitaciones').then(
+        (m) => m.LimpiezaHabitaciones
+      ),
+    title: 'Limpieza de habitaciones',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
+  },
+  {
     path: '',
     redirectTo: 'habitaciones',
     pathMatch: 'full',

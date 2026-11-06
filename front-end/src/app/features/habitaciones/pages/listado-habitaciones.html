@@ -90,9 +90,9 @@
               <td>
                 <span
                   class="estado"
-                  [class]="'estado estado--' + habitacion.estadoOcupacion.toLowerCase()"
+                  [class]="'estado ' + claseOcupacion(habitacion)"
                 >
-                  {{ mostrarEstado(habitacion.estadoOcupacion) }}
+                  {{ mostrarOcupacion(habitacion) }}
                 </span>
               </td>
               <td>

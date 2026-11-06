@@ -11,7 +11,7 @@ export interface OpcionMenu {
   roles: string[];
 }
 
-// Opciones del menu y que roles las ven (el admin ve todas)
+// Opciones del menu y que roles las ven (el admin ve todas clarament)
 export const OPCIONES_MENU: OpcionMenu[] = [
   { texto: 'Habitaciones', ruta: '/habitaciones', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
   { texto: 'Disponibilidad', ruta: '/disponibilidad', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
@@ -20,4 +20,5 @@ export const OPCIONES_MENU: OpcionMenu[] = [
   { texto: 'Consumos', ruta: '/consumos', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
   { texto: 'Check-in', ruta: '/check-in', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
   { texto: 'Check-out', ruta: '/check-out', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
+  { texto: 'Limpieza', ruta: '/limpieza', roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
 ];
