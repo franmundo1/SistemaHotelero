@@ -3,50 +3,41 @@
   position: sticky;
   z-index: 20;
   top: 0;
-  --color-surface: #fffcf8;
-  --color-surface-soft: #f1ddd3;
-  --color-text: #2d2628;
-  --color-text-muted: #786966;
-  --color-text-inverse: #fff9f3;
-  --color-accent: #b55b3a;
-  --color-accent-hover: #94472d;
-  --color-border: #e3d6cb;
-  --color-danger: #a94d4d;
-  --radius-sm: 0.25rem;
-  --page-width: 83rem;
-  --page-gutter: clamp(1rem, 3.75vw, 3.375rem);
+  --fondo: #fffcf8;
+  --fondo-avatar: #f1ddd3;
+  --texto: #2d2628;
+  --texto-suave: #786966;
+  --acento: #b55b3a;
+  --acento-oscuro: #94472d;
+  --borde: #e3d6cb;
 }
 
 :host *,
-:host *::before,
 :host *::after {
   box-sizing: border-box;
 }
 
 .barra {
-  border-bottom: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
-  box-shadow: 0 4px 18px rgb(53 42 45 / 4%);
-  backdrop-filter: blur(12px);
-  color: var(--color-text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border-bottom: 1px solid var(--borde);
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, sans-serif;
 }
 
 .barra__contenido {
   display: flex;
   align-items: center;
-  width: min(100%, calc(var(--page-width) + (var(--page-gutter) * 2)));
+  width: min(100%, 89.75rem);
   min-height: 5.5rem;
   margin: 0 auto;
-  padding: 0 var(--page-gutter);
-  gap: clamp(1.5rem, 3vw, 2.75rem);
+  padding: 0 clamp(1rem, 3.75vw, 3.375rem);
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
 }
 
 .barra__marca {
   display: grid;
-  flex: 0 0 auto;
-  gap: 0;
-  color: var(--color-text);
+  flex: none;
+  color: var(--texto);
   text-decoration: none;
 }
 
@@ -54,32 +45,34 @@
   font-size: 1.15rem;
   font-weight: 800;
   line-height: 1.25;
-  letter-spacing: -0.025em;
 }
 
 .barra__marca span {
-  color: var(--color-accent);
+  color: var(--acento);
   font-size: 0.55rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+}
+
+.barra__menu {
+  display: none;
 }
 
 .barra__navegacion {
   display: flex;
   align-items: center;
   align-self: stretch;
-  gap: 1.5rem;
+  gap: clamp(0.85rem, 1.4vw, 1.35rem);
 }
 
 .barra__navegacion a {
-  display: grid;
+  display: flex;
   position: relative;
-  place-items: center;
-  color: var(--color-text-muted);
+  align-items: center;
+  color: var(--texto-suave);
   font-size: 0.78rem;
-  font-weight: 550;
+  font-weight: 600;
   text-decoration: none;
-  transition: color 160ms ease;
+  white-space: nowrap;
 }
 
 .barra__navegacion a::after {
@@ -88,18 +81,21 @@
   bottom: 1.25rem;
   left: 0;
   height: 2px;
-  border-radius: 2px;
-  background: transparent;
   content: '';
 }
 
 .barra__navegacion a:hover,
 .barra__navegacion .barra__enlace--activo {
-  color: var(--color-accent);
+  color: var(--acento);
 }
 
 .barra__navegacion .barra__enlace--activo::after {
-  background: var(--color-accent);
+  background: var(--acento);
+}
+
+:host :focus-visible {
+  outline: 3px solid #e8b9a7;
+  outline-offset: 3px;
 }
 
 .barra__acciones,
@@ -115,45 +111,47 @@
 }
 
 .barra__fecha {
-  color: var(--color-text-muted);
+  color: var(--texto-suave);
   font-size: 0.7rem;
-  font-weight: 550;
   text-transform: capitalize;
   white-space: nowrap;
 }
 
-.barra__reserva {
-  border-radius: var(--radius-sm);
-  padding: 0.7rem 1rem;
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  font-size: 0.75rem;
+.barra__reserva,
+.barra__salir {
+  border-radius: 0.25rem;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  text-decoration: none;
   white-space: nowrap;
-  transition: background-color 160ms ease;
+}
+
+.barra__reserva {
+  background: var(--acento);
+  color: #fff9f3;
+  text-decoration: none;
 }
 
 .barra__reserva:hover {
-  background: var(--color-accent-hover);
+  background: var(--acento-oscuro);
 }
 
 .barra__sesion {
   min-width: 0;
   gap: 0.65rem;
+  border-left: 1px solid var(--borde);
   padding-left: 1rem;
-  border-left: 1px solid var(--color-border);
 }
 
 .barra__avatar {
   display: grid;
   width: 2.25rem;
   height: 2.25rem;
-  flex: 0 0 auto;
+  flex: none;
   place-items: center;
   border-radius: 50%;
-  background: var(--color-surface-soft);
-  color: var(--color-accent);
+  background: var(--fondo-avatar);
+  color: var(--acento);
   font-size: 0.8rem;
   font-weight: 800;
 }
@@ -165,72 +163,42 @@
 }
 
 .barra__usuario span {
-  color: var(--color-text-muted);
+  color: var(--texto-suave);
   font-size: 0.62rem;
 }
 
 .barra__usuario strong {
-  overflow: hidden;
-  max-width: 10rem;
-  color: var(--color-text);
   font-size: 0.72rem;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .barra__salir {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--borde);
   background: transparent;
-  color: var(--color-text-muted);
-  font: inherit;
-  font-size: 0.68rem;
-  font-weight: 650;
+  color: var(--texto-suave);
+  font-family: inherit;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.barra__salir:hover:not(:disabled) {
-  border-color: var(--color-danger);
-  background: var(--color-danger);
-  color: var(--color-text-inverse);
+.barra__salir:hover {
+  border-color: #a94d4d;
+  background: #a94d4d;
+  color: white;
 }
 
-@media (width <= 1080px) {
-  .barra__fecha,
-  .barra__usuario {
-    display: none;
-  }
-
-  .barra__sesion {
-    padding-left: 0;
-    border-left: 0;
-  }
-}
-
-@media (width <= 780px) {
-  :host {
-    position: static;
-  }
-
+@media (width <= 1200px) {
   .barra__contenido {
-    min-height: auto;
     flex-wrap: wrap;
-    padding-top: 0.9rem;
-    padding-bottom: 0.75rem;
-    gap: 0.75rem 1rem;
+    min-height: auto;
+    padding-top: 0.8rem;
+    gap: 0.7rem 1rem;
   }
 
   .barra__marca {
     margin-right: auto;
   }
 
-  .barra__acciones {
-    margin-left: 0;
-  }
-
-  .barra__avatar {
+  .barra__fecha {
     display: none;
   }
 
@@ -238,12 +206,11 @@
     width: 100%;
     order: 3;
     overflow-x: auto;
-    gap: 1.25rem;
+    gap: 1.4rem;
   }
 
   .barra__navegacion a {
-    min-height: 2.25rem;
-    white-space: nowrap;
+    min-height: 2.8rem;
   }
 
   .barra__navegacion a::after {
@@ -251,12 +218,100 @@
   }
 }
 
-@media (width <= 480px) {
-  .barra__reserva {
+@media (width <= 900px) {
+  .barra__usuario {
     display: none;
   }
 
-  .barra__salir {
-    padding-inline: 0.6rem;
+  .barra__sesion {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media (width <= 760px) {
+  .barra__contenido {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .barra__menu {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    place-content: center;
+    gap: 0.3rem;
+    border: 1px solid var(--borde);
+    border-radius: 0.25rem;
+    background: var(--fondo);
+    cursor: pointer;
+  }
+
+  .barra__menu span {
+    width: 1.15rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--texto);
+  }
+
+  .barra__navegacion,
+  .barra__acciones {
+    display: none;
+    grid-column: 1 / -1;
+    width: 100%;
+    border-top: 1px solid var(--borde);
+  }
+
+  .barra__navegacion {
+    overflow: visible;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-top: 0.35rem;
+  }
+
+  .barra__navegacion a {
+    min-height: 2.7rem;
+    padding: 0 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  .barra__navegacion a::after {
+    right: auto;
+    width: 2rem;
+  }
+
+  .barra__navegacion--abierta {
+    display: flex;
+  }
+
+  .barra__acciones {
+    margin-left: 0;
+    padding-top: 0.8rem;
+  }
+
+  .barra__acciones--abiertas {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .barra__reserva {
+    text-align: center;
+  }
+
+  .barra__sesion {
+    justify-content: space-between;
+  }
+
+  .barra__usuario {
+    display: grid;
+    margin-right: auto;
+  }
+
+  .barra__usuario strong {
+    white-space: normal;
   }
 }

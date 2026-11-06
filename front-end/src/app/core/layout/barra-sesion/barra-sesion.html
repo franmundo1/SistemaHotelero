@@ -5,17 +5,44 @@
       <span>HOTEL &amp; ESTADÍAS</span>
     </a>
 
-    <nav class="barra__navegacion" aria-label="Navegación principal">
+    <button
+      type="button"
+      class="barra__menu"
+      aria-label="Abrir menú"
+      [attr.aria-expanded]="menuAbierto()"
+      aria-controls="navegacion-principal"
+      (click)="cambiarMenu()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      id="navegacion-principal"
+      class="barra__navegacion"
+      [class.barra__navegacion--abierta]="menuAbierto()"
+      aria-label="Navegación principal"
+    >
       @for (opcion of opciones(); track opcion.ruta) {
-        <a [routerLink]="opcion.ruta" routerLinkActive="barra__enlace--activo">{{ opcion.texto }}</a>
+        <a
+          [routerLink]="opcion.ruta"
+          routerLinkActive="barra__enlace--activo"
+          ariaCurrentWhenActive="page"
+          (click)="cerrarMenu()"
+        >
+          {{ opcion.texto }}
+        </a>
       }
     </nav>
 
-    <div class="barra__acciones">
+    <div class="barra__acciones" [class.barra__acciones--abiertas]="menuAbierto()">
       <span class="barra__fecha">{{ fechaActual }}</span>
 
       @if (puedeReservar()) {
-        <a class="barra__reserva" routerLink="/disponibilidad">Nueva reserva</a>
+        <a class="barra__reserva" routerLink="/disponibilidad" (click)="cerrarMenu()">
+          Nueva reserva
+        </a>
       }
 
       <div class="barra__sesion">
@@ -25,7 +52,7 @@
 
         <div class="barra__usuario">
           <span>Sesión activa</span>
-          <strong>{{ emailUsuario() }}</strong>
+          <strong>{{ nombreUsuario() }}</strong>
         </div>
 
         <button type="button" class="barra__salir" (click)="cerrarSesion()">Cerrar sesión</button>

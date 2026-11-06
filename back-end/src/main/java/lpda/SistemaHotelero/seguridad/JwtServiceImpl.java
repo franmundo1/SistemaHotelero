@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lpda.SistemaHotelero.features.usuarios.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class JwtServiceImpl implements JwtService {
                 .stream()
                 .map(authority -> authority.getAuthority())
                 .toList());
+
+        if (userDetails instanceof UsuarioEntity usuario) {
+            claims.put("nombre", usuario.getNombre());
+            claims.put("apellido", usuario.getApellido());
+        }
 
         return buildToken(claims, userDetails, jwtExpiration);
     }
