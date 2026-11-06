@@ -50,7 +50,8 @@
             <th>Canal</th>
             <th>Total</th>
             <th>Estado</th>
-            <th class="acciones">Acciones</th>
+            <th class="acciones">Pagos</th>
+            <th class="acciones">Cancelar</th>
           </tr>
         </thead>
 
@@ -84,6 +85,14 @@
                     {{ reserva.motivoCancelacion }}
                   </small>
                 }
+              </td>
+              <td class="acciones">
+                <a
+                  class="accion-pagos"
+                  [routerLink]="['/reservas', reserva.idExterno, 'pagos']"
+                >
+                  Ver pagos
+                </a>
               </td>
               <td class="acciones">
                 @if (puedeCancelar(reserva)) {

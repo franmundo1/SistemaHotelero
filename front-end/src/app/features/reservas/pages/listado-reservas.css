@@ -147,6 +147,23 @@ tbody tr:hover {
   text-align: right;
 }
 
+.accion-pagos {
+  display: inline-block;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  color: #334155;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.accion-pagos:hover {
+  border-color: #94a3b8;
+  background-color: #f1f5f9;
+}
+
 .accion-cancelar {
   border: 1px solid #fecaca;
   border-radius: 0.5rem;
