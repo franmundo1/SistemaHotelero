@@ -50,9 +50,9 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
 
     List<HabitacionEntity> findByActivaTrue();
 
-    long countByEstadoOcupacion(EstadoOcupacion estadoOcupacion);
+    long countByActivaTrueAndEstadoOcupacion(EstadoOcupacion estadoOcupacion);
 
-    long countByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
+    long countByActivaTrueAndEstadoLimpieza(EstadoLimpieza estadoLimpieza);
 
     long countByActivaTrue();
 

@@ -1,4 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
+import { ROLES } from './roles';
 
 interface JwtPayload {
   sub: string;
@@ -44,6 +45,11 @@ export class SesionService {
   });
 
   readonly autoridades = computed(() => this.datosUsuario()?.roles ?? []);
+
+  // Pantalla de inicio segun el rol: recepcion ve el dashboard, limpieza su listado
+  readonly rutaInicio = computed(() =>
+    this.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA]) ? '/dashboard' : '/limpieza'
+  );
 
   constructor() {
     this.recuperarTokenGuardado();

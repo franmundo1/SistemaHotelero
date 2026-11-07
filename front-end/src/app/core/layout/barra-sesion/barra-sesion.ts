@@ -25,11 +25,7 @@ export class BarraSesion {
     this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
   );
 
-  readonly rutaInicio = computed(() =>
-    this.sesionService.tieneAlgunRol([ROLES.ADMIN, ROLES.RECEPCIONISTA])
-      ? '/habitaciones'
-      : '/limpieza'
-  );
+  readonly rutaInicio = this.sesionService.rutaInicio;
 
   readonly inicialUsuario = computed(() => this.nombreUsuario()?.charAt(0).toUpperCase() ?? 'U');
 

@@ -1,0 +1,79 @@
+<section class="dashboard">
+  <header class="encabezado">
+    <div>
+      <p class="seccion">Inicio</p>
+      <h1>Hola, {{ nombreUsuario() }}</h1>
+      <p class="descripcion">Así está el hotel hoy.</p>
+    </div>
+
+    <button type="button" class="secundario" (click)="cargarResumen()" [disabled]="cargando()">
+      Actualizar
+    </button>
+  </header>
+
+  @if (cargando() && resumen() === null) {
+    <div class="mensaje">
+      <p>Cargando resumen...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="cargarResumen()">Reintentar</button>
+    </div>
+  } @else if (resumen(); as datos) {
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <span>Ocupación</span>
+        <strong>{{ porcentajeOcupacion() }}%</strong>
+        <small>{{ datos.habitacionesOcupadas }} de {{ datos.habitacionesTotales }} habitaciones</small>
+      </article>
+
+      <article class="tarjeta">
+        <span>Disponibles</span>
+        <strong>{{ datos.habitacionesDisponibles }}</strong>
+        <small>habitaciones libres</small>
+      </article>
+
+      <article class="tarjeta">
+        <span>Estadías en curso</span>
+        <strong>{{ datos.reservasEnCurso }}</strong>
+        <small>{{ datos.reservasConfirmadas }} reservas confirmadas</small>
+      </article>
+
+      <article class="tarjeta">
+        <span>Pendientes de limpieza</span>
+        <strong>{{ pendientesLimpieza() }}</strong>
+        <small>{{ datos.habitacionesEnLimpieza }} en limpieza ahora</small>
+      </article>
+
+      <article class="tarjeta">
+        <span>Consumos</span>
+        <strong>{{ datos.consumosRegistrados }}</strong>
+        <small>{{ datos.productosActivos }} productos activos</small>
+      </article>
+    </div>
+
+    <div class="graficos">
+      <article class="grafico">
+        <h2>Ocupación de habitaciones</h2>
+        <div class="grafico__lienzo">
+          <canvas #ocupacion aria-label="Gráfico de ocupación de habitaciones" role="img"></canvas>
+        </div>
+      </article>
+
+      <article class="grafico">
+        <h2>Reservas por estado</h2>
+        <div class="grafico__lienzo">
+          <canvas #reservas aria-label="Gráfico de reservas por estado" role="img"></canvas>
+        </div>
+      </article>
+
+      <article class="grafico">
+        <h2>Estado de limpieza</h2>
+        <div class="grafico__lienzo">
+          <canvas #limpieza aria-label="Gráfico de estado de limpieza" role="img"></canvas>
+        </div>
+      </article>
+    </div>
+  }
+</section>
