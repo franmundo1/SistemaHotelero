@@ -1,5 +1,7 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ROLES } from './core/auth/roles';
+import { SesionService } from './core/auth/sesion.service';
 import { authGuard, guestGuard } from './core/guards/auth-guard';
 import { rolGuard } from './core/guards/rol-guard';
 import { ListadoHabitaciones } from './features/habitaciones/pages/listado-habitaciones';
@@ -13,6 +15,13 @@ export const routes: Routes = [
     path: 'login',
     component: Login,
     canActivate: [guestGuard],
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/pages/dashboard').then((m) => m.Dashboard),
+    title: 'Inicio',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
   },
   {
     path: 'habitaciones',
@@ -101,13 +110,14 @@ export const routes: Routes = [
     canActivate: [authGuard, rolGuard],
     data: { roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
   },
+  // Sin ruta (o una que no existe) se va al inicio del rol
   {
     path: '',
-    redirectTo: 'habitaciones',
+    redirectTo: () => inject(SesionService).rutaInicio(),
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'habitaciones',
+    redirectTo: () => inject(SesionService).rutaInicio(),
   },
 ];

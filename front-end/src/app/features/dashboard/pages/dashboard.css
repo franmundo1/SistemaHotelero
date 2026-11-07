@@ -1,0 +1,153 @@
+:host {
+  display: block;
+}
+
+.dashboard {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  margin: 0 0 0.35rem;
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  color: #172033;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.descripcion {
+  margin: 0.4rem 0 0;
+  color: #64748b;
+}
+
+button {
+  border: 0;
+  border-radius: 0.6rem;
+  padding: 0.75rem 1.1rem;
+  background-color: #2563eb;
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.secundario {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 1.1rem 1.2rem;
+  background-color: white;
+}
+
+.tarjeta span {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tarjeta strong {
+  color: #172033;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.tarjeta small {
+  color: #64748b;
+}
+
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.grafico {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  background-color: white;
+}
+
+.grafico h2 {
+  margin: 0 0 1rem;
+  color: #172033;
+  font-size: 1rem;
+}
+
+/* Chart.js necesita un contenedor con alto fijo para maintainAspectRatio: false */
+.grafico__lienzo {
+  position: relative;
+  height: 260px;
+}
+
+.mensaje {
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background-color: white;
+  text-align: center;
+}
+
+.mensaje--error {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+@media (width <= 1000px) {
+  .graficos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .secundario {
+    width: 100%;
+  }
+
+  .graficos {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
