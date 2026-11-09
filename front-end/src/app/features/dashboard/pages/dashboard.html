@@ -75,5 +75,78 @@
         </div>
       </article>
     </div>
+
+    <section class="personalizados">
+      <h2>Gráficos personalizados</h2>
+      <p class="descripcion">Elegí qué medir, cómo agruparlo y el período, y el gráfico se agrega abajo.</p>
+
+      <form class="filtros" [formGroup]="filtros" (ngSubmit)="onGenerarGrafico()">
+        <label>
+          Tipo de gráfico
+          <select formControlName="tipoGrafico">
+            @for (tipo of tiposGrafico; track tipo.valor) {
+              <option [value]="tipo.valor">{{ tipo.texto }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Métrica
+          <select formControlName="metrica">
+            @for (metrica of metricas; track metrica.valor) {
+              <option [value]="metrica.valor">{{ metrica.texto }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Agrupar por
+          <select formControlName="agruparPor">
+            @for (agrupacion of agrupaciones(); track agrupacion.valor) {
+              <option [value]="agrupacion.valor">{{ agrupacion.texto }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Desde
+          <input type="date" formControlName="fechaDesde" />
+        </label>
+
+        <label>
+          Hasta
+          <input type="date" formControlName="fechaHasta" />
+        </label>
+
+        <label>
+          Máximo de categorías
+          <input type="number" formControlName="limite" min="1" max="10" />
+        </label>
+
+        <button type="submit" [disabled]="generando() || fechasInvalidas()">
+          {{ generando() ? 'Generando...' : 'Agregar gráfico' }}
+        </button>
+      </form>
+
+      @if (fechasInvalidas()) {
+        <p class="error">La fecha desde no puede ser posterior a la fecha hasta.</p>
+      }
+      @if (filtros.controls.limite.touched && filtros.controls.limite.errors; as e) {
+        @if (e['required']) {
+          <p class="error">El máximo de categorías es obligatorio.</p>
+        } @else if (e['min'] || e['max']) {
+          <p class="error">El máximo de categorías tiene que estar entre 1 y 10.</p>
+        }
+      }
+      @if (mensajeGrafico()) {
+        <p class="aviso">{{ mensajeGrafico() }}</p>
+      }
+
+      <div class="graficos">
+        @for (item of graficosDinamicos(); track item.id) {
+          <app-grafico-dinamico [grafico]="item.grafico" (quitar)="onQuitarGrafico(item.id)" />
+        }
+      </div>
+    </section>
   }
 </section>

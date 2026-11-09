@@ -2,6 +2,7 @@ import {
   afterRenderEffect,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   OnDestroy,
@@ -20,10 +21,28 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SesionService } from '../../../core/auth/sesion.service';
 import { ApiError } from '../../../core/models/api-error';
-import { DashboardResumen } from '../models/dashboard';
+import { GraficoDinamicoCard } from '../components/grafico-dinamico/grafico-dinamico';
+import {
+  AGRUPACIONES,
+  AGRUPACIONES_POR_METRICA,
+  DashboardResumen,
+  GraficoDinamico,
+  METRICAS,
+  TIPOS_GRAFICO,
+  TipoAgrupacion,
+  TipoGrafico,
+  TipoMetrica,
+} from '../models/dashboard';
 import { DashboardService } from '../services/dashboard';
+
+// Fecha de hoy y del primer dia del mes en formato yyyy-mm-dd (el que usa el input date)
+const hoy = new Date();
+const HOY = hoy.toISOString().slice(0, 10);
+const PRIMERO_DEL_MES = new Date(hoy.getFullYear(), hoy.getMonth(), 1).toISOString().slice(0, 10);
 
 // Solo se registran las piezas de Chart.js que usan estos graficos
 Chart.register(
@@ -48,6 +67,7 @@ const COLORES = {
 
 @Component({
   selector: 'app-dashboard',
+  imports: [ReactiveFormsModule, GraficoDinamicoCard],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -67,6 +87,36 @@ export class Dashboard implements OnInit, OnDestroy {
   readonly error = signal<string | null>(null);
 
   readonly nombreUsuario = this.sesionService.nombreUsuario;
+
+  // ---- Graficos dinamicos (H26) ----
+  protected readonly tiposGrafico = TIPOS_GRAFICO;
+  protected readonly metricas = METRICAS;
+
+  readonly filtros = new FormGroup({
+    tipoGrafico: new FormControl<TipoGrafico>('TORTA', { nonNullable: true, validators: [Validators.required] }),
+    metrica: new FormControl<TipoMetrica>('INGRESOS', { nonNullable: true, validators: [Validators.required] }),
+    agruparPor: new FormControl<TipoAgrupacion>('HABITACION', { nonNullable: true, validators: [Validators.required] }),
+    fechaDesde: new FormControl(PRIMERO_DEL_MES, { nonNullable: true, validators: [Validators.required] }),
+    fechaHasta: new FormControl(HOY, { nonNullable: true, validators: [Validators.required] }),
+    limite: new FormControl(5, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(10)] }),
+  });
+
+  private readonly metricaElegida = toSignal(this.filtros.controls.metrica.valueChanges, { initialValue: 'INGRESOS' as TipoMetrica });
+  private readonly fechaDesde = toSignal(this.filtros.controls.fechaDesde.valueChanges, { initialValue: PRIMERO_DEL_MES });
+  private readonly fechaHasta = toSignal(this.filtros.controls.fechaHasta.valueChanges, { initialValue: HOY });
+
+  // "Agrupar por" solo muestra las opciones validas para la metrica elegida
+  readonly agrupaciones = computed(() =>
+    AGRUPACIONES.filter((opcion) => AGRUPACIONES_POR_METRICA[this.metricaElegida()].includes(opcion.valor))
+  );
+
+  // Las fechas vienen en yyyy-mm-dd, asi que se pueden comparar como texto
+  readonly fechasInvalidas = computed(() => this.fechaDesde() > this.fechaHasta());
+
+  readonly graficosDinamicos = signal<{ id: number; grafico: GraficoDinamico }[]>([]);
+  readonly generando = signal(false);
+  readonly mensajeGrafico = signal<string | null>(null);
+  private proximoId = 1;
 
   readonly porcentajeOcupacion = computed(() => {
     const resumen = this.resumen();
@@ -96,6 +146,16 @@ export class Dashboard implements OnInit, OnDestroy {
   constructor() {
     // Se redibuja cada vez que cambia el resumen o aparecen los canvas
     afterRenderEffect(() => this.dibujarGraficos());
+
+    // Si la agrupacion elegida no sirve para la nueva metrica, se pasa a la primera valida
+    effect(() => {
+      const opciones = this.agrupaciones();
+      const actual = this.filtros.controls.agruparPor.value;
+
+      if (!opciones.some((opcion) => opcion.valor === actual)) {
+        this.filtros.controls.agruparPor.setValue(opciones[0].valor);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -120,6 +180,40 @@ export class Dashboard implements OnInit, OnDestroy {
         this.cargando.set(false);
       },
     });
+  }
+
+  onGenerarGrafico(): void {
+    if (this.filtros.invalid) {
+      this.filtros.markAllAsTouched();
+      return;
+    }
+    // Con las fechas invertidas no se llama a la API
+    if (this.fechasInvalidas()) {
+      return;
+    }
+
+    this.generando.set(true);
+    this.mensajeGrafico.set(null);
+
+    this.dashboardService.generarGrafico(this.filtros.getRawValue()).subscribe({
+      next: (grafico) => {
+        if (grafico.etiquetas.length === 0) {
+          this.mensajeGrafico.set('No hay datos para el período seleccionado.');
+        } else {
+          // El nuevo va primero para que se vea sin tener que bajar
+          this.graficosDinamicos.update((lista) => [{ id: this.proximoId++, grafico }, ...lista]);
+        }
+        this.generando.set(false);
+      },
+      error: (error: ApiError) => {
+        this.mensajeGrafico.set(error.mensaje);
+        this.generando.set(false);
+      },
+    });
+  }
+
+  onQuitarGrafico(id: number): void {
+    this.graficosDinamicos.update((lista) => lista.filter((item) => item.id !== id));
   }
 
   private dibujarGraficos(): void {
