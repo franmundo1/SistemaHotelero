@@ -57,4 +57,6 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
     List<ReservaEntity> findByEstadoIgnoreCase(String estado);
 
     long countByEstadoIgnoreCase(String estado);
+
+    List<ReservaEntity> findByFechaEntradaBetween(LocalDate desde, LocalDate hasta);
 }

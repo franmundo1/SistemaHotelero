@@ -127,6 +127,60 @@ button:disabled {
   color: #991b1b;
 }
 
+/* Graficos personalizados (H26) */
+.personalizados {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.personalizados h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.4rem;
+}
+
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background-color: white;
+}
+
+.filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.filtros select,
+.filtros input {
+  padding: 0.55rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font: inherit;
+  font-weight: 400;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+.aviso {
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem;
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
 @media (width <= 1000px) {
   .graficos {
     grid-template-columns: repeat(2, 1fr);
