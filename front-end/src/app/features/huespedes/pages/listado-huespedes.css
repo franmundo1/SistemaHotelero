@@ -18,7 +18,7 @@
 
 .huespedes__seccion {
   margin: 0 0 0.35rem;
-  color: #2563eb;
+  color: #b55b3a;
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -27,13 +27,13 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: #302429;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
 .huespedes__descripcion {
   margin: 0.5rem 0 0;
-  color: #64748b;
+  color: #776d67;
 }
 
 .boton-recargar,
@@ -41,7 +41,7 @@ h1 {
   border: 0;
   border-radius: 0.6rem;
   padding: 0.7rem 1rem;
-  background-color: #2563eb;
+  background-color: #b55b3a;
   color: white;
   font: inherit;
   font-weight: 600;
@@ -55,7 +55,7 @@ h1 {
 
 .tabla-contenedor {
   overflow-x: auto;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   background-color: white;
   box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
@@ -74,33 +74,33 @@ td {
 }
 
 th {
-  background-color: #f8fafc;
-  color: #475569;
+  background-color: #fffdfa;
+  color: #5f514d;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 td {
-  border-top: 1px solid #e2e8f0;
-  color: #334155;
+  border-top: 1px solid #ded5cc;
+  color: #4c403d;
 }
 
 tbody tr:hover {
-  background-color: #f8fafc;
+  background-color: #fffdfa;
 }
 
 .nombre {
-  color: #172033;
+  color: #302429;
   font-weight: 700;
 }
 
 .mensaje {
   padding: 2rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   background-color: white;
-  color: #475569;
+  color: #5f514d;
   text-align: center;
 }
 
@@ -131,8 +131,8 @@ tbody tr:hover {
 }
 
 .boton-recargar--secundario {
-  background-color: #e2e8f0;
-  color: #334155;
+  background-color: #ded5cc;
+  color: #4c403d;
 }
 
 .acciones {

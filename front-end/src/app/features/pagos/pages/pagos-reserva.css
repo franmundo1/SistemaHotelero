@@ -18,7 +18,7 @@
 
 .seccion {
   margin: 0 0 0.35rem;
-  color: #2563eb;
+  color: #b55b3a;
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -27,12 +27,12 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: #302429;
 }
 
 .descripcion {
   margin: 0.5rem 0 0;
-  color: #64748b;
+  color: #776d67;
 }
 
 .botones {
@@ -45,7 +45,7 @@ button {
   border: 0;
   border-radius: 0.5rem;
   padding: 0.7rem 1rem;
-  background: #2563eb;
+  background: #b55b3a;
   color: white;
   font: inherit;
   font-weight: 700;
@@ -54,7 +54,7 @@ button {
 }
 
 .botones a {
-  background: #64748b;
+  background: #776d67;
 }
 
 button:disabled {
@@ -64,7 +64,7 @@ button:disabled {
 
 .tabla-contenedor {
   overflow-x: auto;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   background: white;
 }
@@ -82,14 +82,14 @@ td {
 }
 
 th {
-  background: #f8fafc;
-  color: #475569;
+  background: #fffdfa;
+  color: #5f514d;
   font-size: 0.8rem;
 }
 
 td {
-  border-top: 1px solid #e2e8f0;
-  color: #334155;
+  border-top: 1px solid #ded5cc;
+  color: #4c403d;
 }
 
 .monto {
@@ -101,15 +101,15 @@ td {
   display: inline-block;
   border-radius: 20px;
   padding: 0.3rem 0.65rem;
-  background: #e2e8f0;
-  color: #475569;
+  background: #ded5cc;
+  color: #5f514d;
   font-size: 0.8rem;
   font-weight: 700;
 }
 
 .tipo--anticipo {
-  background: #dbeafe;
-  color: #1e40af;
+  background: #eaded6;
+  color: #8b442b;
 }
 
 .tipo--final {
@@ -118,11 +118,11 @@ td {
 }
 
 .mensaje {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   padding: 1.5rem;
   background: white;
-  color: #475569;
+  color: #5f514d;
   text-align: center;
 }
 
