@@ -87,6 +87,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/reservas/**").hasAuthority("VER_RESERVAS")
                         .requestMatchers(HttpMethod.POST, "/api/reservas/**").hasAuthority("CREAR_RESERVA")
                         .requestMatchers(HttpMethod.PUT, "/api/reservas/**").hasAuthority("ACTUALIZAR_RESERVA")
+                        .requestMatchers(HttpMethod.PATCH, "/api/reservas/*/cancelar").hasAuthority("CANCELAR_RESERVA")
                         .requestMatchers(HttpMethod.DELETE, "/api/reservas/**").hasAuthority("CANCELAR_RESERVA")
 
                         .requestMatchers(HttpMethod.GET, "/api/huespedes/**").hasAuthority("VER_HUESPEDES")
