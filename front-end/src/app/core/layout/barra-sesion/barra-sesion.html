@@ -1,6 +1,6 @@
 <header class="barra">
   <div class="barra__contenido">
-    <a class="barra__marca" [routerLink]="rutaInicio()" aria-label="Ir al inicio">
+    <a class="barra__marca" [routerLink]="rutaInicio()" aria-label="Ir al inicio" (click)="cerrarMenu()">
       <strong>FARO GESTIÓN</strong>
       <span>HOTEL &amp; ESTADÍAS</span>
     </a>
@@ -8,7 +8,7 @@
     <button
       type="button"
       class="barra__menu"
-      aria-label="Abrir menú"
+      [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
       [attr.aria-expanded]="menuAbierto()"
       aria-controls="navegacion-principal"
       (click)="cambiarMenu()"
