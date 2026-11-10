@@ -18,7 +18,7 @@
 
 .check-in__seccion {
   margin: 0 0 0.35rem;
-  color: #2563eb;
+  color: #b55b3a;
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -27,19 +27,19 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: #302429;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
 .check-in__encabezado div > p:last-child {
   margin: 0.5rem 0 0;
-  color: #64748b;
+  color: #776d67;
 }
 
 form,
 .resultado,
 .mensaje {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   padding: 1.5rem;
   background-color: white;
@@ -54,7 +54,7 @@ form {
 label {
   display: grid;
   gap: 0.5rem;
-  color: #334155;
+  color: #4c403d;
   font-weight: 700;
 }
 
@@ -62,18 +62,18 @@ select,
 textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #ded5cc;
   border-radius: 0.65rem;
   padding: 0.8rem 1rem;
   background-color: white;
-  color: #172033;
+  color: #302429;
   font: inherit;
   outline: none;
 }
 
 select:focus,
 textarea:focus {
-  border-color: #2563eb;
+  border-color: #b55b3a;
   box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
 }
 
@@ -84,13 +84,13 @@ textarea {
 .reserva {
   border-radius: 0.7rem;
   padding: 1rem;
-  background-color: #f8fafc;
+  background-color: #fffdfa;
 }
 
 .reserva h2,
 .resultado h2 {
   margin: 0 0 1rem;
-  color: #172033;
+  color: #302429;
   font-size: 1.1rem;
 }
 
@@ -107,7 +107,7 @@ dl div {
 }
 
 dt {
-  color: #64748b;
+  color: #776d67;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -115,7 +115,7 @@ dt {
 
 dd {
   margin: 0;
-  color: #172033;
+  color: #302429;
   font-weight: 700;
 }
 
@@ -125,7 +125,7 @@ form > button,
   border: 0;
   border-radius: 0.65rem;
   padding: 0.8rem 1rem;
-  background-color: #2563eb;
+  background-color: #b55b3a;
   color: white;
   font: inherit;
   font-weight: 700;
@@ -139,7 +139,7 @@ form > button:disabled,
 }
 
 .boton-secundario {
-  background-color: #475569;
+  background-color: #5f514d;
 }
 
 .resultado {
@@ -149,7 +149,7 @@ form > button:disabled,
 }
 
 .mensaje {
-  color: #475569;
+  color: #5f514d;
   text-align: center;
 }
 

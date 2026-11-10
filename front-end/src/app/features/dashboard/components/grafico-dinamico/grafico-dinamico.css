@@ -1,8 +1,14 @@
 .grafico {
-  border: 1px solid #e2e8f0;
+  min-width: 0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   padding: 1.2rem;
   background-color: white;
+}
+
+:host {
+  display: block;
+  min-width: 0;
 }
 
 header {
@@ -15,7 +21,7 @@ header {
 
 h2 {
   margin: 0;
-  color: #172033;
+  color: #302429;
   font-size: 1rem;
 }
 
@@ -23,8 +29,8 @@ h2 {
   border: 0;
   border-radius: 0.5rem;
   padding: 0.35rem 0.7rem;
-  background-color: #e2e8f0;
-  color: #334155;
+  background-color: #ded5cc;
+  color: #4c403d;
   font: inherit;
   font-size: 0.85rem;
   cursor: pointer;
@@ -44,5 +50,5 @@ h2 {
 small {
   display: block;
   margin-top: 0.75rem;
-  color: #64748b;
+  color: #776d67;
 }

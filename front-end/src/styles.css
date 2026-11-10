@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --fondo-pagina: #f4efe8;
+  --superficie: #fffdfa;
+  --texto-principal: #302429;
+  --texto-suave: #776d67;
+  --terracota: #b55b3a;
+  --terracota-oscuro: #94472d;
+  --borde: #ded5cc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--fondo-pagina);
+  color: var(--texto-principal);
+  font-family: Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (width <= 700px) {
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+  }
+}

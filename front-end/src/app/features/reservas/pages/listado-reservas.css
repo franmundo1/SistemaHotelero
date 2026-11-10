@@ -19,7 +19,7 @@
 .reservas__seccion,
 .modal__seccion {
   margin: 0 0 0.35rem;
-  color: #2563eb;
+  color: #b55b3a;
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -29,7 +29,7 @@
 h1,
 h2 {
   margin: 0;
-  color: #172033;
+  color: #302429;
 }
 
 h1 {
@@ -38,7 +38,7 @@ h1 {
 
 .reservas__descripcion {
   margin: 0.5rem 0 0;
-  color: #64748b;
+  color: #776d67;
 }
 
 .boton-actualizar,
@@ -54,7 +54,7 @@ h1 {
 
 .boton-actualizar,
 .mensaje button {
-  background-color: #2563eb;
+  background-color: #b55b3a;
   color: white;
 }
 
@@ -65,7 +65,7 @@ button:disabled {
 
 .tabla-contenedor {
   overflow-x: auto;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   background-color: white;
   box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
@@ -85,24 +85,24 @@ td {
 }
 
 th {
-  background-color: #f8fafc;
-  color: #475569;
+  background-color: #fffdfa;
+  color: #5f514d;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 td {
-  border-top: 1px solid #e2e8f0;
-  color: #334155;
+  border-top: 1px solid #ded5cc;
+  color: #4c403d;
 }
 
 tbody tr:hover {
-  background-color: #f8fafc;
+  background-color: #fffdfa;
 }
 
 .huesped {
-  color: #172033;
+  color: #302429;
   font-weight: 700;
 }
 
@@ -115,8 +115,8 @@ tbody tr:hover {
 }
 
 .estado--confirmada {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: #eaded6;
+  color: #8b442b;
 }
 
 .estado--en_curso {
@@ -125,8 +125,8 @@ tbody tr:hover {
 }
 
 .estado--finalizada {
-  background-color: #e2e8f0;
-  color: #475569;
+  background-color: #ded5cc;
+  color: #5f514d;
 }
 
 .estado--cancelada {
@@ -139,7 +139,7 @@ tbody tr:hover {
   max-width: 180px;
   margin-top: 0.4rem;
   overflow: hidden;
-  color: #64748b;
+  color: #776d67;
   text-overflow: ellipsis;
 }
 
@@ -149,19 +149,19 @@ tbody tr:hover {
 
 .accion-pagos {
   display: inline-block;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #ded5cc;
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
   background-color: white;
-  color: #334155;
+  color: #4c403d;
   font: inherit;
   font-weight: 700;
   text-decoration: none;
 }
 
 .accion-pagos:hover {
-  border-color: #94a3b8;
-  background-color: #f1f5f9;
+  border-color: #b5a49b;
+  background-color: #f4efe8;
 }
 
 .accion-cancelar {
@@ -182,16 +182,16 @@ tbody tr:hover {
 }
 
 .sin-accion {
-  color: #94a3b8;
+  color: #b5a49b;
 }
 
 .mensaje,
 .mensaje-exito {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ded5cc;
   border-radius: 0.8rem;
   padding: 1.25rem;
   background-color: white;
-  color: #475569;
+  color: #5f514d;
   text-align: center;
 }
 
@@ -220,6 +220,8 @@ tbody tr:hover {
 
 .modal {
   width: min(100%, 520px);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
   border-radius: 0.9rem;
   padding: 1.5rem;
   background-color: white;
@@ -234,14 +236,14 @@ tbody tr:hover {
 }
 
 .modal > p {
-  color: #475569;
+  color: #5f514d;
   line-height: 1.6;
 }
 
 .modal__cerrar {
   padding: 0.2rem 0.55rem !important;
   background-color: transparent;
-  color: #64748b;
+  color: #776d67;
   font-size: 1.5rem !important;
 }
 
@@ -253,24 +255,24 @@ tbody tr:hover {
 .modal label {
   display: grid;
   gap: 0.5rem;
-  color: #334155;
+  color: #4c403d;
   font-weight: 700;
 }
 
 .modal textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #ded5cc;
   border-radius: 0.65rem;
   padding: 0.8rem 1rem;
-  color: #172033;
+  color: #302429;
   font: inherit;
   resize: vertical;
   outline: none;
 }
 
 .modal textarea:focus {
-  border-color: #2563eb;
+  border-color: #b55b3a;
   box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
 }
 
@@ -282,8 +284,8 @@ tbody tr:hover {
 }
 
 .boton-secundario {
-  background-color: #e2e8f0;
-  color: #334155;
+  background-color: #ded5cc;
+  color: #4c403d;
 }
 
 .boton-peligro {

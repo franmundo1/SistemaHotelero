@@ -1,27 +1,58 @@
+:host {
+  display: block;
+}
+
 form {
-  max-width: 320px;
+  width: min(100%, 430px);
   margin-bottom: 1.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  padding: 1.1rem;
+  background: var(--superficie);
 }
 
 label {
   display: block;
-  margin-top: 0.75rem;
+  margin-top: 0.8rem;
+  color: var(--texto-principal);
+  font-weight: 700;
 }
 
 input,
 select {
   display: block;
   width: 100%;
-  box-sizing: border-box;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.45rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--superficie);
 }
 
 button {
   margin-top: 1rem;
   margin-right: 0.5rem;
+  border: 0;
+  border-radius: 0.45rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--terracota);
+  color: white;
+  cursor: pointer;
 }
 
 .error {
   display: block;
-  color: red;
+  margin-top: 0.4rem;
+  color: #9b3939;
+}
+
+@media (width <= 500px) {
+  form {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+    margin-right: 0;
+  }
 }
