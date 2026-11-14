@@ -11,14 +11,39 @@ export interface OpcionMenu {
   roles: string[];
 }
 
-// Opciones del menu y que roles las ven (el admin ve todas)
-export const OPCIONES_MENU: OpcionMenu[] = [
-  { texto: 'Habitaciones', ruta: '/habitaciones', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Disponibilidad', ruta: '/disponibilidad', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Reservas', ruta: '/reservas', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Huéspedes', ruta: '/huespedes', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Consumos', ruta: '/consumos', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Check-in', ruta: '/check-in', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Check-out', ruta: '/check-out', roles: [ROLES.ADMIN, ROLES.RECEPCIONISTA] },
-  { texto: 'Limpieza', ruta: '/limpieza', roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
+export interface GrupoMenu {
+  texto: string;
+  opciones: OpcionMenu[];
+}
+
+const RECEPCION = [ROLES.ADMIN, ROLES.RECEPCIONISTA];
+
+// Opciones del menu agrupadas segun el flujo del hotel y que roles las ven (el admin ve todas)
+export const GRUPOS_MENU: GrupoMenu[] = [
+  {
+    texto: 'Reservas',
+    opciones: [
+      { texto: 'Reservas', ruta: '/reservas', roles: RECEPCION },
+      { texto: 'Disponibilidad', ruta: '/disponibilidad', roles: RECEPCION },
+      { texto: 'Huéspedes', ruta: '/huespedes', roles: RECEPCION },
+    ],
+  },
+  {
+    texto: 'Estadías',
+    opciones: [
+      { texto: 'Check-in', ruta: '/check-in', roles: RECEPCION },
+      { texto: 'Check-out', ruta: '/check-out', roles: RECEPCION },
+      { texto: 'Consumos', ruta: '/consumos', roles: RECEPCION },
+    ],
+  },
+  {
+    texto: 'Habitaciones',
+    opciones: [
+      { texto: 'Habitaciones', ruta: '/habitaciones', roles: RECEPCION },
+      { texto: 'Limpieza', ruta: '/limpieza', roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
+    ],
+  },
 ];
+
+// Lista plana con todas las opciones, por si se necesita recorrerlas sin grupos
+export const OPCIONES_MENU: OpcionMenu[] = GRUPOS_MENU.flatMap((grupo) => grupo.opciones);
