@@ -1,11 +1,76 @@
+/* =========================================================
+   Tokens globales del sistema (H20)
+   Todos los componentes toman colores, tipografía y bordes
+   de estas variables, así un cambio de marca se hace acá.
+   ========================================================= */
 :root {
-  --fondo-pagina: #f4efe8;
-  --superficie: #fffdfa;
-  --texto-principal: #302429;
-  --texto-suave: #776d67;
-  --terracota: #b55b3a;
-  --terracota-oscuro: #94472d;
-  --borde: #ded5cc;
+  /* Colores de marca */
+  --color-acento: #b55b3a;
+  --color-acento-oscuro: #94472d;
+  --color-acento-suave: #f6e8e0;
+  --color-sobre-acento: #ffffff;
+
+  /* Superficies: lienzo blanco, tarjetas crema */
+  --color-fondo: #ffffff;
+  --color-superficie: #fffcf6;
+  --color-panel-oscuro: #302429;
+
+  /* Texto */
+  --color-texto: #302429;
+  --color-texto-secundario: #4c403d;
+  --color-texto-suave: #776d67;
+
+  /* Bordes finos en lugar de sombras */
+  --color-borde: #ded5cc;
+  --color-divisor: #ebe4dd;
+  --color-foco: rgb(181 91 58 / 28%);
+
+  /* Estados */
+  --color-info-fondo: #d2f4ff;
+  --color-exito-fondo: #f0fdf4;
+  --color-exito-borde: #bbf7d0;
+  --color-exito-texto: #166534;
+  --color-aviso-fondo: #fef3c7;
+  --color-aviso-texto: #92400e;
+  --color-error-fondo: #fef2f2;
+  --color-error-borde: #fecaca;
+  --color-error-texto: #991b1b;
+
+  /* Tipografía: una sola familia, contraste entre 400 y 900 */
+  --fuente: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --peso-normal: 400;
+  --peso-medio: 500;
+  --peso-semi: 600;
+  --peso-negrita: 700;
+  --peso-titulo: 900;
+  --texto-chico: 0.8125rem;
+  --texto-base: 1rem;
+  --texto-subtitulo: 1.25rem;
+  --texto-titulo: clamp(2rem, 4vw, 3rem);
+  --tracking-titulo: -0.025em;
+
+  /* Bordes redondeados: tarjetas 4px, campos 8px, botones y etiquetas en píldora */
+  --radio-tarjeta: 4px;
+  --radio-control: 8px;
+  --radio-pildora: 9999px;
+
+  /* Espaciado y transiciones */
+  --espacio-1: 8px;
+  --espacio-2: 16px;
+  --espacio-3: 24px;
+  --espacio-4: 32px;
+  --espacio-5: 48px;
+  --ancho-maximo: 1280px;
+  --transicion: 180ms ease;
+
+  /* Nombres anteriores, para no romper estilos que todavía los usan */
+  --fondo-pagina: var(--color-fondo);
+  --superficie: var(--color-superficie);
+  --texto-principal: var(--color-texto);
+  --texto-suave: var(--color-texto-suave);
+  --terracota: var(--color-acento);
+  --terracota-oscuro: var(--color-acento-oscuro);
+  --borde: var(--color-borde);
 }
 
 * {
@@ -16,9 +81,31 @@ html,
 body {
   min-width: 320px;
   margin: 0;
-  background: var(--fondo-pagina);
-  color: var(--texto-principal);
-  font-family: Arial, sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente);
+  font-size: var(--texto-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2 {
+  font-weight: var(--peso-titulo);
+  letter-spacing: var(--tracking-titulo);
+  line-height: 1.05;
+}
+
+h3 {
+  font-weight: var(--peso-negrita);
+  letter-spacing: -0.01em;
+}
+
+/* Los números de tablas y tarjetas quedan alineados */
+table,
+.kpi,
+.tarjeta {
+  font-variant-numeric: tabular-nums;
 }
 
 button,
@@ -34,6 +121,21 @@ input,
 select,
 textarea {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Foco visible para quien navega con teclado */
+:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 @media (width <= 700px) {

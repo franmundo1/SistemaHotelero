@@ -6,7 +6,7 @@
   width: min(900px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 2rem 0;
-  font-family: Arial, sans-serif;
+  font-family: var(--fuente);
 }
 
 .encabezado {
@@ -29,7 +29,7 @@ h1 {
 .tabla-contenedor {
   overflow-x: auto;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: var(--radio-tarjeta);
   background: white;
 }
 
@@ -64,7 +64,7 @@ td {
 
 .estado {
   display: inline-block;
-  border-radius: 20px;
+  border-radius: var(--radio-pildora);
   padding: 0.3rem 0.65rem;
   background: #fbe0dc;
   color: #8b3025;
@@ -79,9 +79,9 @@ td {
 
 button {
   border: 0;
-  border-radius: 5px;
+  border-radius: var(--radio-pildora);
   padding: 0.7rem 1rem;
-  background: #b55b3a;
+  background: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 600;
@@ -100,19 +100,19 @@ button:disabled {
 .aviso,
 .vacio {
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: var(--radio-tarjeta);
   padding: 0.8rem;
 }
 
 .aviso--bien {
   border-color: #96c9a2;
-  background: #f1fff4;
+  background: var(--color-exito-fondo);
   color: #286438;
 }
 
 .aviso--error {
   border-color: #e4aaaa;
-  background: #fff3f3;
+  background: var(--color-error-fondo);
   color: #a22;
 }
 

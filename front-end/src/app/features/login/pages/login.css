@@ -1,14 +1,14 @@
 :host {
-  --crema: #f4efe8;
-  --blanco-calido: #fffdfa;
-  --marron-oscuro: #302429;
-  --terracota: #b75d3e;
+  --crema: var(--color-fondo);
+  --blanco-calido: var(--color-superficie);
+  --marron-oscuro: var(--color-texto);
+  --terracota: var(--color-acento);
   --terracota-claro: #d99a7c;
   --verde-salvia: #718b78;
   --mostaza: #c49a45;
-  --texto: #332b28;
-  --texto-suave: #776d67;
-  --borde: #ded5cc;
+  --texto: var(--color-texto);
+  --texto-suave: var(--color-texto-suave);
+  --borde: var(--color-borde);
 
   position: fixed;
   inset: 0;
@@ -48,7 +48,7 @@
 }
 
 .marca strong {
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .marca__icono {
@@ -71,7 +71,7 @@
 
 .hero__contenido p {
   margin: 1.4rem 0 0;
-  color: #eaded6;
+  color: var(--color-borde);
   font-size: clamp(1.25rem, 2vw, 2rem);
   line-height: 1.35;
 }
@@ -116,7 +116,7 @@
 .campo label {
   color: var(--texto);
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .campo__control {
@@ -126,7 +126,7 @@
   box-sizing: border-box;
   gap: 0.85rem;
   border: 1px solid var(--borde);
-  border-radius: 0.75rem;
+  border-radius: var(--radio-control);
   padding: 0 1.1rem;
   background-color: var(--blanco-calido);
   color: var(--texto-suave);
@@ -137,7 +137,7 @@
 
 .campo__control:focus-within {
   border-color: var(--terracota);
-  box-shadow: 0 0 0 4px rgb(183 93 62 / 16%);
+  box-shadow: 0 0 0 4px var(--color-foco);
 }
 
 .campo__control > svg,
@@ -169,7 +169,7 @@
 }
 
 .campo small {
-  color: #b91c1c;
+  color: var(--color-error-texto);
   font-size: 0.85rem;
 }
 
@@ -204,11 +204,11 @@
 
 .login__error {
   margin: 0 0 1rem;
-  border: 1px solid #fecaca;
-  border-radius: 0.65rem;
+  border: 1px solid var(--color-error-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 0.8rem 1rem;
-  background-color: #fef2f2;
-  color: #991b1b;
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 .boton-ingresar {
@@ -219,15 +219,14 @@
   justify-content: center;
   gap: 1rem;
   border: 0;
-  border-radius: 0.75rem;
+  border-radius: var(--radio-pildora);
   padding: 0.9rem 1.2rem;
   background: linear-gradient(90deg, var(--terracota), var(--terracota-claro));
   color: var(--blanco-calido);
   font: inherit;
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgb(183 93 62 / 22%);
   transition:
     transform 160ms ease,
     box-shadow 160ms ease;
@@ -235,7 +234,6 @@
 
 .boton-ingresar:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgb(183 93 62 / 32%);
 }
 
 .boton-ingresar:disabled {

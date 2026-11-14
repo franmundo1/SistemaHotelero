@@ -6,7 +6,7 @@
   width: min(850px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 2rem 0;
-  font-family: Arial, sans-serif;
+  font-family: var(--fuente);
 }
 
 .encabezado {
@@ -31,7 +31,7 @@ form,
 .resultado,
 .mensaje {
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: var(--radio-tarjeta);
   padding: 1.25rem;
   background: white;
 }
@@ -53,7 +53,7 @@ textarea {
   box-sizing: border-box;
   width: 100%;
   border: 1px solid #bbb;
-  border-radius: 5px;
+  border-radius: var(--radio-control);
   padding: 0.7rem;
   font: inherit;
 }
@@ -69,7 +69,7 @@ textarea {
 }
 
 .resumen {
-  border-radius: 6px;
+  border-radius: var(--radio-tarjeta);
   padding: 1rem;
   background: #f4f4f4;
 }
@@ -94,9 +94,9 @@ textarea {
 
 button {
   border: 0;
-  border-radius: 5px;
+  border-radius: var(--radio-pildora);
   padding: 0.7rem 1rem;
-  background: #b55b3a;
+  background: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 600;
@@ -115,7 +115,7 @@ button:disabled {
 .resultado {
   margin-bottom: 1.5rem;
   border-color: #8bc79a;
-  background: #f1fff4;
+  background: var(--color-exito-fondo);
 }
 
 .resultado h2 {
@@ -147,9 +147,9 @@ dd {
 .error-contenedor {
   margin-top: 1rem;
   border: 1px solid #e4aaaa;
-  border-radius: 5px;
+  border-radius: var(--radio-tarjeta);
   padding: 0.75rem;
-  background: #fff3f3;
+  background: var(--color-error-fondo);
 }
 
 @media (width <= 650px) {

@@ -6,7 +6,7 @@
   width: min(900px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 2rem 0;
-  font-family: Arial, sans-serif;
+  font-family: var(--fuente);
 }
 
 .consumos__encabezado,
@@ -35,7 +35,7 @@ form,
 .listado,
 .mensaje {
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: var(--radio-tarjeta);
   padding: 1.25rem;
   background: #fff;
 }
@@ -63,7 +63,7 @@ textarea {
   box-sizing: border-box;
   width: 100%;
   border: 1px solid #bbb;
-  border-radius: 5px;
+  border-radius: var(--radio-control);
   padding: 0.7rem;
   font: inherit;
 }
@@ -74,9 +74,9 @@ textarea {
 
 button {
   border: 0;
-  border-radius: 5px;
+  border-radius: var(--radio-pildora);
   padding: 0.7rem 1rem;
-  background: #b55b3a;
+  background: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 600;
@@ -105,9 +105,9 @@ button:disabled {
 .error-contenedor {
   margin: 0;
   border: 1px solid #e4aaaa;
-  border-radius: 5px;
+  border-radius: var(--radio-tarjeta);
   padding: 0.75rem;
-  background: #fff3f3;
+  background: var(--color-error-fondo);
 }
 
 .exito {

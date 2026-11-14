@@ -19,9 +19,9 @@
 .reservas__seccion,
 .modal__seccion {
   margin: 0 0 0.35rem;
-  color: #b55b3a;
+  color: var(--color-acento);
   font-size: 0.85rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -29,7 +29,7 @@
 h1,
 h2 {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
 }
 
 h1 {
@@ -38,14 +38,14 @@ h1 {
 
 .reservas__descripcion {
   margin: 0.5rem 0 0;
-  color: #776d67;
+  color: var(--color-texto-suave);
 }
 
 .boton-actualizar,
 .mensaje button,
 .modal button {
   border: 0;
-  border-radius: 0.6rem;
+  border-radius: var(--radio-pildora);
   padding: 0.7rem 1rem;
   font: inherit;
   font-weight: 700;
@@ -54,7 +54,7 @@ h1 {
 
 .boton-actualizar,
 .mensaje button {
-  background-color: #b55b3a;
+  background-color: var(--color-acento);
   color: white;
 }
 
@@ -65,10 +65,9 @@ button:disabled {
 
 .tabla-contenedor {
   overflow-x: auto;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background-color: white;
-  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
 }
 
 table {
@@ -85,53 +84,53 @@ td {
 }
 
 th {
-  background-color: #fffdfa;
-  color: #5f514d;
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 td {
-  border-top: 1px solid #ded5cc;
-  color: #4c403d;
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
 }
 
 tbody tr:hover {
-  background-color: #fffdfa;
+  background-color: var(--color-superficie);
 }
 
 .huesped {
-  color: #302429;
+  color: var(--color-texto);
   font-weight: 700;
 }
 
 .estado {
   display: inline-flex;
-  border-radius: 999px;
+  border-radius: var(--radio-pildora);
   padding: 0.3rem 0.65rem;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .estado--confirmada {
-  background-color: #eaded6;
+  background-color: var(--color-borde);
   color: #8b442b;
 }
 
 .estado--en_curso {
-  background-color: #fef3c7;
-  color: #92400e;
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
 }
 
 .estado--finalizada {
-  background-color: #ded5cc;
-  color: #5f514d;
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
 }
 
 .estado--cancelada {
-  background-color: #fee2e2;
-  color: #991b1b;
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 .motivo {
@@ -139,7 +138,7 @@ tbody tr:hover {
   max-width: 180px;
   margin-top: 0.4rem;
   overflow: hidden;
-  color: #776d67;
+  color: var(--color-texto-suave);
   text-overflow: ellipsis;
 }
 
@@ -149,11 +148,11 @@ tbody tr:hover {
 
 .accion-pagos {
   display: inline-block;
-  border: 1px solid #ded5cc;
-  border-radius: 0.5rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
   padding: 0.5rem 0.75rem;
   background-color: white;
-  color: #4c403d;
+  color: var(--color-texto-secundario);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
@@ -161,15 +160,15 @@ tbody tr:hover {
 
 .accion-pagos:hover {
   border-color: #b5a49b;
-  background-color: #f4efe8;
+  background-color: var(--color-fondo);
 }
 
 .accion-cancelar {
-  border: 1px solid #fecaca;
-  border-radius: 0.5rem;
+  border: 1px solid var(--color-error-borde);
+  border-radius: var(--radio-pildora);
   padding: 0.5rem 0.75rem;
-  background-color: #fef2f2;
-  color: #b91c1c;
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
@@ -187,25 +186,25 @@ tbody tr:hover {
 
 .mensaje,
 .mensaje-exito {
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 1.25rem;
   background-color: white;
-  color: #5f514d;
+  color: var(--color-texto-secundario);
   text-align: center;
 }
 
 .mensaje--error {
-  border-color: #fecaca;
-  background-color: #fef2f2;
-  color: #991b1b;
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 .mensaje-exito {
   margin-bottom: 1rem;
   border-color: #86efac;
-  background-color: #f0fdf4;
-  color: #166534;
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
 }
 
 .modal-fondo {
@@ -222,10 +221,9 @@ tbody tr:hover {
   width: min(100%, 520px);
   max-height: calc(100dvh - 2rem);
   overflow-y: auto;
-  border-radius: 0.9rem;
+  border-radius: var(--radio-tarjeta);
   padding: 1.5rem;
   background-color: white;
-  box-shadow: 0 24px 60px rgb(15 23 42 / 30%);
 }
 
 .modal > header {
@@ -236,14 +234,14 @@ tbody tr:hover {
 }
 
 .modal > p {
-  color: #5f514d;
+  color: var(--color-texto-secundario);
   line-height: 1.6;
 }
 
 .modal__cerrar {
   padding: 0.2rem 0.55rem !important;
   background-color: transparent;
-  color: #776d67;
+  color: var(--color-texto-suave);
   font-size: 1.5rem !important;
 }
 
@@ -255,25 +253,25 @@ tbody tr:hover {
 .modal label {
   display: grid;
   gap: 0.5rem;
-  color: #4c403d;
+  color: var(--color-texto-secundario);
   font-weight: 700;
 }
 
 .modal textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ded5cc;
-  border-radius: 0.65rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
   padding: 0.8rem 1rem;
-  color: #302429;
+  color: var(--color-texto);
   font: inherit;
   resize: vertical;
   outline: none;
 }
 
 .modal textarea:focus {
-  border-color: #b55b3a;
-  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-foco);
 }
 
 .modal__acciones {
@@ -284,8 +282,8 @@ tbody tr:hover {
 }
 
 .boton-secundario {
-  background-color: #ded5cc;
-  color: #4c403d;
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
 }
 
 .boton-peligro {
@@ -294,15 +292,15 @@ tbody tr:hover {
 }
 
 .error {
-  color: #b91c1c;
+  color: var(--color-error-texto);
 }
 
 .error--contenedor {
   margin: 0;
-  border: 1px solid #fecaca;
-  border-radius: 0.6rem;
+  border: 1px solid var(--color-error-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 0.75rem;
-  background-color: #fef2f2;
+  background-color: var(--color-error-fondo);
 }
 
 @media (width <= 700px) {
