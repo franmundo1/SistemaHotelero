@@ -18,27 +18,27 @@
 
 .seccion {
   margin: 0 0 0.35rem;
-  color: #b55b3a;
+  color: var(--color-acento);
   font-size: 0.875rem;
   font-weight: 700;
 }
 
 h1 {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
 .descripcion {
   margin: 0.4rem 0 0;
-  color: #776d67;
+  color: var(--color-texto-suave);
 }
 
 button {
   border: 0;
-  border-radius: 0.6rem;
+  border-radius: var(--radio-pildora);
   padding: 0.75rem 1.1rem;
-  background-color: #b55b3a;
+  background-color: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 700;
@@ -51,8 +51,8 @@ button:disabled {
 }
 
 .secundario {
-  background-color: #ded5cc;
-  color: #4c403d;
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
 }
 
 .tarjetas {
@@ -66,26 +66,26 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 1.1rem 1.2rem;
   background-color: white;
 }
 
 .tarjeta span {
-  color: #776d67;
+  color: var(--color-texto-suave);
   font-size: 0.85rem;
   font-weight: 700;
 }
 
 .tarjeta strong {
-  color: #302429;
+  color: var(--color-texto);
   font-size: 2rem;
   line-height: 1.1;
 }
 
 .tarjeta small {
-  color: #776d67;
+  color: var(--color-texto-suave);
 }
 
 .graficos {
@@ -96,15 +96,15 @@ button:disabled {
 
 .grafico {
   min-width: 0;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 1.2rem;
   background-color: white;
 }
 
 .grafico h2 {
   margin: 0 0 1rem;
-  color: #302429;
+  color: var(--color-texto);
   font-size: 1rem;
 }
 
@@ -116,28 +116,28 @@ button:disabled {
 
 .mensaje {
   padding: 2rem;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background-color: white;
   text-align: center;
 }
 
 .mensaje--error {
-  border-color: #fecaca;
-  background-color: #fef2f2;
-  color: #991b1b;
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 /* Graficos personalizados (H26) */
 .personalizados {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #ded5cc;
+  border-top: 1px solid var(--color-borde);
 }
 
 .personalizados h2 {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
   font-size: 1.4rem;
 }
 
@@ -148,8 +148,8 @@ button:disabled {
   gap: 0.75rem;
   margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background-color: white;
 }
 
@@ -158,7 +158,7 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  color: #4c403d;
+  color: var(--color-texto-secundario);
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -167,21 +167,21 @@ button:disabled {
 .filtros select,
 .filtros input {
   padding: 0.55rem;
-  border: 1px solid #ded5cc;
-  border-radius: 0.5rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
   font: inherit;
   font-weight: 400;
 }
 
 .error {
-  color: #b91c1c;
+  color: var(--color-error-texto);
 }
 
 .aviso {
   padding: 0.75rem 1rem;
-  border-radius: 0.6rem;
-  background-color: #fef3c7;
-  color: #92400e;
+  border-radius: var(--radio-tarjeta);
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
 }
 
 @media (width <= 1000px) {

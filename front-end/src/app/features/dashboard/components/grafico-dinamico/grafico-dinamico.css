@@ -1,7 +1,7 @@
 .grafico {
   min-width: 0;
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 1.2rem;
   background-color: white;
 }
@@ -21,24 +21,24 @@ header {
 
 h2 {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
   font-size: 1rem;
 }
 
 .quitar {
   border: 0;
-  border-radius: 0.5rem;
+  border-radius: var(--radio-pildora);
   padding: 0.35rem 0.7rem;
-  background-color: #ded5cc;
-  color: #4c403d;
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
   font: inherit;
   font-size: 0.85rem;
   cursor: pointer;
 }
 
 .quitar:hover {
-  background-color: #fecaca;
-  color: #991b1b;
+  background-color: var(--color-error-borde);
+  color: var(--color-error-texto);
 }
 
 /* Chart.js necesita un contenedor con alto fijo para maintainAspectRatio: false */
@@ -50,5 +50,5 @@ h2 {
 small {
   display: block;
   margin-top: 0.75rem;
-  color: #776d67;
+  color: var(--color-texto-suave);
 }

@@ -18,32 +18,31 @@
 
 .check-in__seccion {
   margin: 0 0 0.35rem;
-  color: #b55b3a;
+  color: var(--color-acento);
   font-size: 0.85rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 h1 {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
 .check-in__encabezado div > p:last-child {
   margin: 0.5rem 0 0;
-  color: #776d67;
+  color: var(--color-texto-suave);
 }
 
 form,
 .resultado,
 .mensaje {
-  border: 1px solid #ded5cc;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   padding: 1.5rem;
   background-color: white;
-  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
 }
 
 form {
@@ -54,7 +53,7 @@ form {
 label {
   display: grid;
   gap: 0.5rem;
-  color: #4c403d;
+  color: var(--color-texto-secundario);
   font-weight: 700;
 }
 
@@ -62,19 +61,19 @@ select,
 textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ded5cc;
-  border-radius: 0.65rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
   padding: 0.8rem 1rem;
   background-color: white;
-  color: #302429;
+  color: var(--color-texto);
   font: inherit;
   outline: none;
 }
 
 select:focus,
 textarea:focus {
-  border-color: #b55b3a;
-  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-foco);
 }
 
 textarea {
@@ -82,15 +81,15 @@ textarea {
 }
 
 .reserva {
-  border-radius: 0.7rem;
+  border-radius: var(--radio-tarjeta);
   padding: 1rem;
-  background-color: #fffdfa;
+  background-color: var(--color-superficie);
 }
 
 .reserva h2,
 .resultado h2 {
   margin: 0 0 1rem;
-  color: #302429;
+  color: var(--color-texto);
   font-size: 1.1rem;
 }
 
@@ -107,7 +106,7 @@ dl div {
 }
 
 dt {
-  color: #776d67;
+  color: var(--color-texto-suave);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -115,7 +114,7 @@ dt {
 
 dd {
   margin: 0;
-  color: #302429;
+  color: var(--color-texto);
   font-weight: 700;
 }
 
@@ -123,9 +122,9 @@ form > button,
 .boton-secundario,
 .mensaje button {
   border: 0;
-  border-radius: 0.65rem;
+  border-radius: var(--radio-pildora);
   padding: 0.8rem 1rem;
-  background-color: #b55b3a;
+  background-color: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 700;
@@ -139,33 +138,33 @@ form > button:disabled,
 }
 
 .boton-secundario {
-  background-color: #5f514d;
+  background-color: var(--color-texto-secundario);
 }
 
 .resultado {
   margin-bottom: 1.5rem;
   border-color: #86efac;
-  background-color: #f0fdf4;
+  background-color: var(--color-exito-fondo);
 }
 
 .mensaje {
-  color: #5f514d;
+  color: var(--color-texto-secundario);
   text-align: center;
 }
 
 .mensaje--error,
 .error--contenedor {
-  border: 1px solid #fecaca;
-  background-color: #fef2f2;
+  border: 1px solid var(--color-error-borde);
+  background-color: var(--color-error-fondo);
 }
 
 .error {
-  color: #b91c1c;
+  color: var(--color-error-texto);
 }
 
 .error--contenedor {
   margin: 0;
-  border-radius: 0.65rem;
+  border-radius: var(--radio-tarjeta);
   padding: 0.8rem 1rem;
 }
 

@@ -5,18 +5,18 @@
   top: 0;
   --fondo: #fffcf8;
   --fondo-avatar: #f1ddd3;
-  --texto: #2d2628;
-  --texto-suave: #786966;
-  --acento: #b55b3a;
-  --acento-oscuro: #94472d;
-  --borde: #e3d6cb;
+  --texto: var(--color-texto);
+  --texto-suave: var(--color-texto-suave);
+  --acento: var(--color-acento);
+  --acento-oscuro: var(--color-acento-oscuro);
+  --borde: var(--color-borde);
 }
 
 .barra {
   border-bottom: 1px solid var(--borde);
   background: var(--fondo);
   color: var(--texto);
-  font-family: system-ui, sans-serif;
+  font-family: var(--fuente);
 }
 
 .barra__contenido {
@@ -38,14 +38,14 @@
 
 .barra__marca strong {
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.25;
 }
 
 .barra__marca span {
   color: var(--acento);
   font-size: 0.55rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .barra__menu {
@@ -115,7 +115,7 @@
 
 .barra__reserva,
 .barra__salir {
-  border-radius: 0.5rem;
+  border-radius: var(--radio-pildora);
   padding: 0.65rem 0.8rem;
   font-size: 0.7rem;
   font-weight: 700;
@@ -149,7 +149,7 @@
   background: var(--fondo-avatar);
   color: var(--acento);
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .barra__usuario {
@@ -247,7 +247,7 @@
     place-content: center;
     gap: 0.3rem;
     border: 1px solid var(--borde);
-    border-radius: 0.25rem;
+    border-radius: var(--radio-tarjeta);
     background: var(--fondo);
     cursor: pointer;
   }
