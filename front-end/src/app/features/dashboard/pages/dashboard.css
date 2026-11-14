@@ -88,6 +88,20 @@ button:disabled {
   color: var(--color-texto-suave);
 }
 
+/* Llegadas de hoy e ingresos por canal */
+.paneles {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (width <= 900px) {
+  .paneles {
+    grid-template-columns: 1fr;
+  }
+}
+
 .graficos {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -130,6 +144,7 @@ button:disabled {
 
 /* Graficos personalizados (H26) */
 .personalizados {
+  scroll-margin-top: 80px;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--color-borde);

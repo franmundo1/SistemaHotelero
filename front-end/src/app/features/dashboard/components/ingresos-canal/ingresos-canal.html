@@ -1,0 +1,27 @@
+<article class="panel">
+  <h2>Ingresos por canal</h2>
+  <p class="panel__periodo">Pagos registrados este mes</p>
+
+  @if (cargando()) {
+    <p class="panel__mensaje">Cargando ingresos...</p>
+  } @else if (error()) {
+    <p class="panel__mensaje panel__mensaje--error">{{ error() }}</p>
+  } @else if (barras().length === 0) {
+    <p class="panel__mensaje">Todavía no hay pagos registrados este mes.</p>
+  } @else {
+    <ul class="barras">
+      @for (barra of barras(); track barra.etiqueta) {
+        <li>
+          <span class="barras__canal">{{ barra.etiqueta }}</span>
+          <span class="barras__pista" aria-hidden="true">
+            <span class="barras__valor" [style.width.%]="barra.ancho"></span>
+          </span>
+          <span class="barras__monto">{{ formatear(barra.valor) }}</span>
+        </li>
+      }
+    </ul>
+    <p class="panel__total">Total: <strong>{{ formatear(datos()!.total) }}</strong></p>
+  }
+
+  <button type="button" class="panel__enlace" (click)="irAGraficos()">Armar un gráfico →</button>
+</article>

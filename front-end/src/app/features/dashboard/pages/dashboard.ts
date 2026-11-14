@@ -26,6 +26,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SesionService } from '../../../core/auth/sesion.service';
 import { ApiError } from '../../../core/models/api-error';
 import { GraficoDinamicoCard } from '../components/grafico-dinamico/grafico-dinamico';
+import { IngresosCanal } from '../components/ingresos-canal/ingresos-canal';
+import { LlegadasHoy } from '../components/llegadas-hoy/llegadas-hoy';
 import {
   AGRUPACIONES,
   AGRUPACIONES_POR_METRICA,
@@ -67,7 +69,7 @@ const COLORES = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ReactiveFormsModule, GraficoDinamicoCard],
+  imports: [ReactiveFormsModule, GraficoDinamicoCard, LlegadasHoy, IngresosCanal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
