@@ -221,19 +221,17 @@
   border: 0;
   border-radius: var(--radio-pildora);
   padding: 0.9rem 1.2rem;
-  background: linear-gradient(90deg, var(--terracota), var(--terracota-claro));
-  color: var(--blanco-calido);
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
   font: inherit;
   font-size: 1.1rem;
-  font-weight: 900;
+  font-weight: var(--peso-negrita);
   cursor: pointer;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease;
+  transition: background-color var(--transicion);
 }
 
 .boton-ingresar:hover:not(:disabled) {
-  transform: translateY(-1px);
+  background: var(--color-acento-oscuro);
 }
 
 .boton-ingresar:disabled {
