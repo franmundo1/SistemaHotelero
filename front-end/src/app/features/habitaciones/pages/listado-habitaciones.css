@@ -204,3 +204,23 @@ tbody tr:hover {
     flex-direction: column;
   }
 }
+
+/* Habitaciones dadas de baja (solo las ve el admin) */
+tr.inactiva td {
+  color: #94a3b8;
+}
+
+tr.inactiva .estado {
+  opacity: 0.5;
+}
+
+.baja {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #64748b;
+}

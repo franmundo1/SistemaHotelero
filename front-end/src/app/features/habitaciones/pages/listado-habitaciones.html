@@ -77,8 +77,13 @@
 
         <tbody>
           @for (habitacion of habitaciones(); track habitacion.idExterno) {
-            <tr>
-              <td class="numero">{{ habitacion.numero }}</td>
+            <tr [class.inactiva]="!habitacion.activa">
+              <td class="numero">
+                {{ habitacion.numero }}
+                @if (!habitacion.activa) {
+                  <span class="baja">Dada de baja</span>
+                }
+              </td>
               <td>{{ mostrarEstado(habitacion.tipo) }}</td>
               <td>
                 {{ habitacion.capacidad }}
@@ -105,8 +110,12 @@
               </td>
               @if (esAdmin()) {
                 <td class="acciones">
-                  <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
-                  <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
+                  @if (habitacion.activa) {
+                    <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
+                    <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
+                  } @else {
+                    <button type="button" class="accion" (click)="onReactivar(habitacion)">Reactivar</button>
+                  }
                 </td>
               }
             </tr>
