@@ -1,0 +1,225 @@
+:host {
+  display: block;
+}
+
+.usuarios {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.usuarios__encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.usuarios__seccion {
+  margin: 0 0 0.35rem;
+  color: var(--color-acento);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: var(--color-texto);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.usuarios__descripcion {
+  margin: 0.5rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+.boton-recargar,
+.mensaje button {
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.7rem 1rem;
+  background-color: var(--color-acento);
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton-recargar:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+td {
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+tbody tr:hover {
+  background-color: var(--color-superficie);
+}
+
+.nombre {
+  color: var(--color-texto);
+  font-weight: 700;
+}
+
+.mensaje {
+  padding: 2rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: white;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+.mensaje--error {
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+.mensaje button {
+  margin-top: 0.75rem;
+}
+
+@media (width <= 700px) {
+  .usuarios__encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boton-recargar {
+    width: 100%;
+  }
+}
+
+.usuarios__acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.boton-recargar--secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.acciones {
+  text-align: right;
+}
+
+.accion {
+  margin-left: 0.4rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background: white;
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accion:hover:not(:disabled) { background: var(--color-superficie); }
+.accion:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.accion--peligro {
+  border-color: var(--color-error-borde);
+  background: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+.accion--peligro:hover:not(:disabled) { border-color: #dc2626; background: #dc2626; color: white; }
+.boton-recargar:hover:not(:disabled), .mensaje button:hover { background: var(--color-acento-oscuro); }
+.boton-recargar--secundario:hover:not(:disabled) { background: var(--color-divisor); }
+
+.exito {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+@media (width <= 700px) {
+  .usuarios__acciones {
+    flex-direction: column;
+  }
+}
+
+.buscador {
+  display: block;
+  max-width: 320px;
+  margin-bottom: 1rem;
+  color: var(--color-texto-secundario);
+  font-weight: 700;
+}
+
+.buscador input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  background: white;
+  color: var(--color-texto);
+}
+
+.buscador input:focus { border-color: var(--color-acento); outline: none; box-shadow: 0 0 0 3px var(--color-foco); }
+
+/* Estado del usuario */
+.estado {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado--inactivo {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+tr.inactivo td {
+  color: #94a3b8;
+}
+
+.vos {
+  font-size: 0.85rem;
+  color: #64748b;
+}
