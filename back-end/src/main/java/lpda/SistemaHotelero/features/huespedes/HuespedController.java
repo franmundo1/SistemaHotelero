@@ -1,5 +1,7 @@
 package lpda.SistemaHotelero.features.huespedes;
 
+import lpda.SistemaHotelero.features.huespedes.DTO.BajaHuespedResponseDTO;
+
 import jakarta.validation.Valid;
 import lpda.SistemaHotelero.features.acompanantes.AcompananteResponseDTO;
 import lpda.SistemaHotelero.features.huespedes.DTO.HuespedRequestDTO;
@@ -91,15 +93,15 @@ public class HuespedController {
             description = "Elimina un huésped utilizando su identificador externo"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Huésped eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Huésped no encontrado")
+            @ApiResponse(responseCode = "200", description = "Huésped eliminado (FISICA) o dado de baja (LOGICA)"),
+            @ApiResponse(responseCode = "404", description = "Huésped no encontrado"),
+            @ApiResponse(responseCode = "409", description = "Tiene una reserva confirmada o en curso")
     })
     @DeleteMapping("/{idExterno}")
-    public ResponseEntity<Void> delete(
+    public ResponseEntity<BajaHuespedResponseDTO> delete(
             @PathVariable UUID idExterno)
     {
-        huespedService.delete(idExterno);
-        return  ResponseEntity.noContent().build();
+        return ResponseEntity.ok(huespedService.delete(idExterno));
     }
 
 }

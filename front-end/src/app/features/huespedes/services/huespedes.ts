@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Api } from '../../../core/services/api';
-import { Huesped, HuespedRequest } from '../models/huesped';
+import { BajaHuesped, Huesped, HuespedRequest } from '../models/huesped';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class HuespedesService {
   }
 
   // El back borra el registro de la base (si tiene reservas responde 409)
-  delete(idExterno: string): Observable<void> {
-    return this.api.delete(`${this.url}/${idExterno}`);
+  delete(idExterno: string): Observable<BajaHuesped> {
+    return this.api.delete<BajaHuesped>(`${this.url}/${idExterno}`);
   }
 }

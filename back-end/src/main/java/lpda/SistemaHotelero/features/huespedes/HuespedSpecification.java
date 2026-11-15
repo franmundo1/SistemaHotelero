@@ -11,6 +11,10 @@ public class HuespedSpecification {
                 : cb.like(cb.lower(root.get("nombre")), "%" + nombre.toLowerCase() + "%");
     }
 
+    public static Specification<HuespedEntity> activos() {
+        return (root, query, cb) -> cb.isTrue(root.get("activo"));
+    }
+
     public static Specification<HuespedEntity> dniEquals(String dni) {
         return (root, query, cb) -> (dni == null || dni.isBlank())
                 ? cb.conjunction()
