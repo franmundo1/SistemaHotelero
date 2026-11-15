@@ -168,12 +168,28 @@ tbody tr:hover {
 
 .accion {
   margin-left: 0.4rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background: white;
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-weight: 700;
   cursor: pointer;
 }
 
+.accion:hover:not(:disabled) { background: var(--color-superficie); }
+.accion:disabled { cursor: not-allowed; opacity: 0.6; }
+
 .accion--peligro {
+  border-color: var(--color-error-borde);
+  background: var(--color-error-fondo);
   color: var(--color-error-texto);
 }
+
+.accion--peligro:hover:not(:disabled) { border-color: #dc2626; background: #dc2626; color: white; }
+.boton-recargar:hover:not(:disabled), .mensaje button:hover { background: var(--color-acento-oscuro); }
+.boton-recargar--secundario:hover:not(:disabled) { background: var(--color-divisor); }
 
 .exito {
   color: green;
