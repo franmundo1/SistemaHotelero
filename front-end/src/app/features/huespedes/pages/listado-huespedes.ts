@@ -98,7 +98,7 @@ export class ListadoHuespedes implements OnInit {
   onEliminar(huesped: Huesped): void {
     const confirmado = confirm(
       `¿Seguro que querés eliminar a ${huesped.nombre} ${huesped.apellido}? ` +
-        'Se borrarán sus datos y no se puede deshacer.'
+        'Si tiene reservas anteriores, se da de baja y se conserva su historial.'
     );
     if (!confirmado) {
       return;
@@ -108,19 +108,23 @@ export class ListadoHuespedes implements OnInit {
     this.errorBaja.set(null);
 
     this.huespedesService.delete(huesped.idExterno).subscribe({
-      next: () => {
+      next: (baja) => {
         // Lo sacamos de la lista sin recargar
         this.huespedes.update((lista) => lista.filter((h) => h.idExterno !== huesped.idExterno));
         if (this.huespedEnEdicion()?.idExterno === huesped.idExterno) {
           this.onCancelar();
         }
-        this.mensaje.set(`Huésped ${huesped.nombre} ${huesped.apellido} eliminado.`);
+        this.mensaje.set(
+          baja.tipo === 'LOGICA'
+            ? `Huésped ${huesped.nombre} ${huesped.apellido} dado de baja. Se conserva su historial de reservas.`
+            : `Huésped ${huesped.nombre} ${huesped.apellido} eliminado.`
+        );
       },
       error: (error: ApiError) => {
-        // 409: la base no deja borrarlo porque tiene reservas asociadas
+        // 409: tiene una reserva confirmada o en curso
         this.errorBaja.set(
           error.status === 409
-            ? `No se puede eliminar a ${huesped.nombre} ${huesped.apellido} porque tiene reservas asociadas.`
+            ? `No se puede eliminar a ${huesped.nombre} ${huesped.apellido} porque tiene una reserva confirmada o en curso.`
             : error.mensaje
         );
       },
