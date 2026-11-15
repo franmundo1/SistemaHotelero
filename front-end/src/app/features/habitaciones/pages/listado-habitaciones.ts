@@ -39,9 +39,19 @@ export class ListadoHabitaciones implements OnInit {
     this.cargando.set(true);
     this.error.set(null);
 
-    this.habitacionesService.listar().subscribe({
+    // El admin ve tambien las dadas de baja, para poder reactivarlas
+    const peticion = this.esAdmin()
+      ? this.habitacionesService.listarTodas()
+      : this.habitacionesService.listar();
+
+    peticion.subscribe({
       next: (habitaciones) => {
-        this.habitaciones.set(habitaciones);
+        // Activas primero y despues por numero
+        this.habitaciones.set(
+          [...habitaciones].sort(
+            (a, b) => Number(b.activa) - Number(a.activa) || a.numero.localeCompare(b.numero, 'es', { numeric: true })
+          )
+        );
         this.cargando.set(false);
       },
       error: (error: ApiError) => {
@@ -101,8 +111,8 @@ export class ListadoHabitaciones implements OnInit {
 
     this.habitacionesService.delete(habitacion.idExterno).subscribe({
       next: () => {
-        // El listado solo trae activas: la sacamos sin recargar
-        this.habitaciones.update((lista) => lista.filter((h) => h.idExterno !== habitacion.idExterno));
+        // Queda en la lista como inactiva, con el boton para reactivarla
+        this.reemplazar({ ...habitacion, activa: false });
         if (this.habitacionEnEdicion()?.idExterno === habitacion.idExterno) {
           this.onCancelar();
         }
@@ -110,6 +120,26 @@ export class ListadoHabitaciones implements OnInit {
       },
       error: (error: ApiError) => this.errorBaja.set(error.mensaje),
     });
+  }
+
+  onReactivar(habitacion: Habitacion): void {
+    this.mensaje.set(null);
+    this.errorBaja.set(null);
+
+    this.habitacionesService.cambiarActiva(habitacion.idExterno, true).subscribe({
+      next: (actualizada) => {
+        this.reemplazar(actualizada);
+        this.mensaje.set(`Habitación ${actualizada.numero} reactivada.`);
+      },
+      error: (error: ApiError) => this.errorBaja.set(error.mensaje),
+    });
+  }
+
+  // Cambia solo la fila de esa habitacion, sin recargar el listado
+  private reemplazar(actualizada: Habitacion): void {
+    this.habitaciones.update((lista) =>
+      lista.map((h) => (h.idExterno === actualizada.idExterno ? actualizada : h))
+    );
   }
 
   mostrarEstado(estado: string): string {

@@ -53,4 +53,14 @@ export class HabitacionesService {
   delete(idExterno: string): Observable<void> {
     return this.api.delete(`${this.url}/${idExterno}`);
   }
+
+  // Sin filtros, /filtrar devuelve activas e inactivas (el listado comun solo trae activas)
+  listarTodas(): Observable<Habitacion[]> {
+    return this.api.get<Habitacion[]>(`${this.url}/filtrar`);
+  }
+
+  // Reactiva o da de baja: el estado viaja como parametro (?activa=true), con cuerpo vacio
+  cambiarActiva(idExterno: string, activa: boolean): Observable<Habitacion> {
+    return this.api.patch<Habitacion>(`${this.url}/${idExterno}/activa`, {}, { activa });
+  }
 }
