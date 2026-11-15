@@ -1,6 +1,14 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiError } from '../../../core/models/api-error';
 import { Habitacion } from '../models/habitacion';
@@ -12,6 +20,22 @@ interface Busqueda {
   personas: number;
 }
 
+// Fecha de hoy en formato yyyy-mm-dd (el que usa el input date)
+function fechaDeHoy(): string {
+  return new Date().toLocaleDateString('en-CA');
+}
+
+// La fecha de entrada no puede ser anterior a hoy (yyyy-mm-dd se compara como texto)
+const fechaNoPasada: ValidatorFn = (control: AbstractControl): ValidationErrors | null =>
+  control.value && control.value < fechaDeHoy() ? { fechaPasada: true } : null;
+
+// Validador de grupo: la salida tiene que ser posterior a la entrada
+const rangoFechas: ValidatorFn = (grupo: AbstractControl): ValidationErrors | null => {
+  const entrada = grupo.get('fechaEntrada')?.value;
+  const salida = grupo.get('fechaSalida')?.value;
+  return entrada && salida && salida <= entrada ? { rangoInvalido: true } : null;
+};
+
 @Component({
   selector: 'app-disponibilidad-habitaciones',
   imports: [ReactiveFormsModule, CurrencyPipe],
@@ -22,8 +46,7 @@ export class DisponibilidadHabitaciones {
   private readonly habitacionesService = inject(HabitacionesService);
   private readonly router = inject(Router);
 
-  // Fecha de hoy en formato yyyy-mm-dd (el que usa el input date)
-  protected readonly hoy = new Date().toLocaleDateString('en-CA');
+  protected readonly hoy = fechaDeHoy();
 
   readonly habitaciones = signal<Habitacion[]>([]);
   readonly buscando = signal(false);
@@ -31,13 +54,13 @@ export class DisponibilidadHabitaciones {
   readonly busqueda = signal<Busqueda | null>(null); // null = todavia no se busco
 
   readonly form = new FormGroup({
-    fechaEntrada: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fechaEntrada: new FormControl('', { nonNullable: true, validators: [Validators.required, fechaNoPasada] }),
     fechaSalida: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     personas: new FormControl(1, {
       nonNullable: true,
       validators: [Validators.required, Validators.min(1), Validators.max(3)],
     }),
-  });
+  }, { validators: rangoFechas });
 
   // El endpoint no recibe la capacidad: se filtra aca
   readonly disponibles = computed(() => {
@@ -52,15 +75,6 @@ export class DisponibilidadHabitaciones {
     }
 
     const datos = this.form.getRawValue();
-    // Las fechas en yyyy-mm-dd se pueden comparar como texto
-    if (datos.fechaEntrada < this.hoy) {
-      this.error.set('La fecha de entrada no puede ser pasada.');
-      return;
-    }
-    if (datos.fechaSalida <= datos.fechaEntrada) {
-      this.error.set('La fecha de salida debe ser posterior a la fecha de entrada.');
-      return;
-    }
 
     this.buscando.set(true);
     this.error.set(null);

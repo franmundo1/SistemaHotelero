@@ -14,9 +14,11 @@
       Fecha de entrada
       <input type="date" formControlName="fechaEntrada" [min]="hoy" />
     </label>
-    @if (form.controls.fechaEntrada.touched && form.controls.fechaEntrada.errors; as e) {
+    @if ((form.controls.fechaEntrada.touched || form.controls.fechaEntrada.dirty) && form.controls.fechaEntrada.errors; as e) {
       @if (e['required']) {
         <small class="error">La fecha de entrada es obligatoria.</small>
+      } @else if (e['fechaPasada']) {
+        <small class="error">La fecha de entrada no puede ser pasada.</small>
       }
     }
 
@@ -28,6 +30,9 @@
       @if (e['required']) {
         <small class="error">La fecha de salida es obligatoria.</small>
       }
+    }
+    @if (form.hasError('rangoInvalido') && (form.controls.fechaSalida.touched || form.controls.fechaSalida.dirty)) {
+      <small class="error">La fecha de salida debe ser posterior a la fecha de entrada.</small>
     }
 
     <label>
