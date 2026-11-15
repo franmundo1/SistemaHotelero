@@ -140,12 +140,28 @@ tbody tr:hover {
 
 .accion {
   margin-left: 0.4rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background: white;
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-weight: 700;
   cursor: pointer;
 }
 
+.accion:hover:not(:disabled) { background: var(--color-superficie); }
+.accion:disabled { cursor: not-allowed; opacity: 0.6; }
+
 .accion--peligro {
+  border-color: var(--color-error-borde);
+  background: var(--color-error-fondo);
   color: var(--color-error-texto);
 }
+
+.accion--peligro:hover:not(:disabled) { border-color: #dc2626; background: #dc2626; color: white; }
+.boton-recargar:hover:not(:disabled), .mensaje button:hover { background: var(--color-acento-oscuro); }
+.boton-recargar--secundario:hover:not(:disabled) { background: var(--color-divisor); }
 
 .exito {
   color: green;
@@ -165,6 +181,8 @@ tbody tr:hover {
   display: block;
   max-width: 320px;
   margin-bottom: 1rem;
+  color: var(--color-texto-secundario);
+  font-weight: 700;
 }
 
 .buscador input {
@@ -172,4 +190,11 @@ tbody tr:hover {
   width: 100%;
   box-sizing: border-box;
   margin-top: 0.25rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  background: white;
+  color: var(--color-texto);
 }
+
+.buscador input:focus { border-color: var(--color-acento); outline: none; box-shadow: 0 0 0 3px var(--color-foco); }
