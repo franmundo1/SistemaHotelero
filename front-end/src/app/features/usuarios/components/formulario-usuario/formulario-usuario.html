@@ -1,0 +1,59 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h2>Nuevo usuario</h2>
+
+  <label>
+    Nombre
+    <input type="text" formControlName="nombre" />
+  </label>
+  @if (form.controls.nombre.touched && form.controls.nombre.errors?.['required']) {
+    <small class="error">El nombre es obligatorio.</small>
+  }
+
+  <label>
+    Apellido
+    <input type="text" formControlName="apellido" />
+  </label>
+  @if (form.controls.apellido.touched && form.controls.apellido.errors?.['required']) {
+    <small class="error">El apellido es obligatorio.</small>
+  }
+
+  <label>
+    Email
+    <input type="email" formControlName="email" autocomplete="off" />
+  </label>
+  @if (form.controls.email.touched && form.controls.email.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El email es obligatorio.</small>
+    } @else if (e['email']) {
+      <small class="error">El email no es válido.</small>
+    }
+  }
+
+  <label>
+    Contraseña
+    <input type="password" formControlName="password" autocomplete="new-password" />
+  </label>
+  @if (form.controls.password.touched && form.controls.password.errors; as e) {
+    @if (e['required']) {
+      <small class="error">La contraseña es obligatoria.</small>
+    } @else if (e['minlength']) {
+      <small class="error">La contraseña debe tener al menos 6 caracteres.</small>
+    }
+  }
+
+  <label>
+    Rol
+    <select formControlName="rol">
+      @for (rol of roles; track rol.valor) {
+        <option [value]="rol.valor">{{ rol.texto }}</option>
+      }
+    </select>
+  </label>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <button type="submit" [disabled]="loading()">{{ loading() ? 'Guardando...' : 'Guardar' }}</button>
+  <button type="button" (click)="onCancelar()" [disabled]="loading()">Cancelar</button>
+</form>

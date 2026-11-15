@@ -43,6 +43,10 @@ export const GRUPOS_MENU: GrupoMenu[] = [
       { texto: 'Limpieza', ruta: '/limpieza', roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
     ],
   },
+  {
+    texto: 'Administración',
+    opciones: [{ texto: 'Usuarios', ruta: '/usuarios', roles: [ROLES.ADMIN] }],
+  },
 ];
 
 // Lista plana con todas las opciones, por si se necesita recorrerlas sin grupos

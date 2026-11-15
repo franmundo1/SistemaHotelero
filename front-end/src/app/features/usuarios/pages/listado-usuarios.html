@@ -1,0 +1,103 @@
+<section class="usuarios">
+  <header class="usuarios__encabezado">
+    <div>
+      <p class="usuarios__seccion">Administración</p>
+      <h1>Usuarios</h1>
+      <p class="usuarios__descripcion">
+        Creá los usuarios del personal y activalos o desactivalos. Solo el administrador ve esta pantalla.
+      </p>
+    </div>
+
+    <div class="usuarios__acciones">
+      <button
+        type="button"
+        class="boton-recargar boton-recargar--secundario"
+        (click)="cargarUsuarios()"
+        [disabled]="cargando()"
+      >
+        Actualizar
+      </button>
+      <button type="button" class="boton-recargar" (click)="onNuevo()" [disabled]="formularioAbierto()">
+        Nuevo usuario
+      </button>
+    </div>
+  </header>
+
+  @if (mensaje()) {
+    <p class="exito">{{ mensaje() }}</p>
+  }
+  @if (errorEstado()) {
+    <p class="error">{{ errorEstado() }}</p>
+  }
+
+  @if (formularioAbierto()) {
+    <app-formulario-usuario
+      [loading]="guardando()"
+      [error]="errorFormulario()"
+      (guardar)="onGuardar($event)"
+      (cancelar)="onCancelar()"
+    />
+  }
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando usuarios...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+
+      <button type="button" (click)="cargarUsuarios()">Reintentar</button>
+    </div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th class="acciones">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (usuario of usuarios(); track usuario.idExterno) {
+            <tr [class.inactivo]="!usuario.activo">
+              <td class="nombre">{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellido }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ mostrarRol(usuario.rol) }}</td>
+              <td>
+                <span class="estado" [class.estado--inactivo]="!usuario.activo">
+                  {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="acciones">
+                @if (esUsuarioActual(usuario)) {
+                  <span class="vos">Tu usuario</span>
+                } @else {
+                  <button
+                    type="button"
+                    class="accion"
+                    [class.accion--peligro]="usuario.activo"
+                    (click)="onCambiarActivo(usuario)"
+                    [disabled]="actualizando() === usuario.idExterno"
+                  >
+                    {{ usuario.activo ? 'Desactivar' : 'Activar' }}
+                  </button>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No hay usuarios para mostrar.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

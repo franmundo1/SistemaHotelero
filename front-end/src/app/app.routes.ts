@@ -110,6 +110,14 @@ export const routes: Routes = [
     canActivate: [authGuard, rolGuard],
     data: { roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
   },
+  {
+    path: 'usuarios',
+    loadComponent: () =>
+      import('./features/usuarios/pages/listado-usuarios').then((m) => m.ListadoUsuarios),
+    title: 'Usuarios',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: [ROLES.ADMIN] },
+  },
   // Sin ruta (o una que no existe) se va al inicio del rol
   {
     path: '',
