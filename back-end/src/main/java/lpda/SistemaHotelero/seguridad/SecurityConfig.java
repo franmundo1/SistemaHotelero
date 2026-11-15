@@ -63,6 +63,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
+                                // Spring reenvia los errores (por ejemplo el 403) a /error: si no se permite, el 403 llega como 401
+                                "/error",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
@@ -93,6 +95,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/huespedes/**").hasAuthority("VER_HUESPEDES")
                         .requestMatchers(HttpMethod.POST, "/api/huespedes/**").hasAuthority("CREAR_HUESPED")
                         .requestMatchers(HttpMethod.PUT, "/api/huespedes/**").hasAuthority("ACTUALIZAR_HUESPED")
+                        .requestMatchers(HttpMethod.DELETE, "/api/huespedes/**").hasAuthority("ACTUALIZAR_HUESPED")
 
                         .requestMatchers("/api/checkIn/**").hasAuthority("REALIZAR_CHECK_IN")
                         .requestMatchers("/api/checkOut/**").hasAuthority("REALIZAR_CHECK_OUT")
