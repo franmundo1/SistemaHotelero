@@ -1,0 +1,150 @@
+:host {
+  display: block;
+}
+
+.pagos {
+  width: min(1000px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  margin: 0 0 0.35rem;
+  color: var(--color-acento);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: var(--color-texto);
+}
+
+.descripcion {
+  margin: 0.5rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+.botones {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.botones a,
+button {
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.7rem 1rem;
+  background: var(--color-acento);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.botones a {
+  background: var(--color-texto-suave);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font-size: 0.8rem;
+}
+
+td {
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.monto {
+  text-align: right;
+  font-weight: 700;
+}
+
+.tipo {
+  display: inline-block;
+  border-radius: var(--radio-pildora);
+  padding: 0.3rem 0.65rem;
+  background: var(--color-borde);
+  color: var(--color-texto-secundario);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tipo--anticipo {
+  background: var(--color-borde);
+  color: #8b442b;
+}
+
+.tipo--final {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+}
+
+.mensaje {
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.5rem;
+  background: white;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+.mensaje p {
+  margin-top: 0;
+}
+
+.mensaje--error {
+  border-color: var(--color-error-borde);
+  background: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+@media (width <= 700px) {
+  .encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .botones a,
+  .botones button {
+    flex: 1;
+    text-align: center;
+  }
+}

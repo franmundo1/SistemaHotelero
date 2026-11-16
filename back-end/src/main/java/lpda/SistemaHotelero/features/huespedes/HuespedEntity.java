@@ -43,6 +43,11 @@ public class HuespedEntity {
 
     private String email;
 
+    // Baja logica: false = dado de baja, no aparece en el listado pero conserva su historial.
+    // El default de la columna completa las filas que ya existian al agregarla.
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean activo = true;
+
     @PrePersist
     public void ensureExternalId(){
         if(idExterno == null){

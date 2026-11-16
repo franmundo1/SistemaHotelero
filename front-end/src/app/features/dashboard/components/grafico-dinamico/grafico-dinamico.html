@@ -1,0 +1,12 @@
+<article class="grafico">
+  <header>
+    <h2>{{ grafico().titulo }}</h2>
+    <button type="button" class="quitar" (click)="onQuitar()" aria-label="Quitar gráfico">Quitar</button>
+  </header>
+
+  <div class="grafico__lienzo">
+    <canvas #lienzo [attr.aria-label]="grafico().titulo" role="img"></canvas>
+  </div>
+
+  <small>Total: {{ grafico().total }}</small>
+</article>

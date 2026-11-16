@@ -23,11 +23,11 @@ public class DashboardService {
     public DashboardResumenDTO obtenerResumen() {
         return DashboardResumenDTO.builder()
                 .habitacionesTotales(habitacionRepository.countByActivaTrue())
-                .habitacionesDisponibles(habitacionRepository.countByEstadoOcupacion(EstadoOcupacion.DISPONIBLE))
-                .habitacionesOcupadas(habitacionRepository.countByEstadoOcupacion(EstadoOcupacion.OCUPADA))
-                .habitacionesMantenimiento(habitacionRepository.countByEstadoOcupacion(EstadoOcupacion.MANTENIMIENTO))
-                .habitacionesSucias(habitacionRepository.countByEstadoLimpieza(EstadoLimpieza.SUCIA))
-                .habitacionesEnLimpieza(habitacionRepository.countByEstadoLimpieza(EstadoLimpieza.EN_LIMPIEZA))
+                .habitacionesDisponibles(habitacionRepository.countByActivaTrueAndEstadoOcupacion(EstadoOcupacion.DISPONIBLE))
+                .habitacionesOcupadas(habitacionRepository.countByActivaTrueAndEstadoOcupacion(EstadoOcupacion.OCUPADA))
+                .habitacionesMantenimiento(habitacionRepository.countByActivaTrueAndEstadoOcupacion(EstadoOcupacion.MANTENIMIENTO))
+                .habitacionesSucias(habitacionRepository.countByActivaTrueAndEstadoLimpieza(EstadoLimpieza.SUCIA))
+                .habitacionesEnLimpieza(habitacionRepository.countByActivaTrueAndEstadoLimpieza(EstadoLimpieza.EN_LIMPIEZA))
 
                 .reservasTotales(reservaRepository.count())
                 .reservasConfirmadas(reservaRepository.countByEstadoIgnoreCase("CONFIRMADA"))

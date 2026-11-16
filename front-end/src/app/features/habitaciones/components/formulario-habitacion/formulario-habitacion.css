@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+form {
+  width: min(100%, 430px);
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.5rem;
+  background: white;
+}
+
+h2 { margin: 0 0 1rem; color: var(--color-texto); font-size: 1.25rem; }
+
+label {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--color-texto-secundario);
+  font-weight: 700;
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  background: white;
+  color: var(--color-texto);
+}
+
+input:focus, select:focus { border-color: var(--color-acento); outline: none; box-shadow: 0 0 0 3px var(--color-foco); }
+
+button {
+  margin-top: 1rem;
+  margin-right: 0.5rem;
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.8rem 1rem;
+  background: var(--terracota);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button[type='submit']:hover:not(:disabled) { background: var(--color-acento-oscuro); }
+button[type='button'] { background: var(--color-borde); color: var(--color-texto-secundario); }
+button[type='button']:hover:not(:disabled) { background: var(--color-divisor); }
+button:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.error {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--color-error-texto);
+}
+
+@media (width <= 500px) {
+  form {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+    margin-right: 0;
+  }
+}

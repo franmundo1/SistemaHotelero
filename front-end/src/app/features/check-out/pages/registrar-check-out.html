@@ -1,0 +1,115 @@
+<section class="check-out">
+  <header class="encabezado">
+    <div>
+      <h1>Registrar check-out</h1>
+      <p>Cerrá una estadía cobrando el saldo pendiente.</p>
+    </div>
+
+    <button type="button" class="secundario" (click)="cargarReservas()" [disabled]="cargando()">
+      Actualizar
+    </button>
+  </header>
+
+  @if (resultado(); as checkOut) {
+    <div class="resultado">
+      <h2>Check-out registrado</h2>
+      <p>{{ checkOut.nombreHuesped }} dejó la habitación {{ checkOut.numeroHabitacion }}.</p>
+
+      <dl>
+        <div>
+          <dt>Fecha y hora</dt>
+          <dd>{{ checkOut.fechaHoraSalida | date: 'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+        <div>
+          <dt>Reserva</dt>
+          <dd>{{ checkOut.estadoReserva }}</dd>
+        </div>
+        <div>
+          <dt>Habitación</dt>
+          <dd>{{ checkOut.estadoOcupacionHabitacion }}</dd>
+        </div>
+        <div>
+          <dt>Limpieza</dt>
+          <dd>{{ checkOut.estadoLimpiezaHabitacion }}</dd>
+        </div>
+      </dl>
+    </div>
+  }
+
+  @if (cargando()) {
+    <p class="mensaje">Cargando reservas...</p>
+  } @else if (reservas().length === 0 && resultado() === null) {
+    <p class="mensaje">No hay reservas en curso para realizar el check-out.</p>
+  } @else if (reservas().length > 0) {
+    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+      <label>
+        Reserva en curso
+        <select formControlName="idReservaExterno" (change)="cargarResumen()">
+          <option value="" disabled>Seleccioná una reserva</option>
+          @for (reserva of reservas(); track reserva.idExterno) {
+            <option [value]="reserva.idExterno">
+              Habitación {{ reserva.habitacion }} - {{ reserva.huesped }}
+            </option>
+          }
+        </select>
+      </label>
+
+      @if (
+        formulario.controls.idReservaExterno.touched &&
+        formulario.controls.idReservaExterno.hasError('required')
+      ) {
+        <small class="error">Seleccioná una reserva.</small>
+      }
+
+      @if (cargandoResumen()) {
+        <p>Cargando resumen...</p>
+      }
+
+      @if (resumen(); as datos) {
+        <div class="resumen">
+          <h2>Resumen</h2>
+          <p><span>Huésped</span><strong>{{ datos.huesped }}</strong></p>
+          <p><span>Habitación</span><strong>{{ datos.habitacion }}</strong></p>
+          <p><span>Total estadía</span><strong>{{ datos.totalEstadia | currency: 'ARS' }}</strong></p>
+          <p><span>Consumos</span><strong>{{ datos.totalConsumos | currency: 'ARS' }}</strong></p>
+          <p><span>Anticipo</span><strong>- {{ datos.anticipo | currency: 'ARS' }}</strong></p>
+          <p><span>Total final</span><strong>{{ datos.totalFinal | currency: 'ARS' }}</strong></p>
+          <p class="saldo"><span>Saldo pendiente</span><strong>{{ datos.saldoPendiente | currency: 'ARS' }}</strong></p>
+        </div>
+
+        <div class="fila">
+          <label>
+            Monto abonado
+            <input type="number" min="0.01" step="0.01" formControlName="montoAbonado" />
+          </label>
+
+          <label>
+            Método de pago
+            <select formControlName="metodoPago">
+              @for (metodo of metodosPago; track metodo) {
+                <option [value]="metodo">{{ mostrarMetodo(metodo) }}</option>
+              }
+            </select>
+          </label>
+        </div>
+
+        @if (formulario.controls.montoAbonado.touched && formulario.controls.montoAbonado.invalid) {
+          <small class="error">Ingresá un monto válido.</small>
+        }
+
+        <label>
+          Observaciones
+          <textarea formControlName="observaciones" rows="3" placeholder="Opcional"></textarea>
+        </label>
+
+        <button type="submit" [disabled]="guardando()">
+          {{ guardando() ? 'Registrando...' : 'Confirmar check-out' }}
+        </button>
+      }
+    </form>
+  }
+
+  @if (error()) {
+    <p class="error-contenedor">{{ error() }}</p>
+  }
+</section>

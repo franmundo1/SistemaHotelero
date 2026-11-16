@@ -8,15 +8,39 @@
       </p>
     </div>
 
-    <button
-      type="button"
-      class="boton-recargar"
-      (click)="cargarHabitaciones()"
-      [disabled]="cargando()"
-    >
-      Actualizar
-    </button>
+    <div class="habitaciones__acciones">
+      <button
+        type="button"
+        class="boton-recargar boton-recargar--secundario"
+        (click)="cargarHabitaciones()"
+        [disabled]="cargando()"
+      >
+        Actualizar
+      </button>
+      @if (esAdmin()) {
+      <button type="button" class="boton-recargar" (click)="onNueva()" [disabled]="formularioAbierto()">
+        Nueva habitación
+      </button>
+      }
+    </div>
   </header>
+
+  @if (mensaje()) {
+    <p class="exito">{{ mensaje() }}</p>
+  }
+  @if (errorBaja()) {
+    <p class="error">{{ errorBaja() }}</p>
+  }
+
+  @if (formularioAbierto()) {
+    <app-formulario-habitacion
+      [habitacion]="habitacionEnEdicion()"
+      [loading]="guardando()"
+      [error]="errorFormulario()"
+      (guardar)="onGuardar($event)"
+      (cancelar)="onCancelar()"
+    />
+  }
 
   @if (cargando()) {
     <div class="mensaje">
@@ -45,13 +69,21 @@
             <th>Precio por noche</th>
             <th>Ocupación</th>
             <th>Limpieza</th>
+            @if (esAdmin()) {
+              <th class="acciones">Acciones</th>
+            }
           </tr>
         </thead>
 
         <tbody>
           @for (habitacion of habitaciones(); track habitacion.idExterno) {
-            <tr>
-              <td class="numero">{{ habitacion.numero }}</td>
+            <tr [class.inactiva]="!habitacion.activa">
+              <td class="numero">
+                {{ habitacion.numero }}
+                @if (!habitacion.activa) {
+                  <span class="baja">Dada de baja</span>
+                }
+              </td>
               <td>{{ mostrarEstado(habitacion.tipo) }}</td>
               <td>
                 {{ habitacion.capacidad }}
@@ -63,9 +95,9 @@
               <td>
                 <span
                   class="estado"
-                  [class]="'estado estado--' + habitacion.estadoOcupacion.toLowerCase()"
+                  [class]="'estado ' + claseOcupacion(habitacion)"
                 >
-                  {{ mostrarEstado(habitacion.estadoOcupacion) }}
+                  {{ mostrarOcupacion(habitacion) }}
                 </span>
               </td>
               <td>
@@ -76,6 +108,16 @@
                   {{ mostrarEstado(habitacion.estadoLimpieza) }}
                 </span>
               </td>
+              @if (esAdmin()) {
+                <td class="acciones">
+                  @if (habitacion.activa) {
+                    <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
+                    <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
+                  } @else {
+                    <button type="button" class="accion" (click)="onReactivar(habitacion)">Reactivar</button>
+                  }
+                </td>
+              }
             </tr>
           }
         </tbody>

@@ -1,0 +1,108 @@
+<header class="barra">
+  <div class="barra__contenido">
+    <a class="barra__marca" [routerLink]="rutaInicio()" aria-label="Ir al inicio" (click)="cerrarMenu()">
+      <strong>FARO GESTIÓN</strong>
+      <span>HOTEL &amp; ESTADÍAS</span>
+    </a>
+
+    <button
+      type="button"
+      class="barra__menu"
+      [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
+      [attr.aria-expanded]="menuAbierto()"
+      aria-controls="navegacion-principal"
+      (click)="cambiarMenu()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      id="navegacion-principal"
+      class="barra__navegacion"
+      [class.barra__navegacion--abierta]="menuAbierto()"
+      aria-label="Navegación principal"
+    >
+      @if (puedeReservar()) {
+        <a
+          class="barra__grupo"
+          routerLink="/dashboard"
+          routerLinkActive="barra__grupo--activo"
+          ariaCurrentWhenActive="page"
+          (click)="cerrarMenu()"
+        >
+          Inicio
+        </a>
+      }
+
+      @for (grupo of grupos(); track grupo.texto) {
+        <div class="barra__item">
+          <button
+            type="button"
+            class="barra__grupo"
+            [class.barra__grupo--activo]="grupoActivo(grupo)"
+            [attr.aria-expanded]="grupoAbierto() === grupo.texto"
+            [attr.aria-controls]="'grupo-' + $index"
+            (click)="cambiarGrupo(grupo.texto)"
+          >
+            {{ grupo.texto }}
+            <svg class="barra__flecha" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2.5 4.5 6 8l3.5-3.5" />
+            </svg>
+          </button>
+
+          <div
+            class="barra__desplegable"
+            [id]="'grupo-' + $index"
+            [class.barra__desplegable--abierto]="grupoAbierto() === grupo.texto"
+          >
+            @for (opcion of grupo.opciones; track opcion.ruta) {
+              <a
+                [routerLink]="opcion.ruta"
+                routerLinkActive="barra__opcion--activa"
+                ariaCurrentWhenActive="page"
+                (click)="cerrarMenu()"
+              >
+                {{ opcion.texto }}
+              </a>
+            }
+          </div>
+        </div>
+      }
+    </nav>
+
+    <div class="barra__acciones">
+      @if (puedeReservar()) {
+        <a class="barra__reserva" routerLink="/disponibilidad" (click)="cerrarMenu()">
+          Nueva reserva
+        </a>
+      }
+
+      <div class="barra__item">
+        <button
+          type="button"
+          class="barra__avatar"
+          [attr.aria-label]="'Menú de ' + (nombreUsuario() ?? 'usuario')"
+          [attr.aria-expanded]="menuUsuarioAbierto()"
+          aria-controls="menu-usuario"
+          (click)="cambiarMenuUsuario()"
+        >
+          {{ inicialUsuario() }}
+        </button>
+
+        <div
+          id="menu-usuario"
+          class="barra__desplegable barra__desplegable--derecha"
+          [class.barra__desplegable--abierto]="menuUsuarioAbierto()"
+        >
+          <div class="barra__usuario">
+            <strong>{{ nombreUsuario() }}</strong>
+            <span>{{ fechaActual }}</span>
+          </div>
+          <button type="button" class="barra__salir" (click)="cerrarSesion()">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

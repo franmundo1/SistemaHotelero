@@ -1,0 +1,231 @@
+:host {
+  display: block;
+}
+
+.dashboard {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  margin: 0 0 0.35rem;
+  color: var(--color-acento);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  color: var(--color-texto);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.descripcion {
+  margin: 0.4rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+button {
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.75rem 1.1rem;
+  background-color: var(--color-acento);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.1rem 1.2rem;
+  background-color: white;
+}
+
+.tarjeta span {
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tarjeta strong {
+  color: var(--color-texto);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.tarjeta small {
+  color: var(--color-texto-suave);
+}
+
+/* Llegadas de hoy e ingresos por canal */
+.paneles {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (width <= 900px) {
+  .paneles {
+    grid-template-columns: 1fr;
+  }
+}
+
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.grafico {
+  min-width: 0;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.2rem;
+  background-color: white;
+}
+
+.grafico h2 {
+  margin: 0 0 1rem;
+  color: var(--color-texto);
+  font-size: 1rem;
+}
+
+/* Chart.js necesita un contenedor con alto fijo para maintainAspectRatio: false */
+.grafico__lienzo {
+  position: relative;
+  height: 260px;
+}
+
+.mensaje {
+  padding: 2rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: white;
+  text-align: center;
+}
+
+.mensaje--error {
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+/* Graficos personalizados (H26) */
+.personalizados {
+  scroll-margin-top: 80px;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.personalizados h2 {
+  margin: 0;
+  color: var(--color-texto);
+  font-size: 1.4rem;
+}
+
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: white;
+}
+
+.filtros label {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+
+.filtros select,
+.filtros input {
+  padding: 0.55rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
+  font: inherit;
+  font-weight: 400;
+}
+
+.error {
+  color: var(--color-error-texto);
+}
+
+.aviso {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radio-tarjeta);
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
+}
+
+@media (width <= 1000px) {
+  .graficos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .secundario {
+    width: 100%;
+  }
+
+  .graficos {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 400px) {
+  .tarjetas {
+    grid-template-columns: 1fr;
+  }
+}

@@ -31,9 +31,4 @@ export class Api {
   delete<T = void>(ruta: string): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}${ruta}`);
   }
-
-  // Peticion de prueba: /v3/api-docs es publico en SecurityConfig, no necesita token
-  verificarConexion(): Observable<unknown> {
-    return this.get('/v3/api-docs');
-  }
 }

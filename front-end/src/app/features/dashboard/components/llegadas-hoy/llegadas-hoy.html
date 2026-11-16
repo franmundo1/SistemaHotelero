@@ -1,0 +1,38 @@
+<article class="panel">
+  <h2>Llegadas de hoy</h2>
+
+  @if (cargando()) {
+    <p class="panel__mensaje">Cargando llegadas...</p>
+  } @else if (error()) {
+    <p class="panel__mensaje panel__mensaje--error">{{ error() }}</p>
+  } @else if (llegadas().length === 0) {
+    <p class="panel__mensaje">No hay llegadas previstas para hoy.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Huésped</th>
+          <th scope="col">Habitación</th>
+          <th scope="col">Noches</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (reserva of llegadas(); track reserva.idExterno) {
+          <tr>
+            <td>{{ reserva.huesped }}</td>
+            <td>{{ reserva.habitacion }}</td>
+            <td>{{ noches(reserva) }}</td>
+            <td>
+              <span class="estado" [class.estado--en-curso]="reserva.estado === 'EN_CURSO'">
+                {{ textoEstado(reserva.estado) }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <a class="panel__enlace" routerLink="/reservas">Ver todas las reservas →</a>
+</article>

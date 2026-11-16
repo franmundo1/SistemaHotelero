@@ -1,0 +1,57 @@
+<section class="pagos">
+  <header class="encabezado">
+    <div>
+      <p class="seccion">Detalle de la reserva</p>
+      <h1>Pagos registrados</h1>
+      <p class="descripcion">Anticipos y pagos realizados por el huésped.</p>
+    </div>
+
+    <div class="botones">
+      <a routerLink="/reservas">Volver</a>
+      <button type="button" (click)="cargarPagos()" [disabled]="cargando()">
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (cargando()) {
+    <div class="mensaje">Cargando pagos...</div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="cargarPagos()">Reintentar</button>
+    </div>
+  } @else if (pagos().length === 0) {
+    <div class="mensaje">Esta reserva todavía no tiene pagos registrados.</div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Método</th>
+            <th>Registrado por</th>
+            <th class="monto">Monto</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (pago of pagos(); track pago.idExterno) {
+            <tr>
+              <td>{{ pago.fechaPago | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span class="tipo" [class]="'tipo tipo--' + pago.tipoPago.toLowerCase()">
+                  {{ mostrarTexto(pago.tipoPago) }}
+                </span>
+              </td>
+              <td>{{ mostrarTexto(pago.metodoPago) }}</td>
+              <td>{{ pago.nombreUsuario }}</td>
+              <td class="monto">{{ pago.monto | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

@@ -18,7 +18,7 @@
 
 .habitaciones__seccion {
   margin: 0 0 0.35rem;
-  color: #2563eb;
+  color: var(--color-acento);
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -27,21 +27,21 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: var(--color-texto);
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 
 .habitaciones__descripcion {
   margin: 0.5rem 0 0;
-  color: #64748b;
+  color: var(--color-texto-suave);
 }
 
 .boton-recargar,
 .mensaje button {
   border: 0;
-  border-radius: 0.6rem;
+  border-radius: var(--radio-pildora);
   padding: 0.7rem 1rem;
-  background-color: #2563eb;
+  background-color: var(--color-acento);
   color: white;
   font: inherit;
   font-weight: 600;
@@ -55,10 +55,9 @@ h1 {
 
 .tabla-contenedor {
   overflow-x: auto;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background-color: white;
-  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
 }
 
 table {
@@ -74,31 +73,31 @@ td {
 }
 
 th {
-  background-color: #f8fafc;
-  color: #475569;
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 td {
-  border-top: 1px solid #e2e8f0;
-  color: #334155;
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
 }
 
 tbody tr:hover {
-  background-color: #f8fafc;
+  background-color: var(--color-superficie);
 }
 
 .numero {
-  color: #172033;
+  color: var(--color-texto);
   font-weight: 700;
 }
 
 .estado {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: var(--radio-pildora);
   padding: 0.3rem 0.65rem;
   font-size: 0.8rem;
   font-weight: 700;
@@ -106,35 +105,36 @@ tbody tr:hover {
 
 .estado--disponible,
 .estado--limpia {
-  background-color: #dcfce7;
-  color: #166534;
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
 }
 
 .estado--ocupada,
 .estado--sucia {
-  background-color: #fee2e2;
-  color: #991b1b;
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 .estado--mantenimiento,
-.estado--en_limpieza {
-  background-color: #fef3c7;
-  color: #92400e;
+.estado--en_limpieza,
+.estado--no-disponible {
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
 }
 
 .mensaje {
   padding: 2rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background-color: white;
-  color: #475569;
+  color: var(--color-texto-secundario);
   text-align: center;
 }
 
 .mensaje--error {
-  border-color: #fecaca;
-  background-color: #fef2f2;
-  color: #991b1b;
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
 }
 
 .mensaje button {
@@ -150,4 +150,77 @@ tbody tr:hover {
   .boton-recargar {
     width: 100%;
   }
+}
+
+.habitaciones__acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.boton-recargar--secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.acciones {
+  text-align: right;
+}
+
+.accion {
+  margin-left: 0.4rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background: white;
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accion:hover:not(:disabled) { background: var(--color-superficie); }
+.accion:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.accion--peligro {
+  border-color: var(--color-error-borde);
+  background: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+.accion--peligro:hover:not(:disabled) { border-color: #dc2626; background: #dc2626; color: white; }
+.boton-recargar:hover:not(:disabled), .mensaje button:hover { background: var(--color-acento-oscuro); }
+.boton-recargar--secundario:hover:not(:disabled) { background: var(--color-divisor); }
+
+.exito {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+@media (width <= 700px) {
+  .habitaciones__acciones {
+    flex-direction: column;
+  }
+}
+
+/* Habitaciones dadas de baja (solo las ve el admin) */
+tr.inactiva td {
+  color: #94a3b8;
+}
+
+tr.inactiva .estado {
+  opacity: 0.5;
+}
+
+.baja {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #64748b;
 }

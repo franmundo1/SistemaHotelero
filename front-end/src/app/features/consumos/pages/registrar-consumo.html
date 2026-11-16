@@ -1,0 +1,141 @@
+<section class="consumos">
+  <header class="consumos__encabezado">
+    <div>
+      <h1>Registrar consumo</h1>
+      <p>Cargá los productos consumidos durante una estadía en curso.</p>
+    </div>
+
+    <button type="button" class="secundario" (click)="cargarDatos()" [disabled]="cargando()">
+      Actualizar
+    </button>
+  </header>
+
+  @if (cargando()) {
+    <p class="mensaje">Cargando reservas y productos...</p>
+  } @else if (error()) {
+    <div class="mensaje error-contenedor">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="cargarDatos()">Reintentar</button>
+    </div>
+  } @else if (reservas().length === 0) {
+    <p class="mensaje">No hay reservas en curso para registrar consumos.</p>
+  } @else {
+    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+      <label>
+        Reserva en curso
+        <select formControlName="idReservaExterno" (change)="cargarConsumos()">
+          <option value="" disabled>Seleccioná una reserva</option>
+          @for (reserva of reservas(); track reserva.idExterno) {
+            <option [value]="reserva.idExterno">
+              Habitación {{ reserva.habitacion }} - {{ reserva.huesped }}
+            </option>
+          }
+        </select>
+      </label>
+
+      @if (
+        formulario.controls.idReservaExterno.touched &&
+        formulario.controls.idReservaExterno.hasError('required')
+      ) {
+        <small class="error">Seleccioná una reserva.</small>
+      }
+
+      <div class="fila">
+        <label>
+          Producto
+          <select formControlName="idProductoExterno">
+            <option value="" disabled>Seleccioná un producto</option>
+            @for (producto of productos(); track producto.idExterno) {
+              <option [value]="producto.idExterno" [disabled]="producto.stock === 0">
+                {{ producto.nombre }} - Stock: {{ producto.stock }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Cantidad
+          <input type="number" min="1" formControlName="cantidad" />
+        </label>
+      </div>
+
+      @if (
+        formulario.controls.idProductoExterno.touched &&
+        formulario.controls.idProductoExterno.hasError('required')
+      ) {
+        <small class="error">Seleccioná un producto.</small>
+      }
+
+      @if (formulario.controls.cantidad.touched && formulario.controls.cantidad.invalid) {
+        <small class="error">La cantidad debe ser al menos 1.</small>
+      }
+
+      @if (productoSeleccionado(); as producto) {
+        <p class="detalle-producto">
+          Precio: {{ producto.precio | currency: 'ARS' }} · Stock disponible: {{ producto.stock }}
+        </p>
+      }
+
+      <label>
+        Observaciones
+        <textarea
+          rows="3"
+          formControlName="observaciones"
+          placeholder="Opcional"
+        ></textarea>
+      </label>
+
+      @if (errorRegistro()) {
+        <p class="error-contenedor">{{ errorRegistro() }}</p>
+      }
+
+      @if (mensaje()) {
+        <p class="exito">{{ mensaje() }}</p>
+      }
+
+      <button type="submit" [disabled]="guardando()">
+        {{ guardando() ? 'Registrando...' : 'Registrar consumo' }}
+      </button>
+    </form>
+
+    @if (formulario.controls.idReservaExterno.value) {
+      <section class="listado">
+        <div class="listado__encabezado">
+          <h2>Consumos de la reserva</h2>
+          <strong>Total: {{ totalConsumos() | currency: 'ARS' }}</strong>
+        </div>
+
+        @if (cargandoConsumos()) {
+          <p>Cargando consumos...</p>
+        } @else if (consumos().length === 0) {
+          <p>Esta reserva todavía no tiene consumos.</p>
+        } @else {
+          <div class="tabla-contenedor">
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Importe</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (consumo of consumos(); track consumo.idExterno) {
+                  <tr>
+                    <td>{{ consumo.producto }}</td>
+                    <td>{{ consumo.cantidad }}</td>
+                    <td>{{ consumo.precioUnitario | currency: 'ARS' }}</td>
+                    <td>{{ consumo.subtotal | currency: 'ARS' }}</td>
+                    <td>{{ consumo.fechaConsumo | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+    }
+  }
+</section>

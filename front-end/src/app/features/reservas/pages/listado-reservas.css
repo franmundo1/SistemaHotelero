@@ -1,0 +1,323 @@
+:host {
+  display: block;
+}
+
+.reservas {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.reservas__encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.reservas__seccion,
+.modal__seccion {
+  margin: 0 0 0.35rem;
+  color: var(--color-acento);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: var(--color-texto);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.reservas__descripcion {
+  margin: 0.5rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+.boton-actualizar,
+.mensaje button,
+.modal button {
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton-actualizar,
+.mensaje button {
+  background-color: var(--color-acento);
+  color: white;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+th {
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+td {
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+tbody tr:hover {
+  background-color: var(--color-superficie);
+}
+
+.huesped {
+  color: var(--color-texto);
+  font-weight: 700;
+}
+
+.estado {
+  display: inline-flex;
+  border-radius: var(--radio-pildora);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.estado--confirmada {
+  background-color: var(--color-borde);
+  color: #8b442b;
+}
+
+.estado--en_curso {
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
+}
+
+.estado--finalizada {
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.estado--cancelada {
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+.motivo {
+  display: block;
+  max-width: 180px;
+  margin-top: 0.4rem;
+  overflow: hidden;
+  color: var(--color-texto-suave);
+  text-overflow: ellipsis;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.accion-pagos {
+  display: inline-block;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  color: var(--color-texto-secundario);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.accion-pagos:hover {
+  border-color: #b5a49b;
+  background-color: var(--color-fondo);
+}
+
+.accion-cancelar {
+  border: 1px solid var(--color-error-borde);
+  border-radius: var(--radio-pildora);
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accion-cancelar:hover {
+  border-color: #dc2626;
+  background-color: #dc2626;
+  color: white;
+}
+
+.sin-accion {
+  color: #b5a49b;
+}
+
+.mensaje,
+.mensaje-exito {
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.25rem;
+  background-color: white;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+.mensaje--error {
+  border-color: var(--color-error-borde);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error-texto);
+}
+
+.mensaje-exito {
+  margin-bottom: 1rem;
+  border-color: #86efac;
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+}
+
+.modal-fondo {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background-color: rgb(15 23 42 / 65%);
+}
+
+.modal {
+  width: min(100%, 520px);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  border-radius: var(--radio-tarjeta);
+  padding: 1.5rem;
+  background-color: white;
+}
+
+.modal > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal > p {
+  color: var(--color-texto-secundario);
+  line-height: 1.6;
+}
+
+.modal__cerrar {
+  padding: 0.2rem 0.55rem !important;
+  background-color: transparent;
+  color: var(--color-texto-suave);
+  font-size: 1.5rem !important;
+}
+
+.modal form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.modal label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-texto-secundario);
+  font-weight: 700;
+}
+
+.modal textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  color: var(--color-texto);
+  font: inherit;
+  resize: vertical;
+  outline: none;
+}
+
+.modal textarea:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-foco);
+}
+
+.modal__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.boton-secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+.boton-peligro {
+  background-color: #dc2626;
+  color: white;
+}
+
+.error {
+  color: var(--color-error-texto);
+}
+
+.error--contenedor {
+  margin: 0;
+  border: 1px solid var(--color-error-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 0.75rem;
+  background-color: var(--color-error-fondo);
+}
+
+@media (width <= 700px) {
+  .reservas__encabezado {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boton-actualizar {
+    width: 100%;
+  }
+
+  .modal__acciones {
+    flex-direction: column-reverse;
+  }
+
+  .modal__acciones button {
+    width: 100%;
+  }
+}

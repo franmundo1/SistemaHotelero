@@ -1,0 +1,132 @@
+<section class="check-in">
+  <header class="check-in__encabezado">
+    <div>
+      <p class="check-in__seccion">Estadía y cierre</p>
+      <h1>Registrar check-in</h1>
+      <p>
+        Seleccioná una reserva confirmada con fecha de entrada para hoy.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="boton-secundario"
+      (click)="cargarReservas()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+  </header>
+
+  @if (checkInRegistrado(); as checkIn) {
+    <div class="resultado">
+      <h2>Check-in registrado correctamente</h2>
+
+      <dl>
+        <div>
+          <dt>Huésped</dt>
+          <dd>{{ checkIn.nombreHuesped }}</dd>
+        </div>
+
+        <div>
+          <dt>Habitación</dt>
+          <dd>{{ checkIn.numeroHabitacion }}</dd>
+        </div>
+
+        <div>
+          <dt>Fecha y hora</dt>
+          <dd>{{ checkIn.fechaHoraEntrada | date: 'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+
+        <div>
+          <dt>Estado de la reserva</dt>
+          <dd>{{ checkIn.estadoReserva }}</dd>
+        </div>
+      </dl>
+    </div>
+  }
+
+  @if (cargando()) {
+    <div class="mensaje">
+      <p>Cargando reservas confirmadas...</p>
+    </div>
+  } @else if (error()) {
+    <div class="mensaje mensaje--error">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="cargarReservas()">Reintentar</button>
+    </div>
+  } @else if (reservas().length === 0) {
+    <div class="mensaje">
+      <p>No hay reservas confirmadas con ingreso para hoy.</p>
+    </div>
+  } @else {
+    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+      <label>
+        Reserva
+
+        <select formControlName="idReservaExterno">
+          <option value="" disabled>Seleccioná una reserva</option>
+
+          @for (reserva of reservas(); track reserva.idExterno) {
+            <option [value]="reserva.idExterno">
+              Habitación {{ reserva.habitacion }} — {{ reserva.huesped }}
+            </option>
+          }
+        </select>
+      </label>
+
+      @if (
+        formulario.controls.idReservaExterno.touched &&
+        formulario.controls.idReservaExterno.hasError('required')
+      ) {
+        <small class="error">Seleccioná una reserva.</small>
+      }
+
+      @if (reservaSeleccionada(); as reserva) {
+        <div class="reserva">
+          <h2>Datos de la reserva</h2>
+
+          <dl>
+            <div>
+              <dt>Huésped</dt>
+              <dd>{{ reserva.huesped }}</dd>
+            </div>
+
+            <div>
+              <dt>Habitación</dt>
+              <dd>{{ reserva.habitacion }}</dd>
+            </div>
+
+            <div>
+              <dt>Entrada</dt>
+              <dd>{{ reserva.fechaEntrada | date: 'dd/MM/yyyy' }}</dd>
+            </div>
+
+            <div>
+              <dt>Salida</dt>
+              <dd>{{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}</dd>
+            </div>
+          </dl>
+        </div>
+      }
+
+      <label>
+        Observaciones
+
+        <textarea
+          formControlName="observaciones"
+          rows="4"
+          placeholder="Información adicional del ingreso (opcional)"
+        ></textarea>
+      </label>
+
+      @if (errorRegistro()) {
+        <p class="error error--contenedor">{{ errorRegistro() }}</p>
+      }
+
+      <button type="submit" [disabled]="guardando()">
+        {{ guardando() ? 'Registrando...' : 'Registrar check-in' }}
+      </button>
+    </form>
+  }
+</section>

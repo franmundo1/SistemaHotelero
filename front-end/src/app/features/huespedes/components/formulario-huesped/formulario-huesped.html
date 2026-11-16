@@ -1,0 +1,68 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h2>{{ huesped() ? 'Editar huésped' : 'Nuevo huésped' }}</h2>
+
+  <label>
+    Nombre
+    <input type="text" formControlName="nombre" />
+  </label>
+  @if (form.controls.nombre.touched && form.controls.nombre.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El nombre es obligatorio.</small>
+    } @else if (e['minlength'] || e['maxlength']) {
+      <small class="error">El nombre debe tener entre 2 y 50 caracteres.</small>
+    }
+  }
+
+  <label>
+    Apellido
+    <input type="text" formControlName="apellido" />
+  </label>
+  @if (form.controls.apellido.touched && form.controls.apellido.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El apellido es obligatorio.</small>
+    } @else if (e['minlength'] || e['maxlength']) {
+      <small class="error">El apellido debe tener entre 2 y 50 caracteres.</small>
+    }
+  }
+
+  <label>
+    DNI
+    <input type="text" formControlName="dni" />
+  </label>
+  @if (form.controls.dni.touched && form.controls.dni.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El DNI es obligatorio.</small>
+    } @else if (e['pattern']) {
+      <small class="error">El DNI debe tener entre 7 y 10 números, sin puntos.</small>
+    }
+  }
+
+  <label>
+    Teléfono
+    <input type="text" formControlName="telefono" placeholder="Ej: 2235123456" />
+  </label>
+  @if (form.controls.telefono.touched && form.controls.telefono.errors; as e) {
+    @if (e['pattern']) {
+      <small class="error">El teléfono debe tener entre 10 y 15 números.</small>
+    }
+  }
+
+  <label>
+    Email
+    <input type="email" formControlName="email" />
+  </label>
+  @if (form.controls.email.touched && form.controls.email.errors; as e) {
+    @if (e['required']) {
+      <small class="error">El email es obligatorio.</small>
+    } @else if (e['email']) {
+      <small class="error">El email no es válido.</small>
+    }
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <button type="submit" [disabled]="loading()">{{ loading() ? 'Guardando...' : 'Guardar' }}</button>
+  <button type="button" (click)="onCancelar()" [disabled]="loading()">Cancelar</button>
+</form>

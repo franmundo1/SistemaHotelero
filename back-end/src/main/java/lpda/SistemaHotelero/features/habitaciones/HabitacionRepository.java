@@ -46,11 +46,13 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
 
     List<HabitacionEntity> findByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
 
+    List<HabitacionEntity> findByActivaTrueAndEstadoLimpiezaInOrderByNumeroAsc(List<EstadoLimpieza> estados);
+
     List<HabitacionEntity> findByActivaTrue();
 
-    long countByEstadoOcupacion(EstadoOcupacion estadoOcupacion);
+    long countByActivaTrueAndEstadoOcupacion(EstadoOcupacion estadoOcupacion);
 
-    long countByEstadoLimpieza(EstadoLimpieza estadoLimpieza);
+    long countByActivaTrueAndEstadoLimpieza(EstadoLimpieza estadoLimpieza);
 
     long countByActivaTrue();
 
@@ -58,6 +60,7 @@ public interface HabitacionRepository extends JpaRepository<HabitacionEntity, Lo
     SELECT h FROM HabitacionEntity h
     WHERE h.activa = true
     AND h.estadoOcupacion <> 'MANTENIMIENTO'
+    AND h.estadoLimpieza = 'LIMPIA'
     AND h.idHabitacion NOT IN (
         SELECT r.habitacion.idHabitacion
         FROM ReservaEntity r

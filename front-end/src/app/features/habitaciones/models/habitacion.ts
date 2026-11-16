@@ -11,12 +11,20 @@ export type EstadoLimpieza =
   | 'EN_LIMPIEZA';
 
 export interface Habitacion {
-  idExterno: string;
-  numero: string;
-  tipo: TipoHabitacion;
-  capacidad: number;
-  precioPorNoche: number;
+  idExterno:       string;
+  numero:          string;
+  tipo:            TipoHabitacion;
+  capacidad:       number;
+  precioPorNoche:  number;
   estadoOcupacion: EstadoOcupacion;
-  estadoLimpieza: EstadoLimpieza;
-  activa: boolean;
+  estadoLimpieza:  EstadoLimpieza;
+  activa:          boolean;
 }
+
+export interface HabitacionLimpieza {
+  numero: string;
+  estadoLimpieza: EstadoLimpieza;
+}
+
+
+export type HabitacionRequest = Omit<Habitacion, 'idExterno'>;

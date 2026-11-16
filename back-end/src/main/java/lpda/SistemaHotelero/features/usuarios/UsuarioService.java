@@ -25,8 +25,9 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
+    // Trae activos e inactivos: el admin necesita ver a los desactivados para poder reactivarlos
     public List<UsuarioResponseDTO> listar() {
-        return usuarioRepository.findByActivoTrue()
+        return usuarioRepository.findAll()
                 .stream()
                 .map(usuarioMapper::toResponseDTO)
                 .toList();

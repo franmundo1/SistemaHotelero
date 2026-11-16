@@ -1,18 +1,131 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { ROLES } from './core/auth/roles';
+import { SesionService } from './core/auth/sesion.service';
+import { authGuard, guestGuard } from './core/guards/auth-guard';
+import { rolGuard } from './core/guards/rol-guard';
 import { ListadoHabitaciones } from './features/habitaciones/pages/listado-habitaciones';
+import { Login } from './features/login/pages/login';
+
+// Pantallas de recepcion: las ven el admin y el recepcionista
+const RECEPCION = [ROLES.ADMIN, ROLES.RECEPCIONISTA];
 
 export const routes: Routes = [
   {
-    path: 'habitaciones',
-    component: ListadoHabitaciones,
+    path: 'login',
+    component: Login,
+    canActivate: [guestGuard],
   },
   {
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/pages/dashboard').then((m) => m.Dashboard),
+    title: 'Inicio',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'habitaciones',
+    component: ListadoHabitaciones,
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'disponibilidad',
+    loadComponent: () =>
+      import('./features/habitaciones/pages/disponibilidad-habitaciones').then(
+        (m) => m.DisponibilidadHabitaciones
+      ),
+    title: 'Disponibilidad',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'reservas/nueva',
+    loadComponent: () => import('./features/reservas/pages/nueva-reserva').then((m) => m.NuevaReserva),
+    title: 'Nueva reserva',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'reservas/:id/pagos',
+    loadComponent: () =>
+      import('./features/pagos/pages/pagos-reserva').then((m) => m.PagosReserva),
+    title: 'Pagos de la reserva',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'reservas',
+    loadComponent: () =>
+      import('./features/reservas/pages/listado-reservas').then((m) => m.ListadoReservas),
+    title: 'Reservas',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'huespedes',
+    loadComponent: () =>
+      import('./features/huespedes/pages/listado-huespedes').then((m) => m.ListadoHuespedes),
+    title: 'Huéspedes',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'consumos',
+    loadComponent: () =>
+      import('./features/consumos/pages/registrar-consumo').then((m) => m.RegistrarConsumo),
+    title: 'Registrar consumo',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'check-in',
+    loadComponent: () => import('./features/check-in/pages/check-in').then((m) => m.RegistrarCheckIn),
+    title: 'Registrar check-in',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: RECEPCION },
+  },
+  {
+    path: 'sin-permiso',
+    loadComponent: () => import('./core/layout/sin-permiso/sin-permiso').then((m) => m.SinPermiso),
+    title: 'Sin permisos',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'check-out',
+    loadComponent: () =>
+      import('./features/check-out/pages/registrar-check-out').then(
+        (m) => m.RegistrarCheckOut
+      ),
+    title: 'Registrar check-out',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'limpieza',
+    loadComponent: () =>
+      import('./features/habitaciones/pages/limpieza-habitaciones').then(
+        (m) => m.LimpiezaHabitaciones
+      ),
+    title: 'Limpieza de habitaciones',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: [ROLES.ADMIN, ROLES.LIMPIEZA] },
+  },
+  {
+    path: 'usuarios',
+    loadComponent: () =>
+      import('./features/usuarios/pages/listado-usuarios').then((m) => m.ListadoUsuarios),
+    title: 'Usuarios',
+    canActivate: [authGuard, rolGuard],
+    data: { roles: [ROLES.ADMIN] },
+  },
+  // Sin ruta (o una que no existe) se va al inicio del rol
+  {
     path: '',
-    redirectTo: 'habitaciones',
+    redirectTo: () => inject(SesionService).rutaInicio(),
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'habitaciones',
+    redirectTo: () => inject(SesionService).rutaInicio(),
   },
 ];
