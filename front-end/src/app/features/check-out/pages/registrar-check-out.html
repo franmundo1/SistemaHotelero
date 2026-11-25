@@ -1,6 +1,7 @@
 <section class="check-out">
   <header class="encabezado">
     <div>
+      <p class="check-out__seccion">Estadía y cierre</p>
       <h1>Registrar check-out</h1>
       <p>Cerrá una estadía cobrando el saldo pendiente.</p>
     </div>
@@ -12,8 +13,13 @@
 
   @if (resultado(); as checkOut) {
     <div class="resultado">
-      <h2>Check-out registrado</h2>
-      <p>{{ checkOut.nombreHuesped }} dejó la habitación {{ checkOut.numeroHabitacion }}.</p>
+      <div class="resultado__icono" aria-hidden="true">✓</div>
+      <p class="resultado__etiqueta">Estadía finalizada</p>
+      <h2>Check-out registrado correctamente</h2>
+      <p class="resultado__descripcion">
+        <strong>{{ checkOut.nombreHuesped }}</strong> dejó la habitación
+        <strong>{{ checkOut.numeroHabitacion }}</strong>.
+      </p>
 
       <dl>
         <div>
@@ -41,8 +47,8 @@
   } @else if (reservas().length === 0 && resultado() === null) {
     <p class="mensaje">No hay reservas en curso para realizar el check-out.</p>
   } @else if (reservas().length > 0) {
-    <form [formGroup]="formulario" (ngSubmit)="registrar()">
-      <label>
+    <form class="formulario-check-out" [formGroup]="formulario" (ngSubmit)="registrar()">
+      <label class="selector-reserva">
         Reserva en curso
         <select formControlName="idReservaExterno" (change)="cargarResumen()">
           <option value="" disabled>Seleccioná una reserva</option>
@@ -62,12 +68,19 @@
       }
 
       @if (cargandoResumen()) {
-        <p>Cargando resumen...</p>
+        <p class="cargando-resumen">Cargando resumen de la estadía...</p>
       }
 
       @if (resumen(); as datos) {
         <div class="resumen">
-          <h2>Resumen</h2>
+          <header class="resumen__encabezado">
+            <div>
+              <p>Detalle de la estadía</p>
+              <h2>{{ datos.huesped }}</h2>
+            </div>
+            <span>Habitación {{ datos.habitacion }}</span>
+          </header>
+          <div class="resumen__detalle">
           <p><span>Huésped</span><strong>{{ datos.huesped }}</strong></p>
           <p><span>Habitación</span><strong>{{ datos.habitacion }}</strong></p>
           <p><span>Total estadía</span><strong>{{ datos.totalEstadia | currency: 'ARS' }}</strong></p>
@@ -75,6 +88,7 @@
           <p><span>Anticipo</span><strong>- {{ datos.anticipo | currency: 'ARS' }}</strong></p>
           <p><span>Total final</span><strong>{{ datos.totalFinal | currency: 'ARS' }}</strong></p>
           <p class="saldo"><span>Saldo pendiente</span><strong>{{ datos.saldoPendiente | currency: 'ARS' }}</strong></p>
+          </div>
         </div>
 
         <div class="fila">
@@ -97,12 +111,12 @@
           <small class="error">Ingresá un monto válido.</small>
         }
 
-        <label>
+        <label class="campo-observaciones">
           Observaciones
           <textarea formControlName="observaciones" rows="3" placeholder="Opcional"></textarea>
         </label>
 
-        <button type="submit" [disabled]="guardando()">
+        <button class="boton-principal" type="submit" [disabled]="guardando()">
           {{ guardando() ? 'Registrando...' : 'Confirmar check-out' }}
         </button>
       }

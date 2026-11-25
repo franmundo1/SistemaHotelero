@@ -18,6 +18,22 @@
     </button>
   </header>
 
+  <div class="filtros">
+  <label for="filtro-estado">Filtrar por estado</label>
+
+  <select
+    id="filtro-estado"
+    [value]="filtroEstado()"
+    (change)="onCambiarFiltro($event)"
+  >
+    <option value="TODAS">Todas las reservas</option>
+    <option value="CONFIRMADA">Confirmadas</option>
+    <option value="EN_CURSO">En curso</option>
+    <option value="FINALIZADA">Finalizadas</option>
+    <option value="CANCELADA">Canceladas</option>
+  </select>
+</div>
+
   @if (mensaje()) {
     <p class="mensaje-exito">{{ mensaje() }}</p>
   }
@@ -35,10 +51,17 @@
       </button>
     </div>
   } @else if (reservas().length === 0) {
-    <div class="mensaje">
-      <p>No hay reservas registradas.</p>
-    </div>
-  } @else {
+  <div class="mensaje">
+    <p>No hay reservas registradas.</p>
+  </div>
+} @else if (reservasFiltradas().length === 0) {
+  <div class="mensaje">
+    <p>
+      No hay reservas con estado
+      {{ mostrarEstado(filtroEstado()) }}.
+    </p>
+  </div>
+} @else {
     <div class="tabla-contenedor">
       <table>
         <thead>
@@ -56,20 +79,20 @@
         </thead>
 
         <tbody>
-          @for (reserva of reservas(); track reserva.idExterno) {
+          @for (reserva of reservasFiltradas(); track reserva.idExterno) {
             <tr>
-              <td class="huesped">{{ reserva.huesped }}</td>
-              <td>{{ reserva.habitacion }}</td>
-              <td>{{ reserva.fechaEntrada | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ mostrarEstado(reserva.canalReserva) }}</td>
-              <td>
+              <td class="huesped" data-label="Huésped">{{ reserva.huesped }}</td>
+              <td data-label="Habitación">{{ reserva.habitacion }}</td>
+              <td data-label="Entrada">{{ reserva.fechaEntrada | date: 'dd/MM/yyyy' }}</td>
+              <td data-label="Salida">{{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}</td>
+              <td data-label="Canal">{{ mostrarEstado(reserva.canalReserva) }}</td>
+              <td data-label="Total">
                 {{
                   reserva.totalEstadia
                     | currency: 'ARS' : 'symbol-narrow' : '1.2-2'
                 }}
               </td>
-              <td>
+              <td class="estado-celda" data-label="Estado">
                 <span
                   class="estado"
                   [class]="'estado estado--' + reserva.estado.toLowerCase()"
@@ -86,7 +109,7 @@
                   </small>
                 }
               </td>
-              <td class="acciones">
+              <td class="acciones" data-label="Pagos">
                 <a
                   class="accion-pagos"
                   [routerLink]="['/reservas', reserva.idExterno, 'pagos']"
@@ -94,7 +117,7 @@
                   Ver pagos
                 </a>
               </td>
-              <td class="acciones">
+              <td class="acciones" data-label="Cancelar">
                 @if (puedeCancelar(reserva)) {
                   <button
                     type="button"

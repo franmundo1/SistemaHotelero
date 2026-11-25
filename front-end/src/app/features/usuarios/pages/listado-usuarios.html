@@ -24,10 +24,28 @@
   </header>
 
   @if (mensaje()) {
-    <p class="exito">{{ mensaje() }}</p>
+    <div class="notificacion notificacion--exito" role="status">
+      <span>{{ mensaje() }}</span>
+      <button
+        type="button"
+        aria-label="Cerrar notificación"
+        (click)="cerrarNotificacion()"
+      >
+        ×
+      </button>
+    </div>
   }
-  @if (errorEstado()) {
-    <p class="error">{{ errorEstado() }}</p>
+  @if (errorEstado() && !usuarioADesactivar()) {
+    <div class="notificacion notificacion--error" role="alert">
+      <span>{{ errorEstado() }}</span>
+      <button
+        type="button"
+        aria-label="Cerrar notificación"
+        (click)="cerrarErrorEstado()"
+      >
+        ×
+      </button>
+    </div>
   }
 
   @if (formularioAbierto()) {
@@ -66,16 +84,16 @@
         <tbody>
           @for (usuario of usuarios(); track usuario.idExterno) {
             <tr [class.inactivo]="!usuario.activo">
-              <td class="nombre">{{ usuario.nombre }}</td>
-              <td>{{ usuario.apellido }}</td>
-              <td>{{ usuario.email }}</td>
-              <td>{{ mostrarRol(usuario.rol) }}</td>
-              <td>
+              <td class="nombre" data-label="Nombre">{{ usuario.nombre }}</td>
+              <td data-label="Apellido">{{ usuario.apellido }}</td>
+              <td data-label="Email">{{ usuario.email }}</td>
+              <td data-label="Rol">{{ mostrarRol(usuario.rol) }}</td>
+              <td data-label="Estado">
                 <span class="estado" [class.estado--inactivo]="!usuario.activo">
                   {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-              <td class="acciones">
+              <td class="acciones" data-label="Acciones">
                 @if (esUsuarioActual(usuario)) {
                   <span class="vos">Tu usuario</span>
                 } @else {
@@ -92,7 +110,7 @@
               </td>
             </tr>
           } @empty {
-            <tr>
+            <tr class="tabla-vacia">
               <td colspan="6">No hay usuarios para mostrar.</td>
             </tr>
           }
@@ -101,3 +119,64 @@
     </div>
   }
 </section>
+
+@if (usuarioADesactivar(); as usuario) {
+  <div
+    class="modal-fondo"
+    (click)="onCerrarDesactivacion()"
+  >
+    <section
+      class="modal-confirmacion"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-desactivar-usuario"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-confirmacion__encabezado">
+        <div class="modal-confirmacion__icono" aria-hidden="true">!</div>
+
+        <div>
+          <p class="modal-confirmacion__seccion">Desactivar usuario</p>
+          <h2 id="titulo-desactivar-usuario">¿Confirmás esta acción?</h2>
+        </div>
+      </header>
+
+      <p class="modal-confirmacion__texto">
+        Vas a desactivar a
+        <strong>{{ usuario.nombre }} {{ usuario.apellido }}</strong>.
+      </p>
+
+      <p class="modal-confirmacion__aclaracion">
+        El usuario dejará de tener acceso al sistema, pero sus datos y su historial se conservarán.
+        Podrás volver a activarlo más adelante.
+      </p>
+
+      @if (errorEstado()) {
+        <div class="modal-confirmacion__error" role="alert">
+          <strong>No se pudo desactivar el usuario</strong>
+          <span>{{ errorEstado() }}</span>
+        </div>
+      }
+
+      <footer class="modal-confirmacion__acciones">
+        <button
+          type="button"
+          class="boton-cancelar"
+          (click)="onCerrarDesactivacion()"
+          [disabled]="actualizando() === usuario.idExterno"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="boton-confirmar-baja"
+          (click)="onConfirmarDesactivacion()"
+          [disabled]="actualizando() === usuario.idExterno"
+        >
+          {{ actualizando() === usuario.idExterno ? 'Desactivando...' : 'Desactivar' }}
+        </button>
+      </footer>
+    </section>
+  </div>
+}

@@ -2,6 +2,7 @@ package lpda.SistemaHotelero.features.consumos;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lpda.SistemaHotelero.features.consumos.DTO.ConsumoLoteRequestDTO;
 import lpda.SistemaHotelero.features.consumos.DTO.ConsumoRequestDTO;
 import lpda.SistemaHotelero.features.consumos.DTO.ConsumoResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,37 @@ public class ConsumoController {
                 .status(HttpStatus.CREATED)
                 .body(consumoService.crear(dto));
     }
+
+    @Operation(
+            summary = "Registrar un lote de consumos",
+            description = "Registra varios productos consumidos por una misma reserva en una sola operación"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Consumos registrados correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos o stock insuficiente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Reserva o producto no encontrado"
+            )
+    })
+    @PostMapping("/lote")
+    public ResponseEntity<List<ConsumoResponseDTO>> crearLote(
+            @Valid @RequestBody ConsumoLoteRequestDTO dto
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(consumoService.crearLote(dto));
+    }
+
+
+
+
     @Operation(
             summary = "Listar consumos",
             description = "Obtiene todos los consumos registrados en el sistema"

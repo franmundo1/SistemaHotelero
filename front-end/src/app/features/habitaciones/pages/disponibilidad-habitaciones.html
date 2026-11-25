@@ -57,41 +57,82 @@
   </form>
 
   @if (busqueda()) {
-    @if (disponibles().length === 0) {
+  @if (disponibles().length === 0) {
+    <div class="mensaje">
+      <p>No hay habitaciones disponibles para esas fechas.</p>
+    </div>
+  } @else {
+    <div class="buscador-habitacion">
+      <label for="numero-habitacion">
+        Buscar por número de habitación
+      </label>
+
+      <input
+        id="numero-habitacion"
+        type="search"
+        placeholder="Ej: 102"
+        [value]="numeroBuscado()"
+        (input)="onBuscarNumero($event)"
+      />
+    </div>
+
+    @if (disponiblesFiltradas().length === 0) {
       <div class="mensaje">
-        <p>No hay habitaciones disponibles para esas fechas</p>
+        <p>
+          No se encontró una habitación disponible con el número
+          <strong>{{ numeroBuscado() }}</strong>.
+        </p>
       </div>
     } @else {
-      <div class="tabla-contenedor">
-        <table>
-          <thead>
-            <tr>
-              <th>Número</th>
-              <th>Tipo</th>
-              <th>Capacidad</th>
-              <th>Precio por noche</th>
-              <th class="acciones">Acciones</th>
-            </tr>
-          </thead>
+      <div class="habitaciones-grid">
+        @for (
+          habitacion of disponiblesFiltradas();
+          track habitacion.idExterno
+        ) {
+          <article class="habitacion-card">
+            <header class="habitacion-card__encabezado">
+              <div>
+                <p class="habitacion-card__etiqueta">Habitación</p>
+                <h2>{{ habitacion.numero }}</h2>
+              </div>
 
-          <tbody>
-            @for (habitacion of disponibles(); track habitacion.idExterno) {
-              <tr>
-                <td class="numero">{{ habitacion.numero }}</td>
-                <td>{{ mostrar(habitacion.tipo) }}</td>
-                <td>
+              <span class="habitacion-card__tipo">
+                {{ mostrar(habitacion.tipo) }}
+              </span>
+            </header>
+
+            <div class="habitacion-card__datos">
+              <div>
+                <span>Capacidad</span>
+                <strong>
                   {{ habitacion.capacidad }}
                   {{ habitacion.capacidad === 1 ? 'persona' : 'personas' }}
-                </td>
-                <td>{{ habitacion.precioPorNoche | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</td>
-                <td class="acciones">
-                  <button type="button" class="accion" (click)="onReservar(habitacion)">Reservar</button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+                </strong>
+              </div>
+
+              <div>
+                <span>Precio por noche</span>
+                <strong class="habitacion-card__precio">
+                  {{
+                    habitacion.precioPorNoche
+                      | currency: 'ARS' : 'symbol-narrow' : '1.2-2'
+                  }}
+                </strong>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="boton-reservar"
+              (click)="onReservar(habitacion)"
+            >
+              Reservar habitación
+              <span aria-hidden="true">→</span>
+            </button>
+          </article>
+        }
       </div>
     }
   }
+}
 </section>

@@ -36,6 +36,8 @@ const rangoFechas: ValidatorFn = (grupo: AbstractControl): ValidationErrors | nu
   return entrada && salida && salida <= entrada ? { rangoInvalido: true } : null;
 };
 
+
+
 @Component({
   selector: 'app-disponibilidad-habitaciones',
   imports: [ReactiveFormsModule, CurrencyPipe],
@@ -52,6 +54,7 @@ export class DisponibilidadHabitaciones {
   readonly buscando = signal(false);
   readonly error = signal<string | null>(null);
   readonly busqueda = signal<Busqueda | null>(null); // null = todavia no se busco
+  readonly numeroBuscado = signal('');
 
   readonly form = new FormGroup({
     fechaEntrada: new FormControl('', { nonNullable: true, validators: [Validators.required, fechaNoPasada] }),
@@ -68,6 +71,18 @@ export class DisponibilidadHabitaciones {
     return this.habitaciones().filter((h) => h.capacidad >= personas);
   });
 
+  readonly disponiblesFiltradas = computed(() => {
+  const numero = this.numeroBuscado().trim().toLowerCase();
+
+  if (!numero) {
+    return this.disponibles();
+  }
+
+  return this.disponibles().filter((habitacion) =>
+    habitacion.numero.toLowerCase().includes(numero)
+  );
+});
+
   onBuscar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -78,6 +93,7 @@ export class DisponibilidadHabitaciones {
 
     this.buscando.set(true);
     this.error.set(null);
+    this.numeroBuscado.set('');
 
     this.habitacionesService.getDisponibles(datos.fechaEntrada, datos.fechaSalida).subscribe({
       next: (habitaciones) => {
@@ -92,6 +108,12 @@ export class DisponibilidadHabitaciones {
       },
     });
   }
+
+  onBuscarNumero(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  this.numeroBuscado.set(input.value);
+}
 
   // Pasa a la reserva (H9) con la habitacion y las fechas ya elegidas
   onReservar(habitacion: Habitacion): void {

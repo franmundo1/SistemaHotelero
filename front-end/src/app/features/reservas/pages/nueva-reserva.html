@@ -5,122 +5,238 @@
   </header>
 
   @if (cargando()) {
-    <div class="mensaje">
-      <p>Cargando datos de la reserva...</p>
-    </div>
+  <div class="mensaje">
+    <p>Cargando datos de la reserva...</p>
+  </div>
   } @else if (error()) {
-    <div class="mensaje mensaje--error">
-      <p>{{ error() }}</p>
-      <a routerLink="/disponibilidad">Ir a la consulta de disponibilidad</a>
-    </div>
+  <div class="mensaje mensaje--error">
+    <p>{{ error() }}</p>
+    <a routerLink="/disponibilidad">Ir a la consulta de disponibilidad</a>
+  </div>
   } @else if (reservaCreada(); as reserva) {
-    <div class="mensaje mensaje--exito">
-      <p>
-        Reserva {{ mostrar(reserva.estado) }} para {{ reserva.huesped }} en la habitación
-        {{ reserva.habitacion }}, del {{ reserva.fechaEntrada }} al {{ reserva.fechaSalida }}.
-      </p>
-      <p>Total de la estadía: {{ reserva.totalEstadia | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</p>
-      <a routerLink="/disponibilidad">Hacer otra reserva</a>
-    </div>
-  } @else if (habitacionElegida(); as h) {
-    <div class="resumen">
-      <p><strong>Habitación {{ h.numero }}</strong> · {{ mostrar(h.tipo) }} · hasta {{ h.capacidad }} personas</p>
-      <p>Del {{ fechaEntrada() }} al {{ fechaSalida() }} ({{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }})</p>
-      <a routerLink="/disponibilidad">Cambiar habitación o fechas</a>
-    </div>
+  <section class="confirmacion-reserva" aria-labelledby="titulo-reserva-confirmada">
+    <div class="confirmacion-reserva__icono" aria-hidden="true">✓</div>
 
-    <form [formGroup]="form" (ngSubmit)="onConfirmar()">
-      <label>
-        Huésped
-        <select formControlName="huesped">
-          <option value="" disabled>Elegí un huésped</option>
-          @for (huesped of huespedes(); track huesped.idExterno) {
-            <option [value]="huesped.idExterno">
-              {{ huesped.apellido }}, {{ huesped.nombre }} (DNI {{ huesped.dni }})
-            </option>
-          } @empty {
-            <option value="" disabled>No hay huéspedes cargados</option>
-          }
-        </select>
-      </label>
-      @if (form.controls.huesped.touched && form.controls.huesped.errors; as e) {
-        @if (e['required']) {
-          <small class="error">Elegí un huésped.</small>
-        }
-      }
+    <p class="confirmacion-reserva__etiqueta">Reserva registrada</p>
+    <h2 id="titulo-reserva-confirmada">¡Reserva confirmada!</h2>
+    <p class="confirmacion-reserva__descripcion">
+      La reserva para <strong>{{ reserva.huesped }}</strong> se creó correctamente.
+    </p>
 
-      <label>
-        Canal de reserva
-        <select formControlName="canal">
-          <option value="" disabled>Elegí un canal</option>
-          @for (canal of canales(); track canal.idExterno) {
-            <option [value]="canal.idExterno">{{ mostrar(canal.tipo) }}</option>
-          }
-        </select>
-      </label>
-      @if (form.controls.canal.touched && form.controls.canal.errors; as e) {
-        @if (e['required']) {
-          <small class="error">Elegí un canal de reserva.</small>
-        }
-      }
-
-      <label>
-        Cantidad de personas
-        <input type="number" formControlName="personas" min="1" [max]="h.capacidad" />
-      </label>
-      @if (form.controls.personas.touched && form.controls.personas.errors; as e) {
-        @if (e['required']) {
-          <small class="error">La cantidad de personas es obligatoria.</small>
-        } @else if (e['min']) {
-          <small class="error">Tiene que ser al menos 1 persona.</small>
-        }
-      }
-      @if (superaCapacidad()) {
-        <small class="error">La habitación admite como máximo {{ h.capacidad }} personas.</small>
-      }
-
-      <label>
-        Anticipo
-        <input type="number" formControlName="anticipo" min="0" step="0.01" />
-      </label>
-      @if (form.controls.anticipo.touched && form.controls.anticipo.errors; as e) {
-        @if (e['required']) {
-          <small class="error">El anticipo es obligatorio.</small>
-        } @else if (e['min']) {
-          <small class="error">El anticipo debe ser mayor a 0.</small>
-        }
-      }
-      @if (anticipoSuperaTotal()) {
-        <small class="error">El anticipo no puede superar el total de la estadía.</small>
-      }
-
-      <label>
-        Método de pago del anticipo
-        <select formControlName="metodoPago">
-          @for (metodo of metodosPago; track metodo) {
-            <option [value]="metodo">{{ mostrar(metodo) }}</option>
-          }
-        </select>
-      </label>
-
-      <div class="total">
-        <p>
-          {{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }} x
-          {{ precioPorNoche() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
-        </p>
-        <p><strong>Total a pagar: {{ total() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</strong></p>
-        @if (total() > 0 && form.controls.anticipo.value > 0 && !anticipoSuperaTotal()) {
-          <p>Saldo pendiente: {{ total() - form.controls.anticipo.value | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</p>
-        }
+    <div class="confirmacion-reserva__datos">
+      <div class="confirmacion-reserva__dato">
+        <span>Huésped</span>
+        <strong>{{ reserva.huesped }}</strong>
       </div>
 
-      @if (errorGuardar()) {
-        <p class="error">{{ errorGuardar() }}</p>
+      <div class="confirmacion-reserva__dato">
+        <span>Habitación</span>
+        <strong>{{ reserva.habitacion }}</strong>
+      </div>
+
+      <div class="confirmacion-reserva__dato">
+        <span>Entrada</span>
+        <strong>{{ reserva.fechaEntrada }}</strong>
+      </div>
+
+      <div class="confirmacion-reserva__dato">
+        <span>Salida</span>
+        <strong>{{ reserva.fechaSalida }}</strong>
+      </div>
+    </div>
+
+    <div class="confirmacion-reserva__total">
+      <span>Total de la estadía</span>
+      <strong>
+        {{ reserva.totalEstadia | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
+      </strong>
+    </div>
+
+    <div class="confirmacion-reserva__acciones">
+      <a class="confirmacion-reserva__boton confirmacion-reserva__boton--secundario" routerLink="/reservas">
+        Ver reservas
+      </a>
+      <a class="confirmacion-reserva__boton confirmacion-reserva__boton--principal" routerLink="/disponibilidad">
+        Hacer otra reserva
+      </a>
+    </div>
+  </section>
+  } @else if (habitacionElegida(); as h) {
+  <div class="resumen">
+    <header class="resumen__encabezado">
+      <div>
+        <p class="resumen__etiqueta">Habitación seleccionada</p>
+        <h2>Habitación {{ h.numero }}</h2>
+      </div>
+
+      <span class="resumen__tipo">
+        {{ mostrar(h.tipo) }}
+      </span>
+    </header>
+
+    <div class="resumen__datos">
+      <div class="resumen__dato">
+        <span>Capacidad</span>
+        <strong>
+          Hasta {{ h.capacidad }}
+          {{ h.capacidad === 1 ? 'persona' : 'personas' }}
+        </strong>
+      </div>
+
+      <div class="resumen__dato">
+        <span>Entrada</span>
+        <strong>
+          {{ fechaEntrada() | date: 'dd/MM/yyyy' }}
+        </strong>
+      </div>
+
+      <div class="resumen__dato">
+        <span>Salida</span>
+        <strong>
+          {{ fechaSalida() | date: 'dd/MM/yyyy' }}
+        </strong>
+      </div>
+    </div>
+
+    <footer class="resumen__pie">
+      <p class="resumen__noches">
+        <strong>{{ noches() }}</strong>
+        {{ noches() === 1 ? 'noche' : 'noches' }} de estadía
+      </p>
+
+      <a class="resumen__cambiar" routerLink="/disponibilidad">
+        Cambiar habitación o fechas
+        <span aria-hidden="true">→</span>
+      </a>
+    </footer>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onConfirmar()">
+    <div class="selector-huesped">
+      <label class="buscador-huesped">
+        Buscar y seleccionar huésped
+
+        <input type="search" placeholder="Escribí un nombre, apellido o DNI" autocomplete="off"
+          [value]="busquedaHuesped()" (focus)="onEnfocarHuesped()" (input)="onBuscarHuesped($event)" />
+      </label>
+
+      <input type="hidden" formControlName="huesped" />
+
+      @if (
+      mostrarResultadosHuesped() &&
+      busquedaHuesped().trim().length > 0
+      ) {
+      <div class="resultados-huesped" role="listbox" aria-label="Resultados de huéspedes">
+        @for (
+        huesped of huespedesFiltrados();
+        track huesped.idExterno
+        ) {
+        <button type="button" class="resultado-huesped" (click)="onSeleccionarHuesped(huesped)">
+          <strong>
+            {{ huesped.apellido }}, {{ huesped.nombre }}
+          </strong>
+
+          <span>DNI {{ huesped.dni }}</span>
+        </button>
+        } @empty {
+        <p class="resultado-huesped-vacio">
+          No se encontraron huéspedes.
+        </p>
+        }
+      </div>
       }
 
-      <button type="submit" [disabled]="guardando() || superaCapacidad() || anticipoSuperaTotal()">
-        {{ guardando() ? 'Guardando...' : 'Confirmar reserva' }}
-      </button>
-    </form>
+      @if (
+      busquedaHuesped().trim().length > 0 &&
+      mostrarResultadosHuesped()
+      ) {
+      <small class="buscador-huesped__resultado">
+        {{
+        huespedesFiltrados().length === 1
+        ? '1 huésped encontrado'
+        : huespedesFiltrados().length + ' huéspedes encontrados'
+        }}
+      </small>
+      }
+    </div>
+    @if (form.controls.huesped.touched && form.controls.huesped.errors; as e) {
+    @if (e['required']) {
+    <small class="error">Elegí un huésped.</small>
+    }
+    }
+
+    <label>
+      Canal de reserva
+      <select formControlName="canal">
+        <option value="" disabled>Elegí un canal</option>
+        @for (canal of canales(); track canal.idExterno) {
+        <option [value]="canal.idExterno">{{ mostrar(canal.tipo) }}</option>
+        }
+      </select>
+    </label>
+    @if (form.controls.canal.touched && form.controls.canal.errors; as e) {
+    @if (e['required']) {
+    <small class="error">Elegí un canal de reserva.</small>
+    }
+    }
+
+    <label>
+      Cantidad de personas
+      <input type="number" formControlName="personas" min="1" [max]="h.capacidad" />
+    </label>
+    @if (form.controls.personas.touched && form.controls.personas.errors; as e) {
+    @if (e['required']) {
+    <small class="error">La cantidad de personas es obligatoria.</small>
+    } @else if (e['min']) {
+    <small class="error">Tiene que ser al menos 1 persona.</small>
+    }
+    }
+    @if (superaCapacidad()) {
+    <small class="error">La habitación admite como máximo {{ h.capacidad }} personas.</small>
+    }
+
+    <label>
+      Anticipo
+      <input type="number" formControlName="anticipo" min="0" step="0.01" />
+    </label>
+    @if (form.controls.anticipo.touched && form.controls.anticipo.errors; as e) {
+    @if (e['required']) {
+    <small class="error">El anticipo es obligatorio.</small>
+    } @else if (e['min']) {
+    <small class="error">El anticipo debe ser mayor a 0.</small>
+    }
+    }
+    @if (anticipoSuperaTotal()) {
+    <small class="error">El anticipo no puede superar el total de la estadía.</small>
+    }
+
+    <label>
+      Método de pago del anticipo
+      <select formControlName="metodoPago">
+        @for (metodo of metodosPago; track metodo) {
+        <option [value]="metodo">{{ mostrar(metodo) }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="total">
+      <p>
+        {{ noches() }} {{ noches() === 1 ? 'noche' : 'noches' }} x
+        {{ precioPorNoche() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
+      </p>
+      <p><strong>Total a pagar: {{ total() | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</strong></p>
+      @if (total() > 0 && form.controls.anticipo.value > 0 && !anticipoSuperaTotal()) {
+      <p>Saldo pendiente: {{ total() - form.controls.anticipo.value | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}</p>
+      }
+    </div>
+
+    @if (errorGuardar()) {
+    <p class="error">{{ errorGuardar() }}</p>
+    }
+
+    <button type="submit" [disabled]="guardando() || superaCapacidad() || anticipoSuperaTotal()">
+      {{ guardando() ? 'Guardando...' : 'Confirmar reserva' }}
+    </button>
+  </form>
   }
 </section>
