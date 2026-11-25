@@ -98,7 +98,8 @@ export const routes: Routes = [
         (m) => m.RegistrarCheckOut
       ),
     title: 'Registrar check-out',
-    canActivate: [authGuard],
+    canActivate: [authGuard,rolGuard],
+    data: { roles: RECEPCION },
   },
   {
     path: 'limpieza',
