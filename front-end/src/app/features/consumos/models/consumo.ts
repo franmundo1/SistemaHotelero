@@ -26,3 +26,23 @@ export interface Consumo {
   fechaConsumo: string;
   observaciones: string | null;
 }
+
+export interface ConsumoItemRequest {
+  idProductoExterno: string;
+  cantidad: number;
+  observaciones?: string;
+}
+
+export interface ConsumoLoteRequest {
+  idReservaExterno: string;
+  consumos: ConsumoItemRequest[];
+}
+
+export interface ItemCarritoConsumo {
+  idProductoExterno: string;
+  producto: string;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal: number;
+  observaciones?: string;
+}

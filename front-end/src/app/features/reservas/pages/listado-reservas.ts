@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -11,6 +11,14 @@ import { ApiError } from '../../../core/models/api-error';
 import { Reserva } from '../models/reserva';
 import { ReservasService } from '../services/reservas';
 
+type FiltroEstado =
+  | 'TODAS'
+  | 'CONFIRMADA'
+  | 'EN_CURSO'
+  | 'FINALIZADA'
+  | 'CANCELADA';
+
+
 @Component({
   selector: 'app-listado-reservas',
   imports: [CurrencyPipe, DatePipe, ReactiveFormsModule, RouterLink],
@@ -21,6 +29,19 @@ export class ListadoReservas implements OnInit {
   private readonly reservasService = inject(ReservasService);
 
   readonly reservas = signal<Reserva[]>([]);
+  readonly filtroEstado = signal<FiltroEstado>('TODAS');
+
+readonly reservasFiltradas = computed(() => {
+  const estadoSeleccionado = this.filtroEstado();
+
+  if (estadoSeleccionado === 'TODAS') {
+    return this.reservas();
+  }
+
+  return this.reservas().filter(
+    (reserva) => reserva.estado.toUpperCase() === estadoSeleccionado
+  );
+});
   readonly cargando = signal(false);
   readonly error = signal<string | null>(null);
   readonly mensaje = signal<string | null>(null);
@@ -123,6 +144,12 @@ export class ListadoReservas implements OnInit {
         },
       });
   }
+
+  onCambiarFiltro(event: Event): void {
+  const select = event.target as HTMLSelectElement;
+
+  this.filtroEstado.set(select.value as FiltroEstado);
+}
 
   puedeCancelar(reserva: Reserva): boolean {
     return reserva.estado.toUpperCase() === 'CONFIRMADA';

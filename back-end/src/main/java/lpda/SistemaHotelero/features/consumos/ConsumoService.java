@@ -5,6 +5,7 @@ import lpda.SistemaHotelero.exceptions.BadRequestException;
 import lpda.SistemaHotelero.exceptions.ResourceNotFoundException;
 import lpda.SistemaHotelero.features.consumos.DTO.ConsumoRequestDTO;
 import lpda.SistemaHotelero.features.consumos.DTO.ConsumoResponseDTO;
+import lpda.SistemaHotelero.features.consumos.DTO.ConsumoLoteRequestDTO;
 import lpda.SistemaHotelero.features.productos.ProductoEntity;
 import lpda.SistemaHotelero.features.productos.ProductoService;
 import lpda.SistemaHotelero.features.reservas.ReservaEntity;
@@ -65,6 +66,23 @@ public class ConsumoService {
         ConsumoEntity guardado = consumoRepository.save(consumo);
 
         return consumoMapper.toResponseDTO(guardado);
+    }
+    @Transactional
+    public List<ConsumoResponseDTO> crearLote(ConsumoLoteRequestDTO dto) {
+
+        return dto.getConsumos()
+                .stream()
+                .map(item -> {
+                    ConsumoRequestDTO consumo = new ConsumoRequestDTO();
+
+                    consumo.setIdReservaExterno(dto.getIdReservaExterno());
+                    consumo.setIdProductoExterno(item.getIdProductoExterno());
+                    consumo.setCantidad(item.getCantidad());
+                    consumo.setObservaciones(item.getObservaciones());
+
+                    return crear(consumo);
+                })
+                .toList();
     }
 
     @Transactional(readOnly = true)

@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,9 +13,10 @@ import { CanalReserva, METODOS_PAGO, MetodoPago, Reserva } from '../models/reser
 import { CanalesReservaService } from '../services/canales-reserva';
 import { ReservasService } from '../services/reservas';
 
+
 @Component({
   selector: 'app-nueva-reserva',
-  imports: [ReactiveFormsModule, CurrencyPipe, RouterLink],
+  imports: [ReactiveFormsModule, CurrencyPipe, DatePipe, RouterLink],
   templateUrl: './nueva-reserva.html',
   styleUrl: './nueva-reserva.css',
 })
@@ -36,6 +37,27 @@ export class NuevaReserva implements OnInit {
 
   readonly habitacionElegida = signal<Habitacion | null>(null);
   readonly huespedes = signal<Huesped[]>([]);
+  readonly busquedaHuesped = signal('');
+  readonly mostrarResultadosHuesped = signal(false);
+
+readonly huespedesFiltrados = computed(() => {
+  const terminos = this.normalizarTexto(this.busquedaHuesped())
+    .split(/\s+/)
+    .filter((termino) => termino.length > 0);
+
+  if (terminos.length === 0) {
+    return this.huespedes();
+  }
+
+  return this.huespedes().filter((huesped) => {
+    const datos = this.normalizarTexto(
+      `${huesped.nombre} ${huesped.apellido} ${huesped.dni}`
+    );
+
+    return terminos.every((termino) => datos.includes(termino));
+  });
+});
+
   readonly canales = signal<CanalReserva[]>([]);
   readonly cargando = signal(true);
   readonly error = signal<string | null>(null);
@@ -113,6 +135,31 @@ export class NuevaReserva implements OnInit {
     });
   }
 
+  onBuscarHuesped(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  this.busquedaHuesped.set(input.value);
+  this.mostrarResultadosHuesped.set(true);
+
+  // Si vuelve a escribir, se elimina la selección anterior
+  this.form.controls.huesped.setValue('');
+}
+
+onEnfocarHuesped(): void {
+  this.mostrarResultadosHuesped.set(true);
+}
+
+onSeleccionarHuesped(huesped: Huesped): void {
+  this.form.controls.huesped.setValue(huesped.idExterno);
+  this.form.controls.huesped.markAsTouched();
+
+  this.busquedaHuesped.set(
+    `${huesped.apellido}, ${huesped.nombre} (DNI ${huesped.dni})`
+  );
+
+  this.mostrarResultadosHuesped.set(false);
+}
+
   onConfirmar(): void {
     const habitacion = this.habitacionElegida();
     if (this.form.invalid || !habitacion) {
@@ -156,4 +203,12 @@ export class NuevaReserva implements OnInit {
     const texto = valor.replaceAll('_', ' ').toLowerCase();
     return texto.charAt(0).toUpperCase() + texto.slice(1);
   }
+
+  private normalizarTexto(valor: string | number): string {
+  return String(valor)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
 }

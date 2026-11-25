@@ -48,6 +48,7 @@ form,
 form {
   display: grid;
   gap: 1.25rem;
+  box-shadow: 0 14px 40px rgb(48 36 41 / 7%);
 }
 
 label {
@@ -78,12 +79,43 @@ textarea:focus {
 
 textarea {
   resize: vertical;
+  min-height: 105px;
 }
 
 .reserva {
+  overflow: hidden;
+  border: 1px solid var(--color-borde);
   border-radius: var(--radio-tarjeta);
-  padding: 1rem;
+  background-color: white;
+}
+
+.reserva__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
   background-color: var(--color-superficie);
+}
+
+.reserva__encabezado p {
+  margin: 0 0 0.2rem;
+  color: var(--color-acento);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.reserva__encabezado h2 {
+  margin: 0;
+}
+
+.reserva__encabezado > span {
+  border-radius: var(--radio-pildora);
+  padding: 0.4rem 0.75rem;
+  background-color: white;
+  color: var(--color-texto);
+  font-weight: 800;
 }
 
 .reserva h2,
@@ -98,6 +130,10 @@ dl {
   margin: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.reserva dl {
+  padding: 1.25rem;
 }
 
 dl div {
@@ -143,8 +179,47 @@ form > button:disabled,
 
 .resultado {
   margin-bottom: 1.5rem;
-  border-color: #86efac;
+  border-color: var(--color-exito-borde);
+  background: linear-gradient(145deg, white, var(--color-exito-fondo));
+  text-align: center;
+}
+
+.resultado__icono {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 0.75rem;
+  place-items: center;
+  border-radius: 50%;
   background-color: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.resultado__etiqueta {
+  margin: 0 0 0.25rem;
+  color: var(--color-exito-texto);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.resultado__descripcion {
+  margin: 0.5rem 0 1.25rem;
+  color: var(--color-texto-suave);
+}
+
+.resultado dl {
+  overflow: hidden;
+  border: 1px solid var(--color-exito-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: rgb(255 255 255 / 75%);
+  text-align: left;
+}
+
+.resultado dl div {
+  padding: 1rem;
 }
 
 .mensaje {
@@ -176,5 +251,10 @@ form > button:disabled,
 
   dl {
     grid-template-columns: 1fr;
+  }
+
+  .reserva__encabezado {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

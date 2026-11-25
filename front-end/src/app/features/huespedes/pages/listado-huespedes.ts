@@ -25,6 +25,8 @@ export class ListadoHuespedes implements OnInit {
   readonly errorFormulario = signal<string | null>(null);
   readonly mensaje = signal<string | null>(null);
   readonly errorBaja = signal<string | null>(null);
+  readonly huespedAEliminar = signal<Huesped | null>(null);
+  readonly eliminando = signal(false);
 
   // Buscador: el valor del control pasa a una signal para usarlo en el computed
   readonly buscador = new FormControl('', { nonNullable: true });
@@ -96,40 +98,70 @@ export class ListadoHuespedes implements OnInit {
   }
 
   onEliminar(huesped: Huesped): void {
-    const confirmado = confirm(
-      `¿Seguro que querés eliminar a ${huesped.nombre} ${huesped.apellido}? ` +
-        'Si tiene reservas anteriores, se da de baja y se conserva su historial.'
-    );
-    if (!confirmado) {
-      return;
-    }
+  this.mensaje.set(null);
+  this.errorBaja.set(null);
+  this.huespedAEliminar.set(huesped);
+}
 
-    this.mensaje.set(null);
-    this.errorBaja.set(null);
-
-    this.huespedesService.delete(huesped.idExterno).subscribe({
-      next: (baja) => {
-        // Lo sacamos de la lista sin recargar
-        this.huespedes.update((lista) => lista.filter((h) => h.idExterno !== huesped.idExterno));
-        if (this.huespedEnEdicion()?.idExterno === huesped.idExterno) {
-          this.onCancelar();
-        }
-        this.mensaje.set(
-          baja.tipo === 'LOGICA'
-            ? `Huésped ${huesped.nombre} ${huesped.apellido} dado de baja. Se conserva su historial de reservas.`
-            : `Huésped ${huesped.nombre} ${huesped.apellido} eliminado.`
-        );
-      },
-      error: (error: ApiError) => {
-        // 409: tiene una reserva confirmada o en curso
-        this.errorBaja.set(
-          error.status === 409
-            ? `No se puede eliminar a ${huesped.nombre} ${huesped.apellido} porque tiene una reserva confirmada o en curso.`
-            : error.mensaje
-        );
-      },
-    });
+onCerrarEliminacion(): void {
+  if (this.eliminando()) {
+    return;
   }
+
+  this.huespedAEliminar.set(null);
+  this.errorBaja.set(null);
+}
+
+onConfirmarEliminacion(): void {
+  const huesped = this.huespedAEliminar();
+
+  if (!huesped) {
+    return;
+  }
+
+  this.eliminando.set(true);
+  this.errorBaja.set(null);
+  this.mensaje.set(null);
+
+  this.huespedesService.delete(huesped.idExterno).subscribe({
+    next: (baja) => {
+      this.huespedes.update((lista) =>
+        lista.filter(
+          (h) => h.idExterno !== huesped.idExterno
+        )
+      );
+
+      if (
+        this.huespedEnEdicion()?.idExterno ===
+        huesped.idExterno
+      ) {
+        this.onCancelar();
+      }
+
+      this.eliminando.set(false);
+      this.huespedAEliminar.set(null);
+
+      this.mensaje.set(
+        baja.tipo === 'LOGICA'
+          ? `Huésped ${huesped.nombre} ${huesped.apellido} dado de baja. Se conserva su historial de reservas.`
+          : `Huésped ${huesped.nombre} ${huesped.apellido} eliminado correctamente.`
+      );
+    },
+    error: (error: ApiError) => {
+      this.eliminando.set(false);
+
+      this.errorBaja.set(
+        error.status === 409
+          ? `No se puede dar de baja a ${huesped.nombre} ${huesped.apellido} porque tiene una reserva confirmada o en curso.`
+          : error.mensaje
+      );
+    },
+  });
+}
+
+cerrarNotificacion(): void {
+  this.mensaje.set(null);
+}
 
   private abrirFormulario(huesped: Huesped | null): void {
     this.mensaje.set(null);

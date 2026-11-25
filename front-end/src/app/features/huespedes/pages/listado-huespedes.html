@@ -24,10 +24,20 @@
   </header>
 
   @if (mensaje()) {
-    <p class="exito">{{ mensaje() }}</p>
-  }
-  @if (errorBaja()) {
-    <p class="error">{{ errorBaja() }}</p>
+    <div
+      class="notificacion notificacion--exito"
+      role="status"
+    >
+      <span>{{ mensaje() }}</span>
+
+      <button
+        type="button"
+        aria-label="Cerrar notificación"
+        (click)="cerrarNotificacion()"
+      >
+        ×
+      </button>
+    </div>
   }
 
   @if (formularioAbierto()) {
@@ -72,18 +82,18 @@
         <tbody>
           @for (huesped of huespedesFiltrados(); track huesped.idExterno) {
             <tr>
-              <td class="nombre">{{ huesped.nombre }}</td>
-              <td>{{ huesped.apellido }}</td>
-              <td>{{ huesped.dni }}</td>
-              <td>{{ huesped.telefono || '-' }}</td>
-              <td>{{ huesped.email }}</td>
-              <td class="acciones">
+              <td class="nombre" data-label="Nombre">{{ huesped.nombre }}</td>
+              <td data-label="Apellido">{{ huesped.apellido }}</td>
+              <td data-label="DNI">{{ huesped.dni }}</td>
+              <td data-label="Teléfono">{{ huesped.telefono || '-' }}</td>
+              <td data-label="Email">{{ huesped.email }}</td>
+              <td class="acciones" data-label="Acciones">
                 <button type="button" class="accion" (click)="onEditar(huesped)" [disabled]="formularioAbierto()">Editar</button>
                 <button type="button" class="accion accion--peligro" (click)="onEliminar(huesped)">Eliminar</button>
               </td>
             </tr>
           } @empty {
-            <tr>
+            <tr class="tabla-vacia">
               <td colspan="6">No hay huéspedes para mostrar.</td>
             </tr>
           }
@@ -92,3 +102,73 @@
     </div>
   }
 </section>
+
+@if (huespedAEliminar(); as huesped) {
+  <div
+    class="modal-fondo"
+    (click)="onCerrarEliminacion()"
+  >
+    <section
+      class="modal-confirmacion"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-eliminar-huesped"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-confirmacion__encabezado">
+        <div class="modal-confirmacion__icono" aria-hidden="true">
+          !
+        </div>
+
+        <div>
+          <p class="modal-confirmacion__seccion">
+            Dar de baja huésped
+          </p>
+
+          <h2 id="titulo-eliminar-huesped">
+            ¿Confirmás esta acción?
+          </h2>
+        </div>
+      </header>
+
+      <p class="modal-confirmacion__texto">
+        Vas a dar de baja a
+        <strong>
+          {{ huesped.nombre }} {{ huesped.apellido }}
+        </strong>.
+      </p>
+
+      <p class="modal-confirmacion__aclaracion">
+        Si tiene reservas anteriores, se conservará su historial.
+        Si tiene una reserva confirmada o en curso, la operación será rechazada.
+      </p>
+
+      @if (errorBaja()) {
+        <div class="modal-confirmacion__error" role="alert">
+          <strong>No se pudo realizar la baja</strong>
+          <span>{{ errorBaja() }}</span>
+        </div>
+      }
+
+      <footer class="modal-confirmacion__acciones">
+        <button
+          type="button"
+          class="boton-cancelar"
+          (click)="onCerrarEliminacion()"
+          [disabled]="eliminando()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="boton-confirmar-baja"
+          (click)="onConfirmarEliminacion()"
+          [disabled]="eliminando()"
+        >
+          {{ eliminando() ? 'Procesando...' : 'Confirmar baja' }}
+        </button>
+      </footer>
+    </section>
+  </div>
+}

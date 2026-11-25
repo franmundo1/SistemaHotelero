@@ -17,6 +17,15 @@
   margin-bottom: 1.5rem;
 }
 
+.check-out__seccion {
+  margin: 0 0 0.35rem;
+  color: var(--color-acento);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 h1,
 h2,
 p {
@@ -25,12 +34,18 @@ p {
 
 h1 {
   margin-bottom: 0.4rem;
+  color: var(--color-texto);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.encabezado div > p:last-child {
+  color: var(--color-texto-suave);
 }
 
 form,
 .resultado,
 .mensaje {
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-borde);
   border-radius: var(--radio-tarjeta);
   padding: 1.25rem;
   background: white;
@@ -39,12 +54,14 @@ form,
 form {
   display: grid;
   gap: 1rem;
+  box-shadow: 0 14px 40px rgb(48 36 41 / 7%);
 }
 
 label {
   display: grid;
   gap: 0.4rem;
-  font-weight: 600;
+  color: var(--color-texto-secundario);
+  font-weight: 700;
 }
 
 select,
@@ -52,14 +69,23 @@ input,
 textarea {
   box-sizing: border-box;
   width: 100%;
-  border: 1px solid #bbb;
+  border: 1px solid var(--color-borde);
   border-radius: var(--radio-control);
   padding: 0.7rem;
   font: inherit;
+  outline: none;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-foco);
 }
 
 textarea {
   resize: vertical;
+  min-height: 90px;
 }
 
 .fila {
@@ -69,14 +95,45 @@ textarea {
 }
 
 .resumen {
+  overflow: hidden;
+  border: 1px solid var(--color-borde);
   border-radius: var(--radio-tarjeta);
-  padding: 1rem;
-  background: #f4f4f4;
+  background: white;
 }
 
-.resumen h2 {
-  margin-bottom: 0.8rem;
+.resumen__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-superficie);
+}
+
+.resumen__encabezado p {
+  margin: 0 0 0.2rem;
+  color: var(--color-acento);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.resumen__encabezado h2 {
+  margin: 0;
+  color: var(--color-texto);
   font-size: 1.15rem;
+}
+
+.resumen__encabezado > span {
+  border-radius: var(--radio-pildora);
+  padding: 0.4rem 0.75rem;
+  background-color: white;
+  color: var(--color-texto);
+  font-weight: 800;
+}
+
+.resumen__detalle {
+  padding: 1rem 1.25rem;
 }
 
 .resumen p {
@@ -88,8 +145,16 @@ textarea {
 
 .resumen .saldo {
   margin: 0;
-  padding-top: 0.7rem;
-  border-top: 1px solid #ccc;
+  margin-top: 0.85rem;
+  border-radius: var(--radio-control);
+  padding: 0.9rem 1rem;
+  background-color: var(--color-texto);
+  color: white;
+}
+
+.resumen .saldo span,
+.resumen .saldo strong {
+  color: white;
 }
 
 button {
@@ -114,12 +179,59 @@ button:disabled {
 
 .resultado {
   margin-bottom: 1.5rem;
-  border-color: #8bc79a;
-  background: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  background: linear-gradient(145deg, white, var(--color-exito-fondo));
+  text-align: center;
 }
 
 .resultado h2 {
   margin-bottom: 0.5rem;
+}
+
+.resultado__icono {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 0.75rem;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.resultado__etiqueta {
+  margin-bottom: 0.25rem;
+  color: var(--color-exito-texto);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.resultado__descripcion {
+  margin-bottom: 1.25rem;
+  color: var(--color-texto-suave);
+}
+
+.resultado dl {
+  overflow: hidden;
+  border: 1px solid var(--color-exito-borde);
+  border-radius: var(--radio-tarjeta);
+  background-color: rgb(255 255 255 / 75%);
+  text-align: left;
+}
+
+.resultado dl div {
+  padding: 1rem;
+}
+
+.cargando-resumen {
+  margin: 0;
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  background-color: var(--color-superficie);
+  color: var(--color-texto-suave);
 }
 
 dl {
@@ -161,5 +273,10 @@ dd {
   .fila,
   dl {
     grid-template-columns: 1fr;
+  }
+
+  .resumen__encabezado {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

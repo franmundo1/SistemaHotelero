@@ -25,11 +25,41 @@
     </div>
   </header>
 
+  <div class="filtro-habitaciones">
+    <label for="filtro-habitacion">
+      Filtrar habitaciones
+    </label>
+
+    <select
+      id="filtro-habitacion"
+      [value]="filtroHabitacion()"
+      (change)="onCambiarFiltro($event)"
+    >
+      <option value="TODAS">Todas</option>
+      <option value="DISPONIBLES">Disponibles y limpias</option>
+      <option value="OCUPADAS">Ocupadas</option>
+      <option value="SUCIAS">Sucias</option>
+      <option value="EN_LIMPIEZA">En limpieza</option>
+      <option value="MANTENIMIENTO">En mantenimiento</option>
+
+      @if (esAdmin()) {
+        <option value="INACTIVAS">Dadas de baja</option>
+      }
+    </select>
+  </div>
+
   @if (mensaje()) {
-    <p class="exito">{{ mensaje() }}</p>
-  }
-  @if (errorBaja()) {
-    <p class="error">{{ errorBaja() }}</p>
+    <div class="notificacion notificacion--exito" role="status">
+      <span>{{ mensaje() }}</span>
+
+      <button
+        type="button"
+        aria-label="Cerrar notificación"
+        (click)="cerrarNotificacion()"
+      >
+        ×
+      </button>
+    </div>
   }
 
   @if (formularioAbierto()) {
@@ -58,6 +88,10 @@
     <div class="mensaje">
       <p>No hay habitaciones registradas.</p>
     </div>
+  } @else if (habitacionesFiltradas().length === 0) {
+    <div class="mensaje">
+      <p>No hay habitaciones que coincidan con el filtro seleccionado.</p>
+    </div>
   } @else {
     <div class="tabla-contenedor">
       <table>
@@ -76,23 +110,23 @@
         </thead>
 
         <tbody>
-          @for (habitacion of habitaciones(); track habitacion.idExterno) {
+          @for (habitacion of habitacionesFiltradas(); track habitacion.idExterno) {
             <tr [class.inactiva]="!habitacion.activa">
-              <td class="numero">
+              <td class="numero" data-label="Número">
                 {{ habitacion.numero }}
                 @if (!habitacion.activa) {
                   <span class="baja">Dada de baja</span>
                 }
               </td>
-              <td>{{ mostrarEstado(habitacion.tipo) }}</td>
-              <td>
+              <td data-label="Tipo">{{ mostrarEstado(habitacion.tipo) }}</td>
+              <td data-label="Capacidad">
                 {{ habitacion.capacidad }}
                 {{ habitacion.capacidad === 1 ? 'persona' : 'personas' }}
               </td>
-              <td>
+              <td data-label="Precio por noche">
                 {{ habitacion.precioPorNoche | currency: 'ARS' : 'symbol-narrow' : '1.2-2' }}
               </td>
-              <td>
+              <td data-label="Ocupación">
                 <span
                   class="estado"
                   [class]="'estado ' + claseOcupacion(habitacion)"
@@ -100,7 +134,7 @@
                   {{ mostrarOcupacion(habitacion) }}
                 </span>
               </td>
-              <td>
+              <td data-label="Limpieza">
                 <span
                   class="estado"
                   [class]="'estado estado--' + habitacion.estadoLimpieza.toLowerCase()"
@@ -109,7 +143,7 @@
                 </span>
               </td>
               @if (esAdmin()) {
-                <td class="acciones">
+                <td class="acciones" data-label="Acciones">
                   @if (habitacion.activa) {
                     <button type="button" class="accion" (click)="onEditar(habitacion)">Editar</button>
                     <button type="button" class="accion accion--peligro" (click)="onDarDeBaja(habitacion)">Dar de baja</button>
@@ -125,3 +159,64 @@
     </div>
   }
 </section>
+
+@if (habitacionADarDeBaja(); as habitacion) {
+  <div
+    class="modal-fondo"
+    (click)="onCerrarBajaHabitacion()"
+  >
+    <section
+      class="modal-confirmacion"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-baja-habitacion"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-confirmacion__encabezado">
+        <div class="modal-confirmacion__icono" aria-hidden="true">!</div>
+
+        <div>
+          <p class="modal-confirmacion__seccion">Dar de baja habitación</p>
+          <h2 id="titulo-baja-habitacion">¿Confirmás esta acción?</h2>
+        </div>
+      </header>
+
+      <p class="modal-confirmacion__texto">
+        Vas a dar de baja la habitación
+        <strong>{{ habitacion.numero }}</strong>.
+      </p>
+
+      <p class="modal-confirmacion__aclaracion">
+        La habitación pasará a estado inactivo y dejará de ofrecerse en nuevas reservas.
+        Si está ocupada o tiene reservas activas, la operación será rechazada.
+      </p>
+
+      @if (errorBaja()) {
+        <div class="modal-confirmacion__error" role="alert">
+          <strong>No se pudo dar de baja la habitación</strong>
+          <span>{{ errorBaja() }}</span>
+        </div>
+      }
+
+      <footer class="modal-confirmacion__acciones">
+        <button
+          type="button"
+          class="boton-cancelar"
+          (click)="onCerrarBajaHabitacion()"
+          [disabled]="dandoDeBaja()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="boton-confirmar-baja"
+          (click)="onConfirmarBajaHabitacion()"
+          [disabled]="dandoDeBaja()"
+        >
+          {{ dandoDeBaja() ? 'Dando de baja...' : 'Dar de baja' }}
+        </button>
+      </footer>
+    </section>
+  </div>
+}

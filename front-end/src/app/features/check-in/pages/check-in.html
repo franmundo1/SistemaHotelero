@@ -20,7 +20,12 @@
 
   @if (checkInRegistrado(); as checkIn) {
     <div class="resultado">
+      <div class="resultado__icono" aria-hidden="true">✓</div>
+      <p class="resultado__etiqueta">Ingreso completado</p>
       <h2>Check-in registrado correctamente</h2>
+      <p class="resultado__descripcion">
+        La estadía de <strong>{{ checkIn.nombreHuesped }}</strong> ya se encuentra en curso.
+      </p>
 
       <dl>
         <div>
@@ -60,8 +65,8 @@
       <p>No hay reservas confirmadas con ingreso para hoy.</p>
     </div>
   } @else {
-    <form [formGroup]="formulario" (ngSubmit)="registrar()">
-      <label>
+    <form class="formulario-check-in" [formGroup]="formulario" (ngSubmit)="registrar()">
+      <label class="selector-reserva">
         Reserva
 
         <select formControlName="idReservaExterno">
@@ -84,7 +89,13 @@
 
       @if (reservaSeleccionada(); as reserva) {
         <div class="reserva">
-          <h2>Datos de la reserva</h2>
+          <div class="reserva__encabezado">
+            <div>
+              <p>Reserva seleccionada</p>
+              <h2>{{ reserva.huesped }}</h2>
+            </div>
+            <span>Habitación {{ reserva.habitacion }}</span>
+          </div>
 
           <dl>
             <div>
@@ -110,7 +121,7 @@
         </div>
       }
 
-      <label>
+      <label class="campo-observaciones">
         Observaciones
 
         <textarea
@@ -124,7 +135,7 @@
         <p class="error error--contenedor">{{ errorRegistro() }}</p>
       }
 
-      <button type="submit" [disabled]="guardando()">
+      <button class="boton-principal" type="submit" [disabled]="guardando()">
         {{ guardando() ? 'Registrando...' : 'Registrar check-in' }}
       </button>
     </form>

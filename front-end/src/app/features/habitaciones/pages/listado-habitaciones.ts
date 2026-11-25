@@ -7,6 +7,15 @@ import { FormularioHabitacion } from '../components/formulario-habitacion/formul
 import { Habitacion, HabitacionRequest } from '../models/habitacion';
 import { HabitacionesService } from '../services/habitaciones';
 
+type FiltroHabitacion =
+  | 'TODAS'
+  | 'DISPONIBLES'
+  | 'OCUPADAS'
+  | 'SUCIAS'
+  | 'EN_LIMPIEZA'
+  | 'MANTENIMIENTO'
+  | 'INACTIVAS';
+
 @Component({
   selector: 'app-listado-habitaciones',
   imports: [CurrencyPipe, FormularioHabitacion],
@@ -21,6 +30,52 @@ export class ListadoHabitaciones implements OnInit {
   readonly esAdmin = computed(() => this.sesionService.tieneAlgunRol([ROLES.ADMIN]));
 
   readonly habitaciones = signal<Habitacion[]>([]);
+  readonly filtroHabitacion = signal<FiltroHabitacion>('TODAS');
+
+  readonly habitacionesFiltradas = computed(() => {
+    const filtro = this.filtroHabitacion();
+
+    return this.habitaciones().filter((habitacion) => {
+      switch (filtro) {
+        case 'DISPONIBLES':
+          return (
+            habitacion.activa &&
+            habitacion.estadoOcupacion === 'DISPONIBLE' &&
+            habitacion.estadoLimpieza === 'LIMPIA'
+          );
+
+        case 'OCUPADAS':
+          return (
+            habitacion.activa &&
+            habitacion.estadoOcupacion === 'OCUPADA'
+          );
+
+        case 'SUCIAS':
+          return (
+            habitacion.activa &&
+            habitacion.estadoLimpieza === 'SUCIA'
+          );
+
+        case 'EN_LIMPIEZA':
+          return (
+            habitacion.activa &&
+            habitacion.estadoLimpieza === 'EN_LIMPIEZA'
+          );
+
+        case 'MANTENIMIENTO':
+          return (
+            habitacion.activa &&
+            habitacion.estadoOcupacion === 'MANTENIMIENTO'
+          );
+
+        case 'INACTIVAS':
+          return !habitacion.activa;
+
+        default:
+          return true;
+      }
+    });
+  });
   readonly cargando = signal(false);
   readonly error = signal<string | null>(null);
 
@@ -30,6 +85,8 @@ export class ListadoHabitaciones implements OnInit {
   readonly errorFormulario = signal<string | null>(null);
   readonly mensaje = signal<string | null>(null);
   readonly errorBaja = signal<string | null>(null);
+  readonly habitacionADarDeBaja = signal<Habitacion | null>(null);
+  readonly dandoDeBaja = signal(false);
 
   ngOnInit(): void {
     this.cargarHabitaciones();
@@ -59,6 +116,14 @@ export class ListadoHabitaciones implements OnInit {
         this.cargando.set(false);
       },
     });
+  }
+
+  onCambiarFiltro(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+
+    this.filtroHabitacion.set(
+      select.value as FiltroHabitacion
+    );
   }
 
   onNueva(): void {
@@ -98,29 +163,56 @@ export class ListadoHabitaciones implements OnInit {
   }
 
   onDarDeBaja(habitacion: Habitacion): void {
-    const confirmado = confirm(
-      `¿Seguro que queres dar de baja la habitación ${habitacion.numero}? ` +
-        'Pasará a estado "Inactiva" y no se ofrecerá en nuevas reservas.'
-    );
-    if (!confirmado) {
-      return;
-    }
+  this.mensaje.set(null);
+  this.errorBaja.set(null);
+  this.habitacionADarDeBaja.set(habitacion);
+}
 
-    this.mensaje.set(null);
-    this.errorBaja.set(null);
+onCerrarBajaHabitacion(): void {
+  if (this.dandoDeBaja()) return;
 
-    this.habitacionesService.delete(habitacion.idExterno).subscribe({
-      next: () => {
-        // Queda en la lista como inactiva, con el boton para reactivarla
-        this.reemplazar({ ...habitacion, activa: false });
-        if (this.habitacionEnEdicion()?.idExterno === habitacion.idExterno) {
-          this.onCancelar();
-        }
-        this.mensaje.set(`Habitación ${habitacion.numero} dada de baja.`);
-      },
-      error: (error: ApiError) => this.errorBaja.set(error.mensaje),
-    });
-  }
+  this.habitacionADarDeBaja.set(null);
+  this.errorBaja.set(null);
+}
+
+onConfirmarBajaHabitacion(): void {
+  const habitacion = this.habitacionADarDeBaja();
+
+  if (!habitacion) return;
+
+  this.dandoDeBaja.set(true);
+  this.errorBaja.set(null);
+  this.mensaje.set(null);
+
+  this.habitacionesService.delete(habitacion.idExterno).subscribe({
+    next: () => {
+      this.reemplazar({
+        ...habitacion,
+        activa: false,
+      });
+
+      if (
+        this.habitacionEnEdicion()?.idExterno === habitacion.idExterno
+      ) {
+        this.onCancelar();
+      }
+
+      this.dandoDeBaja.set(false);
+      this.habitacionADarDeBaja.set(null);
+      this.mensaje.set(
+        `Habitación ${habitacion.numero} dada de baja correctamente.`
+      );
+    },
+    error: (error: ApiError) => {
+      this.dandoDeBaja.set(false);
+      this.errorBaja.set(error.mensaje);
+    },
+  });
+}
+
+cerrarNotificacion(): void {
+  this.mensaje.set(null);
+}
 
   onReactivar(habitacion: Habitacion): void {
     this.mensaje.set(null);

@@ -25,6 +25,7 @@ export class ListadoUsuarios implements OnInit {
   readonly mensaje = signal<string | null>(null);
   readonly errorEstado = signal<string | null>(null);
   readonly actualizando = signal<string | null>(null); // id del usuario que se esta activando o desactivando
+  readonly usuarioADesactivar = signal<Usuario | null>(null);
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -76,37 +77,71 @@ export class ListadoUsuarios implements OnInit {
   }
 
   onCambiarActivo(usuario: Usuario): void {
-    const activar = !usuario.activo;
-    if (!activar) {
-      const confirmado = confirm(
-        `¿Seguro que querés desactivar a ${usuario.nombre} ${usuario.apellido}? No va a poder iniciar sesión.`
-      );
-      if (!confirmado) {
-        return;
-      }
-    }
-
-    this.actualizando.set(usuario.idExterno);
+  if (usuario.activo) {
     this.mensaje.set(null);
     this.errorEstado.set(null);
+    this.usuarioADesactivar.set(usuario);
+    return;
+  }
 
-    this.usuariosService.cambiarActivo(usuario.idExterno, activar).subscribe({
+  this.cambiarEstadoUsuario(usuario, true);
+}
+
+onCerrarDesactivacion(): void {
+  if (this.actualizando()) return;
+
+  this.usuarioADesactivar.set(null);
+  this.errorEstado.set(null);
+}
+
+onConfirmarDesactivacion(): void {
+  const usuario = this.usuarioADesactivar();
+
+  if (!usuario) return;
+
+  this.cambiarEstadoUsuario(usuario, false);
+}
+
+private cambiarEstadoUsuario(usuario: Usuario, activar: boolean): void {
+  this.actualizando.set(usuario.idExterno);
+  this.mensaje.set(null);
+  this.errorEstado.set(null);
+
+  this.usuariosService
+    .cambiarActivo(usuario.idExterno, activar)
+    .subscribe({
       next: (actualizado) => {
-        // Se reemplaza solo la fila que cambio
         this.usuarios.update((lista) =>
-          lista.map((u) => (u.idExterno === actualizado.idExterno ? actualizado : u))
+          lista.map((u) =>
+            u.idExterno === actualizado.idExterno
+              ? actualizado
+              : u
+          )
         );
-        this.mensaje.set(
-          `Usuario ${actualizado.email} ${actualizado.activo ? 'activado' : 'desactivado'}.`
-        );
+
         this.actualizando.set(null);
+        this.usuarioADesactivar.set(null);
+
+        this.mensaje.set(
+          `Usuario ${actualizado.email} ${
+            actualizado.activo ? 'activado' : 'desactivado'
+          } correctamente.`
+        );
       },
       error: (error: ApiError) => {
-        this.errorEstado.set(error.mensaje);
         this.actualizando.set(null);
+        this.errorEstado.set(error.mensaje);
       },
     });
-  }
+}
+
+cerrarNotificacion(): void {
+  this.mensaje.set(null);
+}
+
+cerrarErrorEstado(): void {
+  this.errorEstado.set(null);
+}
 
   // El admin no puede desactivarse a si mismo: se quedaria sin acceso
   esUsuarioActual(usuario: Usuario): boolean {

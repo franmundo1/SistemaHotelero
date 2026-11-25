@@ -68,10 +68,167 @@ form button {
   color: #9b3939;
 }
 
+.buscador-habitacion {
+  width: min(100%, 430px);
+  margin: 0 0 1.5rem;
+}
+
+.buscador-habitacion label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-texto);
+  font-weight: 700;
+}
+
+.buscador-habitacion input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-control);
+  padding: 0.8rem 1rem;
+  background-color: white;
+  color: var(--color-texto);
+  font: inherit;
+  outline: none;
+}
+
+.buscador-habitacion input:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-foco);
+}
+
+.habitaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.25rem;
+}
+
+.habitacion-card {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.4rem;
+  background-color: white;
+  box-shadow: 0 8px 24px rgb(48 36 41 / 6%);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.habitacion-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-acento);
+  box-shadow: 0 14px 30px rgb(48 36 41 / 12%);
+}
+
+.habitacion-card__encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.habitacion-card__etiqueta {
+  margin: 0 0 0.25rem;
+  color: var(--color-texto-suave);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.habitacion-card h2 {
+  margin: 0;
+  color: var(--color-texto);
+  font-size: 2rem;
+}
+
+.habitacion-card__tipo {
+  border-radius: var(--radio-pildora);
+  padding: 0.35rem 0.7rem;
+  background-color: var(--color-superficie);
+  color: var(--color-acento);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.habitacion-card__datos {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.habitacion-card__datos div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-borde);
+  padding-bottom: 0.75rem;
+}
+
+.habitacion-card__datos span {
+  color: var(--color-texto-suave);
+}
+
+.habitacion-card__datos strong {
+  color: var(--color-texto);
+}
+
+.habitacion-card__precio {
+  color: var(--color-acento) !important;
+  font-size: 1.1rem;
+}
+
+.boton-reservar {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  border: 0;
+  border-radius: var(--radio-pildora);
+  padding: 0.8rem 1rem;
+  background-color: var(--color-acento);
+  color: white;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.boton-reservar:hover {
+  transform: translateY(-2px);
+  background-color: #9f482d;
+}
+
+.boton-reservar span {
+  font-size: 1.3rem;
+  transition: transform 160ms ease;
+}
+
+.boton-reservar:hover span {
+  transform: translateX(4px);
+}
+
 @media (width <= 500px) {
   form button {
     width: 100%;
   }
+  .habitaciones-grid {
+  grid-template-columns: 1fr;
+}
+
+.buscador-habitacion {
+  width: 100%;
+}
 }
 
 .tabla-contenedor {
